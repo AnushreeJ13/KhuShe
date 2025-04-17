@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CycleBuddy | Teen Cycle Tracker</title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+  <style>
+  .background-animations {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+    background-color: #000; /* changed to black */
+  }
+
+  .floating-circle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(111, 66, 193, 0.15);
+    animation: float 12s infinite linear;
+    filter: blur(8px);
+  }
+  
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0) translateX(0);
+      opacity: 0.2;
+    }
+    25% {
+      transform: translateY(-20vh) translateX(10vw);
+    }
+    50% {
+      transform: translateY(10vh) translateX(-10vw);
+      opacity: 0.4;
+    }
+    75% {
+      transform: translateY(-10vh) translateX(15vw);
+    }
+  }
+
+  .background-animations::before {
+    content: '';
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 50% 50%, 
+      rgba(111, 66, 193, 0.08) 0%, 
+      rgba(0, 0, 0, 0) 70%);
+    animation: rotate 60s linear infinite;
+    top: -50%;
+    left: -50%;
+  }
+  
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .background-animations::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0) 25%,
+      rgba(111, 66, 193, 0.05) 50%,
+      rgba(255, 255, 255, 0) 75%
+    );
+    animation: shimmer 8s infinite;
+    background-size: 1000px 100%;
+  }
+
+  :root {
+    --primary: #6F42C1;
+    --primary-light: #A98EED;
+    --secondary: #FF6B8B;
+    --secondary-light: #FFA2B6;
+    --background: #000; /* changed to black */
+    --card-bg: #ffffff;
+    --text-dark: #333333;
+    --text-medium: #555555;
+    --text-muted: #777777;
+    --success: #6DC993;
+    --warning: #FFD166;
+    --border: #E4D5F7;
+    --input-bg: #ffffff;
+    --highlight: #FF8DC7;
+  }
+    
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+    
+  body {
+    background-color: var(--background);
+    color: var(--text-medium);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+    
+  header {
+    position: relative;
+    text-align: center;
+    padding: 15px 0;
+    background-color: #ffffff;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid var(--primary-light);
+    box-shadow: 0 4px 20px rgba(111, 66, 193, 0.15);
+  }
+    
+  .logo-container {
+    display: flex;
+    justify-content: center;
+    padding: 0;
+  }
+    
+  .logo {
+    width: 180px;
+    transition: transform 0.3s ease, filter 0.3s ease;
+    filter: drop-shadow(0 0 8px rgba(111, 66, 193, 0.5));
+  }
+    
+  .logo:hover {
+    transform: rotate(-5deg) scale(1.05);
+    filter: drop-shadow(0 0 12px rgba(111, 66, 193, 0.8));
+  }
+    
+  nav ul {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    list-style: none;
+    flex-wrap: wrap;
+    padding: 0.5rem 0;
+  }
+    
+  nav a {
+    color: var(--text-medium);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+    
+  nav a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--primary-light), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+    border-radius: 2rem;
+  }
+    
+  nav a:hover {
+    color: var(--primary);
+    transform: translateY(-2px);
+  }
+    
+  nav a:hover::before {
+    opacity: 0.2;
+  }
+    
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+    
+  .title-section {
+    text-align: center;
+    width: 70%;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 20px;
+    border: 2px solid var(--primary-light);
+    margin: 2rem auto;
+    box-shadow: 0 8px 30px rgba(111, 66, 193, 0.15);
+    animation: fadeIn 0.8s ease-out;
+    position: relative;
+    overflow: hidden;
+  }
+    
+  .title-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(111, 66, 193, 0.1), transparent);
+    transform: rotate(45deg);
+    animation: shimmerBg 3s infinite linear;
+    z-index: -1;
+  }
+    
+  @keyframes shimmerBg {
+    0% { transform: translateX(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) rotate(45deg); }
+  }
+    
+  .title-section h1 {
+    font-size: 2.2rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-shadow: 0 0 10px rgba(111, 66, 193, 0.3);
+  }
+    
+  .title-section p {
+    color: var(--text-medium);
+    font-size: 1.1rem;
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+    
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+    
+  .tracker-grid {
+    display: grid;
+    grid-template-columns: minmax(300px, 400px) 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+    
+  .card {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+    
+  .card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 1.5rem;
+    padding: 2px;
+    background: linear-gradient(135deg, var(--primary-light), transparent, var(--secondary-light));
+    -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0.5;
+  }
+    
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(111, 66, 193, 0.2);
+  }
+    
+  .card-header {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+  }
+    
+  .card-title {
+    font-size: 1.5rem;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+    
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+    
+  .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-medium);
+    font-size: 0.95rem;
+  }
+    
+  .form-control {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid var(--border);
+    border-radius: 1rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: var(--input-bg);
+    color: var(--text-dark);
+  }
+    
+  .form-control:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(111, 66, 193, 0.2);
+  }
+    
+  .btn {
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    border-radius: 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+    
+  .btn-primary {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+  }
+    
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(111, 66, 193, 0.3);
+  }
+    
+  .btn-primary::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transform: rotate(45deg);
+    animation: shimmerEffect 3s infinite linear;
+  }
+    
+  @keyframes shimmerEffect {
+    0% { transform: translateX(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) rotate(45deg); }
+  }
+    
+  .result-card {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease;
+  }
+    
+  .result-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+    
+  .result-item {
+    padding: 1.2rem;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+  }
+    
+  .result-item:hover {
+    transform: translateX(5px);
+    border-color: var(--primary-light);
+  }
+    
+  .result-item.primary {
+    background: rgba(111, 66, 193, 0.05);
+  }
+    
+  .result-item.secondary {
+    background: rgba(255, 107, 139, 0.05);
+  }
+    
+  .result-label {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-bottom: 0.25rem;
+  }
+    
+  .result-value {
+    font-size: 1.125rem;
+    color: var(--text-dark);
+    font-weight: 600;
+  }
+    
+  .estimations-table {
+    width: 100%;
+    margin-top: 2rem;
+    border-collapse: separate;
+    border-spacing: 0 0.8rem;
+  }
+    
+  .estimations-table th,
+  .estimations-table td {
+    padding: 1rem;
+    text-align: left;
+  }
+    
+  .estimations-table th {
+    background: rgba(111, 66, 193, 0.1);
+    color: var(--primary);
+    font-weight: 600;
+    border-radius: 0.5rem;
+  }
+    
+  .estimations-table td {
+    background: var(--input-bg);
+    color: var(--text-medium);
+  }
+    
+  .estimations-table tr:hover td {
+    background: rgba(111, 66, 193, 0.05);
+  }
+    
+  .estimations-table tr td:first-child {
+    border-top-left-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+  }
+    
+  .estimations-table tr td:last-child {
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+  }
+    
+  @media (max-width: 1024px) {
+    .tracker-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+    
+  @media (max-width: 768px) {
+    .container {
+      padding: 1rem;
+    }
+    .title-section {
+      width: 90%;
+      padding: 1.5rem;
+    }
+    .title-section h1 {
+      font-size: 1.8rem;
+    }
+    .estimations-table {
+      display: block;
+      overflow-x: auto;
+    }
+  }
+
+  .login-container {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .login-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(111, 66, 193, 0.2);
+    gap: 10px;
+    position: relative;
+    overflow: hidden;
+  }
+  .login-btn::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transform: rotate(45deg);
+    animation: shimmerBtn 3s infinite linear;
+    z-index: 1;
+  }
+  @keyframes shimmerBtn {
+    0% { transform: translateX(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) rotate(45deg); }
+  }
+  .login-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(111, 66, 193, 0.3);
+    background: linear-gradient(135deg, var(--secondary), var(--primary));
+  }
+  .login-btn i {
+    position: relative;
+    z-index: 2;
+  }
+  .login-btn span {
+    position: relative;
+    z-index: 2;
+  }
+  .user-info {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    background: rgba(111, 66, 193, 0.1);
+    padding: 10px 20px;
+    border-radius: 30px;
+    color: var(--text-dark);
+    border: 1px solid rgba(111, 66, 193, 0.2);
+  }
+  .user-info i {
+    font-size: 1.2rem;
+    color: var(--primary);
+  }
+  .logout-btn {
+    color: var(--primary);
+    cursor: pointer;
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+  .logout-btn:hover {
+    color: var(--secondary);
+  }
+  .info-tooltip {
+    position: relative;
+    display: inline-block;
+    margin-left: 5px;
+    color: var(--primary);
+    cursor: pointer;
+  }
+  .tooltip-content {
+    visibility: hidden;
+    position: absolute;
+    width: 200px;
+    background-color: white;
+    color: var(--text-medium);
+    text-align: left;
+    border-radius: 8px;
+    padding: 10px;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    font-size: 0.85rem;
+    line-height: 1.4;
+    border: 1px solid var(--border);
+  }
+  .info-tooltip:hover .tooltip-content {
+    visibility: visible;
+    opacity: 1;
+  }
+  .emoji-icon {
+    font-size: 1.2rem;
+    margin-right: 8px;
+  }
+  .friendly-msg {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-top: 1rem;
+    text-align: center;
+    font-style: italic;
+  }
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+  .pulse-animation {
+    animation: pulse 2s infinite ease-in-out;
+  }
+  </style>
+</head>
+<body>
+  <div class="background-animations">
+    <div class="floating-circle" style="width: 180px; height: 180px; top: 20%; left: 10%;"></div>
+    <div class="floating-circle" style="width: 120px; height: 120px; top: 60%; left: 80%;"></div>
+    <div class="floating-circle" style="width: 200px; height: 200px; top: 40%; left: 50%;"></div>
+    <div class="floating-circle" style="width: 150px; height: 150px; top: 80%; left: 30%;"></div>
+  </div>
+
+  <header>
+    <div class="login-container">
+      <a href="auth.html" class="login-btn" id="loginButton">
+        <i class="fas fa-user"></i> <span>Join Us!</span>
+      </a>
+      <div class="user-info" id="userInfo">
+        <i class="fas fa-user-circle"></i>
+        <span id="userEmail"></span>
+        <span class="logout-btn" id="logoutButton">Log Out</span>
+      </div>
+    </div>
+    <div class="logo-container">
+      <img src="/api/placeholder/180/80" alt="CycleBuddy" class="logo" />
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html"><i class="fas fa-home"></i>Home</a></li>
+        <li><a href="cycle.html"><i class="fas fa-calendar-alt"></i>My Cycle</a></li>
+        <li><a href="learn.html"><i class="fas fa-book-open"></i>Learn</a></li>
+        <li><a href="faq.html"><i class="fas fa-question-circle"></i>Questions</a></li>
+        <li><a href="moods.html"><i class="fas fa-smile"></i>Mood</a></li>
+        <li><a href="chat.html"><i class="fas fa-comments"></i>Talk to Us</a></li>
+        <li><a href="community.html"><i class="fas fa-users"></i>Community</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="title-section">
+      <h1>My Cycle Buddy <span class="emoji-icon">🌸</span></h1>
+      <p>Track your period, predict your next cycle, and get to know your body better!</p>
+    </div>
+
+    <div class="tracker-grid">
+      <div class="card input-section">
+        <div class="card-header">
+          <h2 class="card-title"><i class="fas fa-calendar-alt"></i>Enter Your Cycle Info</h2>
+        </div>
+        <div class="form-group">
+          <label>
+            First Day of Last Period
+            <span class="info-tooltip"><i class="fas fa-info-circle"></i>
+              <span class="tooltip-content">This is the first day when your most recent period began.</span>
+            </span>
+          </label>
+          <input type="date" id="lastPeriod" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label>
+            How Many Days Between Your Periods?
+            <span class="info-tooltip"><i class="fas fa-info-circle"></i>
+              <span class="tooltip-content">Number of days from the start of one period to the next. Average is ~28 days (normal: 21–35).</span>
+            </span>
+          </label>
+          <select id="cycleLength" class="form-control">
+            <option value="21">21 days</option>
+            <option value="22">22 days</option>
+            <option value="23">23 days</option>
+            <option value="24">24 days</option>
+            <option value="25">25 days</option>
+            <option value="26">26 days</option>
+            <option value="27">27 days</option>
+            <option value="28" selected>28 days (average)</option>
+            <option value="29">29 days</option>
+            <option value="30">30 days</option>
+            <option value="31">31 days</option>
+            <option value="32">32 days</option>
+            <option value="33">33 days</option>
+            <option value="34">34 days</option>
+            <option value="35">35 days</option>
+          </select>
+          
+        </div>
+        <p class="friendly-msg">Remember: Every body is different! Your cycle might not be exactly the same each month.</p>
+        <button id="calculateBtn" class="btn btn-primary pulse-animation">
+          <i class="fas fa-magic"></i>Show My Cycle
+        </button>
+      </div>
+
+      <div id="resultsCard" class="card result-card">
+        <div class="card-header">
+          <h2 class="card-title"><i class="fas fa-chart-line"></i>Your Cycle Details</h2>
+        </div>
+        <div class="result-item primary">
+          <div class="result-label"><span class="emoji-icon">🔄</span>Ovulation Window</div>
+          <div id="ovulationWindow" class="result-value"></div>
+        </div>
+        <div class="result-item secondary">
+          <div class="result-label"><span class="emoji-icon">📅</span>Ovulation Day</div>
+          <div id="ovulationDate" class="result-value"></div>
+        </div>
+        <div class="result-item primary">
+          <div class="result-label"><span class="emoji-icon">🌧️</span>Next Period Starts</div>
+          <div id="nextPeriod" class="result-value"></div>
+        </div>
+        <div class="result-item secondary">
+          <div class="result-label"><span class="emoji-icon">📝</span>Best Tracking Days</div>
+          <div id="trackingDays" class="result-value"></div>
+        </div>
+
+        <div class="card-header">
+          <h2 class="card-title"><i class="fas fa-calendar-week"></i>Your Next Few Cycles</h2>
+        </div>
+        <table class="estimations-table" id="estimationsTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Period Starts</th>
+              <th>Middle of Cycle</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <p class="friendly-msg">These are just predictions! Your body might follow its own schedule.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const calculateBtn = document.getElementById('calculateBtn');
+      const resultsCard = document.getElementById('resultsCard');
+
+      function formatDate(date) {
+        return new Intl.DateTimeFormat('en-US', {
+          month: 'long',
+          day: 'numeric',
+          year: 'numeric',
+        }).format(new Date(date));
+      }
+
+      function calculateCycle() {
+        const lastPeriod = new Date(document.getElementById('lastPeriod').value);
+        const cycleLength = parseInt(document.getElementById('cycleLength').value, 10);
+
+        if (!lastPeriod || isNaN(cycleLength)) {
+          alert('Please fill in all fields correctly');
+          return;
+        }
+
+        const ovulationDay = new Date(lastPeriod);
+        ovulationDay.setDate(lastPeriod.getDate() + Math.floor(cycleLength / 2));
+
+        const ovulationWindowStart = new Date(ovulationDay);
+        ovulationWindowStart.setDate(ovulationDay.getDate() - 2);
+
+        const ovulationWindowEnd = new Date(ovulationDay);
+        ovulationWindowEnd.setDate(ovulationDay.getDate() + 2);
+
+        const trackingStart = new Date(lastPeriod);
+        trackingStart.setDate(lastPeriod.getDate() + Math.floor(cycleLength / 4));
+
+        const trackingEnd = new Date(lastPeriod);
+        trackingEnd.setDate(lastPeriod.getDate() + Math.floor(cycleLength * 3 / 4));
+
+        const nextPeriod = new Date(lastPeriod);
+        nextPeriod.setDate(lastPeriod.getDate() + cycleLength);
+
+        document.getElementById('ovulationWindow').textContent =
+          `${formatDate(ovulationWindowStart)} – ${formatDate(ovulationWindowEnd)}`;
+        document.getElementById('ovulationDate').textContent =
+          formatDate(ovulationDay);
+        document.getElementById('nextPeriod').textContent =
+          formatDate(nextPeriod);
+        document.getElementById('trackingDays').textContent =
+          `${formatDate(trackingStart)} – ${formatDate(trackingEnd)}`;
+
+        generateEstimations(lastPeriod, cycleLength);
+        resultsCard.classList.add('visible');
+      }
+
+      function generateEstimations(startDate, cycleLength) {
+        const tbody = document.querySelector('#estimationsTable tbody');
+        tbody.innerHTML = '';
+        let currentDate = new Date(startDate);
+
+        for (let i = 1; i <= 4; i++) {
+          const row = document.createElement('tr');
+          const middleCycle = new Date(currentDate);
+          // FIXED: correct parentheses and calculation
+          middleCycle.setDate(currentDate.getDate() + Math.floor(cycleLength / 2));
+
+          row.innerHTML = `
+            <td>${i}</td>
+            <td>${formatDate(currentDate)}</td>
+            <td>${formatDate(middleCycle)}</td>
+          `;
+          tbody.appendChild(row);
+
+          currentDate.setDate(currentDate.getDate() + cycleLength);
+        }
+      }
+
+      calculateBtn.addEventListener('click', function () {
+        calculateBtn.disabled = true;
+        setTimeout(() => {
+          calculateCycle();
+          calculateBtn.disabled = false;
+        }, 500);
+      });
+    });
+
+    // Auth handling
+    document.addEventListener('DOMContentLoaded', function () {
+      const loginBtn = document.getElementById('loginButton');
+      const userInfo = document.getElementById('userInfo');
+      const userEmail = document.getElementById('userEmail');
+      const logoutBtn = document.getElementById('logoutButton');
+
+      function checkAuth() {
+        const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+        const storedEmail = sessionStorage.getItem('userEmail');
+        if (isLoggedIn && storedEmail) {
+          loginBtn.style.display = 'none';
+          userInfo.style.display = 'flex';
+          userEmail.textContent = storedEmail;
+        } else {
+          loginBtn.style.display = 'inline-flex';
+          userInfo.style.display = 'none';
+        }
+      }
+
+      logoutBtn.addEventListener('click', function () {
+        sessionStorage.removeItem('isLoggedIn');
+        sessionStorage.removeItem('userEmail');
+        checkAuth();
+        window.location.reload();
+      });
+
+      checkAuth();
+    });
+  </script>
+</body>
+</html>

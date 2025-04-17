@@ -1,0 +1,1536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menopause Tracker Pro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  <style>
+    :root {
+      --midnight: #121212;
+      --indigo: #2d2a4a;
+      --blue-accent: #4b6cb7;
+      --purple-accent: #6c5ce7;
+      --text-light: #f0f2f5;
+      --card-bg: #1f1f2e;
+      --border: #444;
+      --success: #00b894;
+      --warning: #fdcb6e;
+      --alert: #e17055;
+      --primary: #EC4899;
+      --primary-dark: #DB2777;
+      --secondary: #7C3AED;
+    }
+
+    /* New Navigation Bar Styles */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 1.5rem 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 1000;
+      backdrop-filter: blur(12px);
+      background: rgba(18, 18, 18, 0.8);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      display: flex;
+      align-items: center;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .logo-icon {
+      margin-right: 0.5rem;
+      font-size: 2rem;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+
+    nav ul li a {
+      font-weight: 500;
+      position: relative;
+      padding: 0.5rem 0;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      color: var(--text-light);
+      font-family: 'Inter', sans-serif;
+    }
+
+    nav ul li a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    nav ul li a:hover,
+    nav ul li a.active {
+      color: var(--primary);
+    }
+
+    nav ul li a:hover::after,
+    nav ul li a.active::after {
+      width: 100%;
+    }
+
+    .nav-cta {
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 0.6rem 1.5rem;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(236, 72, 153, 0.4);
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    /* Adjust app container for new nav */
+    .app-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 120px 20px 30px; /* Added top padding for fixed nav */
+    }
+
+    /* Rest of your existing styles... */
+    * {
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Space Grotesk', sans-serif;
+      background: linear-gradient(135deg, var(--midnight), var(--indigo));
+      color: var(--text-light);
+      min-height: 100vh;
+    }
+
+    /* Your existing body styles continue... */
+    h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 2.8rem;
+      background: linear-gradient(to right, var(--purple-accent), var(--blue-accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      opacity: 0.8;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 30px 0 20px;
+    }
+
+    .tab {
+      padding: 12px 24px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .tab.active {
+      background: linear-gradient(to right, var(--purple-accent), var(--blue-accent));
+      box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
+    }
+
+    .main-content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      justify-content: center;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      padding: 25px;
+      border-radius: 18px;
+      flex: 1;
+      min-width: 320px;
+      max-width: 450px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .card-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.4rem;
+      margin-top: 0;
+      margin-bottom: 20px;
+      color: var(--purple-accent);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    input[type="number"],
+    input[type="date"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px 15px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background-color: #2e2e3e;
+      color: var(--text-light);
+      font-size: 1rem;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--purple-accent);
+      box-shadow: 0 0 0 2px rgba(108, 92, 231, 0.3);
+    }
+
+    .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .checkbox-item {
+      background-color: #2e2e3e;
+      padding: 8px 15px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      user-select: none;
+    }
+
+    .checkbox-item.selected {
+      background: linear-gradient(to right, var(--purple-accent), var(--blue-accent));
+    }
+
+    button {
+      margin-top: 25px;
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(to right, var(--purple-accent), var(--blue-accent));
+      border: none;
+      border-radius: 12px;
+      color: #fff;
+      font-weight: bold;
+      font-size: 1.1rem;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 7px 20px rgba(108, 92, 231, 0.4);
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    .progress-container {
+      margin-top: 25px;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .progress-bar {
+      height: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .progress {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--blue-accent), var(--purple-accent));
+      transition: width 0.8s cubic-bezier(0.26, 1.96, 0.58, 1);
+    }
+
+    .result {
+      margin-top: 25px;
+      padding: 20px;
+      background-color: #29293d;
+      border-radius: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      display: none;
+    }
+
+    .result h3 {
+      margin-top: 0;
+      color: var(--purple-accent);
+    }
+
+    .symptom-chip {
+      display: inline-block;
+      background-color: rgba(108, 92, 231, 0.2);
+      padding: 5px 12px;
+      border-radius: 20px;
+      margin: 3px;
+      font-size: 0.9rem;
+    }
+
+    .chart-container {
+      height: 300px;
+      margin-top: 20px;
+    }
+
+    .recommendations {
+      margin-top: 15px;
+    }
+
+    .recommendation-item {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px;
+      align-items: flex-start;
+    }
+
+    .recommendation-icon {
+      background-color: rgba(108, 92, 231, 0.2);
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .history-entry {
+      padding: 15px;
+      background-color: #29293d;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      border-left: 4px solid var(--purple-accent);
+    }
+
+    .history-date {
+      font-size: 0.85rem;
+      opacity: 0.7;
+      margin-bottom: 5px;
+    }
+
+    .history-details {
+      font-size: 0.95rem;
+    }
+
+    .resources-list {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .resources-list li {
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .resources-list li:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .resource-title {
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: var(--purple-accent);
+    }
+
+    .resource-desc {
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .stage-indicator {
+      display: flex;
+      margin-top: 15px;
+      gap: 5px;
+    }
+
+    .stage {
+      flex: 1;
+      text-align: center;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .stage.active {
+      background-color: rgba(108, 92, 231, 0.3);
+      font-weight: 500;
+    }
+    
+    .export-btn {
+      background: transparent;
+      border: 1px solid var(--purple-accent);
+      color: var(--purple-accent);
+      margin-top: 15px;
+      box-shadow: none;
+    }
+    
+    .export-btn:hover {
+      background: rgba(108, 92, 231, 0.1);
+      box-shadow: none;
+      transform: none;
+    }
+    
+    .panel-toggle {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 10px 15px;
+      border-radius: 10px;
+      margin: 10px 0;
+      cursor: pointer;
+    }
+    
+    .panel-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+    
+    .panel-content.open {
+      max-height: 1000px;
+    }
+    
+    .intensity-slider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    
+    .intensity-slider input {
+      flex-grow: 1;
+    }
+    
+    .intensity-value {
+      width: 30px;
+      text-align: center;
+    }
+    
+    #mood-tracker {
+      display: flex;
+      justify-content: space-between;
+      margin: 20px 0;
+    }
+    
+    .mood-icon {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.5rem;
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    .mood-icon.selected {
+      background-color: var(--purple-accent);
+      transform: scale(1.1);
+    }
+    
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      background-color: var(--success);
+      color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      transform: translateX(200%);
+      transition: transform 0.3s ease;
+      z-index: 1000;
+    }
+    
+    .notification.show {
+      transform: translateX(0);
+    }
+
+    @media (max-width: 768px) {
+      .main-content {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .card {
+        width: 100%;
+        max-width: 100%;
+      }
+      
+      h1 {
+        font-size: 2.2rem;
+      }
+      
+      .tabs {
+        flex-wrap: wrap;
+      }
+    }
+
+
+    /* Mobile styles for nav */
+    @media (max-width: 768px) {
+      header {
+        padding: 1rem 5%;
+      }
+      
+      nav {
+        position: fixed;
+        top: 80px;
+        left: 0;
+        width: 100%;
+        background: var(--midnight);
+        padding: 1rem 5%;
+        transform: translateY(-150%);
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      
+      nav.active {
+        transform: translateY(0);
+      }
+      
+      nav ul {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .mobile-menu-btn {
+        display: block;
+      }
+      
+      .app-container {
+        padding-top: 100px;
+      }
+      
+      h1 {
+        font-size: 2.2rem;
+      }
+      
+      .tabs {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+
+     <!-- New Navigation Bar -->
+  <header>
+    <a href="#" class="logo">
+      <span class="logo-icon">🌸</span>
+      MenoTrack
+    </a>
+    <nav id="mainNav">
+      <ul>
+        <li><a href="#" class="active">Home</a></li>
+        <li><a href="#assessment-tab">Assessment</a></li>
+        <li><a href="#tracker-tab">Tracker</a></li>
+        <li><a href="#history-tab">History</a></li>
+        <li><a href="#resources-tab">Resources</a></li>
+        <li><a href="#" class="nav-cta">Get Help</a></li>
+      </ul>
+    </nav>
+    <button class="mobile-menu-btn" id="menuBtn">☰</button>
+  </header>
+
+  <div class="app-container">
+      <h1>Menopause Tracker Pro</h1>
+      <p class="subtitle">Track your symptoms, understand your journey, and get personalized insights for this important life transition</p>
+      
+      <div class="tabs">
+        <div class="tab active" data-tab="assessment">Assessment</div>
+        <div class="tab" data-tab="tracker">Symptom Tracker</div>
+        <div class="tab" data-tab="history">History</div>
+        <div class="tab" data-tab="resources">Resources</div>
+      </div>
+  
+
+    <div class="tab-content active" id="assessment-tab">
+      <div class="main-content">
+        <div class="card">
+          <h2 class="card-title">Menopause Assessment</h2>
+
+          <div class="form-group">
+            <label for="age">Age</label>
+            <input type="number" id="age" min="35" max="65" placeholder="Enter your age">
+          </div>
+
+          <div class="form-group">
+            <label for="last-period">Last Period Date</label>
+            <input type="date" id="last-period">
+          </div>
+
+          <div class="form-group">
+            <label for="cycle">Typical Cycle Length (days)</label>
+            <input type="number" id="cycle" min="20" max="40" placeholder="Enter days between periods">
+          </div>
+
+          <div class="form-group">
+            <label>Primary Symptoms (select all that apply)</label>
+            <div class="checkbox-group" id="symptoms">
+              <div class="checkbox-item" data-value="hot_flashes">Hot Flashes</div>
+              <div class="checkbox-item" data-value="night_sweats">Night Sweats</div>
+              <div class="checkbox-item" data-value="irregular_periods">Irregular Periods</div>
+              <div class="checkbox-item" data-value="mood_swings">Mood Swings</div>
+              <div class="checkbox-item" data-value="sleep_problems">Sleep Problems</div>
+              <div class="checkbox-item" data-value="vaginal_dryness">Vaginal Dryness</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="severity">Overall Symptom Severity</label>
+            <select id="severity">
+              <option value="">Select severity</option>
+              <option value="mild">Mild - Noticeable but not disruptive</option>
+              <option value="moderate">Moderate - Sometimes disruptive</option>
+              <option value="severe">Severe - Often disrupts daily activities</option>
+            </select>
+          </div>
+
+          <button onclick="analyzeStatus()">Analyze My Status</button>
+
+          <div class="progress-container">
+            <div class="progress-label">
+              <span>Menopause Indicator</span>
+              <span id="percentage">0%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress" id="progress"></div>
+            </div>
+          </div>
+
+          <div class="result" id="result">
+            <h3>Your Menopause Assessment</h3>
+            <div id="result-content"></div>
+            
+            <div class="stage-indicator">
+              <div class="stage" id="premenopause">Pre-menopause</div>
+              <div class="stage" id="perimenopause">Perimenopause</div>
+              <div class="stage" id="menopause">Menopause</div>
+              <div class="stage" id="postmenopause">Post-menopause</div>
+            </div>
+            
+            <div class="recommendations" id="recommendations"></div>
+          </div>
+        </div>
+        
+        <div class="card">
+          <h2 class="card-title">Symptom Insights</h2>
+          <p>Complete the assessment to see your personalized symptom insights and recommendations.</p>
+          
+          <div class="chart-container">
+            <canvas id="symptomsChart"></canvas>
+          </div>
+          
+          <div id="symptoms-detail" style="margin-top: 20px;">
+            <p>Your symptom data will appear here after completing the assessment.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="tab-content" id="tracker-tab">
+      <div class="main-content">
+        <div class="card">
+          <h2 class="card-title">Daily Symptom Tracker</h2>
+          
+          <div class="form-group">
+            <label for="track-date">Date</label>
+            <input type="date" id="track-date">
+          </div>
+          
+          <div class="form-group">
+            <label>Symptoms Experienced Today</label>
+            <div class="checkbox-group" id="daily-symptoms">
+              <div class="checkbox-item" data-value="hot_flashes">Hot Flashes</div>
+              <div class="checkbox-item" data-value="night_sweats">Night Sweats</div>
+              <div class="checkbox-item" data-value="mood_swings">Mood Swings</div>
+              <div class="checkbox-item" data-value="headache">Headache</div>
+              <div class="checkbox-item" data-value="fatigue">Fatigue</div>
+              <div class="checkbox-item" data-value="insomnia">Insomnia</div>
+              <div class="checkbox-item" data-value="joint_pain">Joint Pain</div>
+              <div class="checkbox-item" data-value="anxiety">Anxiety</div>
+              <div class="checkbox-item" data-value="memory_issues">Memory Issues</div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label>Overall Mood Today</label>
+            <div id="mood-tracker">
+              <div class="mood-icon" data-mood="1">😣</div>
+              <div class="mood-icon" data-mood="2">😔</div>
+              <div class="mood-icon" data-mood="3">😐</div>
+              <div class="mood-icon" data-mood="4">🙂</div>
+              <div class="mood-icon" data-mood="5">😄</div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="energy-level">Energy Level</label>
+            <div class="intensity-slider">
+              <span>Low</span>
+              <input type="range" id="energy-level" min="1" max="10" value="5">
+              <span>High</span>
+              <span class="intensity-value" id="energy-value">5</span>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="stress-level">Stress Level</label>
+            <div class="intensity-slider">
+              <span>Low</span>
+              <input type="range" id="stress-level" min="1" max="10" value="5">
+              <span>High</span>
+              <span class="intensity-value" id="stress-value">5</span>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="notes">Notes</label>
+            <textarea id="notes" rows="4" placeholder="Add any additional details or observations here..."></textarea>
+          </div>
+          
+          <button onclick="saveSymptomEntry()">Save Entry</button>
+        </div>
+        
+        <div class="card">
+          <h2 class="card-title">Symptom Trends</h2>
+          <p>Track your symptoms over time to identify patterns and triggers.</p>
+          
+          <div class="chart-container">
+            <canvas id="trendsChart"></canvas>
+          </div>
+          
+          <div class="panel-toggle" onclick="togglePanel('triggers-panel')">
+            <h3 style="margin: 0;">Common Triggers ▾</h3>
+          </div>
+          <div class="panel-content" id="triggers-panel">
+            <div id="triggers">
+              <p>Record daily symptoms to identify your personal triggers.</p>
+              <p>Common triggers for menopausal symptoms include:</p>
+              <ul>
+                <li>Stress and anxiety</li>
+                <li>Caffeine</li>
+                <li>Alcohol</li>
+                <li>Spicy foods</li>
+                <li>Hot environments</li>
+                <li>Lack of sleep</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="panel-toggle" onclick="togglePanel('patterns-panel')">
+            <h3 style="margin: 0;">Pattern Analysis ▾</h3>
+          </div>
+          <div class="panel-content" id="patterns-panel">
+            <p>Continue tracking your symptoms daily to reveal patterns in your data.</p>
+            <p>The app will automatically analyze your entries to help you identify:</p>
+            <ul>
+              <li>Which times of day your symptoms are most severe</li>
+              <li>How your symptoms correlate with stress levels</li>
+              <li>Whether certain activities help reduce symptoms</li>
+              <li>How your menopause journey is progressing over time</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="tab-content" id="history-tab">
+      <div class="main-content">
+        <div class="card" style="width: 100%; max-width: 800px;">
+          <h2 class="card-title">Your Tracking History</h2>
+          
+          <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+            <button class="export-btn" onclick="exportData()">Export Your Data</button>
+            <button class="export-btn" onclick="generateReport()">Generate PDF Report</button>
+          </div>
+          
+          <div id="history-list">
+            <p>Your tracking history will appear here after you start recording symptoms.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="tab-content" id="resources-tab">
+      <div class="main-content">
+        <div class="card" style="width: 100%; max-width: 800px;">
+          <h2 class="card-title">Helpful Resources</h2>
+          
+          <div class="panel-toggle" onclick="togglePanel('education-panel')">
+            <h3 style="margin: 0;">Educational Resources ▾</h3>
+          </div>
+          <div class="panel-content" id="education-panel">
+            <ul class="resources-list">
+              <li>
+                <div class="resource-title">Understanding Menopause Stages</div>
+                <div class="resource-desc">Learn about the different phases of menopause and what to expect during each stage.</div>
+              </li>
+              <li>
+                <div class="resource-title">Hormone Replacement Therapy (HRT)</div>
+                <div class="resource-desc">Information about HRT, its benefits, risks, and when it might be appropriate.</div>
+              </li>
+              <li>
+                <div class="resource-title">Bone Health</div>
+                <div class="resource-desc">Information about maintaining strong bones during and after menopause.</div>
+              </li>
+              <li>
+                <div class="resource-title">Heart Health</div>
+                <div class="resource-desc">Understanding your changing cardiovascular risks and how to protect your heart health.</div>
+              </li>
+            </ul>
+          </div>
+          
+          <div class="panel-toggle" onclick="togglePanel('symptom-panel')">
+            <h3 style="margin: 0;">Symptom Management ▾</h3>
+          </div>
+          <div class="panel-content" id="symptom-panel">
+            <ul class="resources-list">
+              <li>
+                <div class="resource-title">Managing Hot Flashes</div>
+                <div class="resource-desc">Effective strategies for coping with hot flashes and night sweats, from lifestyle changes to medical options.</div>
+              </li>
+              <li>
+                <div class="resource-title">Sleep Solutions</div>
+                <div class="resource-desc">Tips and techniques for improving sleep quality during menopause transition.</div>
+              </li>
+              <li>
+                <div class="resource-title">Mood and Mental Health</div>
+                <div class="resource-desc">Strategies for managing mood swings, anxiety, and depression that can accompany hormonal changes.</div>
+              </li>
+            </ul>
+          </div>
+          
+          <div class="panel-toggle" onclick="togglePanel('community-panel')">
+            <h3 style="margin: 0;">Community Support ▾</h3>
+          </div>
+          <div class="panel-content" id="community-panel">
+            <ul class="resources-list">
+              <li>
+                <div class="resource-title">Online Support Groups</div>
+                <div class="resource-desc">Connect with others who are experiencing similar changes through moderated online communities.</div>
+              </li>
+              <li>
+                <div class="resource-title">Local Support Groups</div>
+                <div class="resource-desc">Find in-person support meetings in your area for education and emotional support.</div>
+              </li>
+              <li>
+                <div class="resource-title">Professional Help</div>
+                <div class="resource-desc">When and how to seek help from healthcare providers who specialize in menopause management.</div>
+              </li>
+            </ul>
+          </div>
+          
+          <div class="panel-toggle" onclick="togglePanel('lifestyle-panel')">
+            <h3 style="margin: 0;">Lifestyle Tips ▾</h3>
+          </div>
+          <div class="panel-content" id="lifestyle-panel">
+            <ul class="resources-list">
+              <li>
+                <div class="resource-title">Nutrition for Menopause</div>
+                <div class="resource-desc">Dietary approaches that may help manage symptoms and support long-term health.</div>
+              </li>
+              <li>
+                <div class="resource-title">Exercise Recommendations</div>
+                <div class="resource-desc">Physical activity guidelines specifically designed for women in menopause.</div>
+              </li>
+              <li>
+                <div class="resource-title">Stress Management</div>
+                <div class="resource-desc">Techniques for reducing stress, which can worsen menopause symptoms.</div>
+              </li>
+              <li>
+                <div class="resource-title">Sleep Hygiene</div>
+                <div class="resource-desc">Create optimal conditions for restorative sleep during the menopause transition.</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="notification" id="notification">Entry saved successfully!</div>
+
+  <script>
+    // Initialize data storage
+    if (!localStorage.getItem('menopauseData')) {
+      localStorage.setItem('menopauseData', JSON.stringify({
+        assessments: [],
+        dailyEntries: []
+      }));
+    }
+    
+    // Set current date as default for date inputs
+    document.addEventListener('DOMContentLoaded', function() {
+      const today = new Date().toISOString().split('T')[0];
+      if (document.getElementById('track-date')) {
+        document.getElementById('track-date').value = today;
+      }
+    });
+    
+    // Tab functionality
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Remove active class from all tabs and content
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        
+        // Add active class to clicked tab and corresponding content
+        tab.classList.add('active');
+        document.getElementById(`${tab.dataset.tab}-tab`).classList.add('active');
+        
+        // Update charts if needed
+        if (tab.dataset.tab === 'tracker') {
+          updateTrendsChart();
+        }
+        
+        // Update history if needed
+        if (tab.dataset.tab === 'history') {
+          updateHistory();
+        }
+      });
+    });
+    
+    // Toggle symptom checkboxes
+    document.querySelectorAll('.checkbox-item').forEach(item => {
+      item.addEventListener('click', () => {
+        item.classList.toggle('selected');
+      });
+    });
+    
+    // Toggle mood selection
+    document.querySelectorAll('.mood-icon').forEach(icon => {
+      icon.addEventListener('click', () => {
+        document.querySelectorAll('.mood-icon').forEach(i => i.classList.remove('selected'));
+        icon.classList.add('selected');
+      });
+    });
+    
+    // Update intensity values
+    document.getElementById('energy-level').addEventListener('input', function() {
+      document.getElementById('energy-value').textContent = this.value;
+    });
+    
+    document.getElementById('stress-level').addEventListener('input', function() {
+      document.getElementById('stress-value').textContent = this.value;
+    });
+    
+    // Toggle panels
+    function togglePanel(panelId) {
+      const panel = document.getElementById(panelId);
+      panel.classList.toggle('open');
+    }
+    
+    // Get selected symptoms
+    function getSelectedSymptoms(containerId) {
+      const selected = [];
+      document.querySelectorAll(`#${containerId} .checkbox-item.selected`).forEach(item => {
+        selected.push(item.dataset.value);
+      });
+      return selected;
+    }
+    
+    // Get selected mood
+    function getSelectedMood() {
+      const selected = document.querySelector('.mood-icon.selected');
+      return selected ? selected.dataset.mood : '3';
+    }
+    
+      // Show notification
+      function showNotification(message) {
+      const notification = document.getElementById('notification');
+      notification.textContent = message;
+      notification.classList.add('show');
+      
+      setTimeout(() => {
+        notification.classList.remove('show');
+      }, 3000);
+    }
+    
+    // Save symptom entry
+    function saveSymptomEntry() {
+      const date = document.getElementById('track-date').value;
+      const symptoms = getSelectedSymptoms('daily-symptoms');
+      const mood = getSelectedMood();
+      const energy = document.getElementById('energy-level').value;
+      const stress = document.getElementById('stress-level').value;
+      const notes = document.getElementById('notes').value;
+      
+      if (!date) {
+        showNotification('Please select a date');
+        return;
+      }
+      
+      if (symptoms.length === 0) {
+        showNotification('Please select at least one symptom');
+        return;
+      }
+      
+      const data = JSON.parse(localStorage.getItem('menopauseData'));
+      data.dailyEntries.push({
+        date,
+        symptoms,
+        mood,
+        energy,
+        stress,
+        notes,
+        timestamp: new Date().toISOString()
+      });
+      
+      localStorage.setItem('menopauseData', JSON.stringify(data));
+      showNotification('Daily entry saved successfully!');
+      
+      // Clear form
+      document.querySelectorAll('#daily-symptoms .checkbox-item').forEach(item => {
+        item.classList.remove('selected');
+      });
+      document.querySelectorAll('.mood-icon').forEach(icon => {
+        icon.classList.remove('selected');
+      });
+      document.getElementById('energy-level').value = 5;
+      document.getElementById('energy-value').textContent = 5;
+      document.getElementById('stress-level').value = 5;
+      document.getElementById('stress-value').textContent = 5;
+      document.getElementById('notes').value = '';
+      
+      // Update charts if on tracker tab
+      if (document.querySelector('.tab-content.active').id === 'tracker-tab') {
+        updateTrendsChart();
+      }
+    }
+    
+    // Update trends chart
+    function updateTrendsChart() {
+      const data = JSON.parse(localStorage.getItem('menopauseData'));
+      const entries = data.dailyEntries;
+      
+      if (entries.length === 0) return;
+      
+      // Sort entries by date
+      entries.sort((a, b) => new Date(a.date) - new Date(b.date));
+      
+      const dates = entries.map(entry => {
+        const d = new Date(entry.date);
+        return `${d.getMonth()+1}/${d.getDate()}`;
+      });
+      
+      const symptomCounts = entries.map(entry => entry.symptoms.length);
+      const moodLevels = entries.map(entry => entry.mood);
+      const energyLevels = entries.map(entry => entry.energy);
+      
+      const ctx = document.getElementById('trendsChart').getContext('2d');
+      
+      if (window.trendsChart) {
+        window.trendsChart.destroy();
+      }
+      
+      window.trendsChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: dates,
+          datasets: [
+            {
+              label: 'Symptom Count',
+              data: symptomCounts,
+              borderColor: 'rgba(108, 92, 231, 1)',
+              backgroundColor: 'rgba(108, 92, 231, 0.1)',
+              tension: 0.3,
+              yAxisID: 'y'
+            },
+            {
+              label: 'Mood Level',
+              data: moodLevels,
+              borderColor: 'rgba(75, 108, 183, 1)',
+              backgroundColor: 'rgba(75, 108, 183, 0.1)',
+              tension: 0.3,
+              yAxisID: 'y1'
+            },
+            {
+              label: 'Energy Level',
+              data: energyLevels,
+              borderColor: 'rgba(0, 184, 148, 1)',
+              backgroundColor: 'rgba(0, 184, 148, 0.1)',
+              tension: 0.3,
+              yAxisID: 'y1'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              type: 'linear',
+              display: true,
+              position: 'left',
+              title: {
+                display: true,
+                text: 'Symptom Count'
+              },
+              min: 0,
+              max: Math.max(...symptomCounts) + 2
+            },
+            y1: {
+              type: 'linear',
+              display: true,
+              position: 'right',
+              title: {
+                display: true,
+                text: 'Mood/Energy Level'
+              },
+              min: 1,
+              max: 10,
+              grid: {
+                drawOnChartArea: false
+              }
+            }
+          }
+        }
+      });
+    }
+    
+    // Update history list
+    function updateHistory() {
+      const data = JSON.parse(localStorage.getItem('menopauseData'));
+      const entries = data.dailyEntries;
+      const historyList = document.getElementById('history-list');
+      
+      if (entries.length === 0) {
+        historyList.innerHTML = '<p>Your tracking history will appear here after you start recording symptoms.</p>';
+        return;
+      }
+      
+      // Sort entries by date (newest first)
+      entries.sort((a, b) => new Date(b.date) - new Date(a.date));
+      
+      historyList.innerHTML = '';
+      
+      entries.forEach(entry => {
+        const date = new Date(entry.date);
+        const formattedDate = date.toLocaleDateString('en-US', { 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        });
+        
+        const symptomsList = entry.symptoms.map(s => 
+          `<span class="symptom-chip">${s.replace(/_/g, ' ')}</span>`
+        ).join('');
+        
+        const moodMap = {
+          '1': 'Very Poor',
+          '2': 'Poor',
+          '3': 'Neutral',
+          '4': 'Good',
+          '5': 'Excellent'
+        };
+        
+        const entryElement = document.createElement('div');
+        entryElement.className = 'history-entry';
+        entryElement.innerHTML = `
+          <div class="history-date">${formattedDate}</div>
+          <div class="history-details">
+            <p><strong>Symptoms:</strong> ${symptomsList || 'None recorded'}</p>
+            <p><strong>Mood:</strong> ${moodMap[entry.mood]}</p>
+            <p><strong>Energy:</strong> ${entry.energy}/10</p>
+            <p><strong>Stress:</strong> ${entry.stress}/10</p>
+            ${entry.notes ? `<p><strong>Notes:</strong> ${entry.notes}</p>` : ''}
+          </div>
+        `;
+        
+        historyList.appendChild(entryElement);
+      });
+    }
+    
+    // Analyze menopause status
+    function analyzeStatus() {
+      const age = parseInt(document.getElementById('age').value);
+      const lastPeriod = document.getElementById('last-period').value;
+      const cycleLength = parseInt(document.getElementById('cycle').value);
+      const symptoms = getSelectedSymptoms('symptoms');
+      const severity = document.getElementById('severity').value;
+      
+      if (!age || !lastPeriod || !cycleLength || symptoms.length === 0 || !severity) {
+        showNotification('Please complete all fields');
+        return;
+      }
+      
+      // Calculate time since last period in months
+      const lastPeriodDate = new Date(lastPeriod);
+      const today = new Date();
+      const monthsSince = (today.getFullYear() - lastPeriodDate.getFullYear()) * 12 + 
+                         (today.getMonth() - lastPeriodDate.getMonth());
+      
+      // Calculate probability (simplified for demo)
+      let probability = 0;
+      let stage = 'premenopause';
+      let recommendations = [];
+      
+      if (age >= 45 && monthsSince >= 12) {
+        probability = 95;
+        stage = 'postmenopause';
+        recommendations = [
+          'Focus on long-term health: bone density, heart health, and maintaining a healthy weight.',
+          'Consider discussing hormone therapy options with your doctor if symptoms persist.',
+          'Regular exercise and calcium-rich diet are particularly important now.'
+        ];
+      } else if (age >= 40 && monthsSince >= 3) {
+        probability = 75;
+        stage = 'perimenopause';
+        recommendations = [
+          'Track symptoms regularly to identify patterns.',
+          'Consider lifestyle changes: regular exercise, stress reduction, and dietary adjustments.',
+          'Discuss symptom management options with your healthcare provider.'
+        ];
+      } else if (age >= 35) {
+        probability = 30 + (symptoms.length * 5);
+        stage = 'premenopause';
+        recommendations = [
+          'Monitor your symptoms as you may be entering perimenopause soon.',
+          'Maintain a healthy lifestyle to ease the transition.',
+          'Consider keeping a symptom diary to track changes over time.'
+        ];
+      }
+      
+      // Adjust based on symptom severity
+      if (severity === 'moderate') probability += 10;
+      if (severity === 'severe') probability += 20;
+      
+      // Cap at 95%
+      probability = Math.min(95, probability);
+      
+      // Update UI
+      document.getElementById('percentage').textContent = `${probability}%`;
+      document.getElementById('progress').style.width = `${probability}%`;
+      
+      // Show result
+      const resultContent = document.getElementById('result-content');
+      resultContent.innerHTML = `
+        <p>Based on your input, you're most likely in the <strong>${stage.replace('-', ' ')}</strong> stage.</p>
+        <p>You reported ${symptoms.length} symptoms with ${severity} severity.</p>
+        <p>It has been ${monthsSince} ${monthsSince === 1 ? 'month' : 'months'} since your last period.</p>
+      `;
+      
+      // Update stage indicator
+      document.querySelectorAll('.stage').forEach(s => s.classList.remove('active'));
+      document.getElementById(stage).classList.add('active');
+      
+      // Show recommendations
+      const recElement = document.getElementById('recommendations');
+      recElement.innerHTML = '<h4>Recommendations</h4>' + 
+        recommendations.map(r => `
+          <div class="recommendation-item">
+            <div class="recommendation-icon">✓</div>
+            <div>${r}</div>
+          </div>
+        `).join('');
+      
+      document.getElementById('result').style.display = 'block';
+      
+      // Update symptoms chart
+      updateSymptomsChart(symptoms);
+      
+      // Save assessment
+      const data = JSON.parse(localStorage.getItem('menopauseData'));
+      data.assessments.push({
+        date: today.toISOString(),
+        age,
+        lastPeriod,
+        cycleLength,
+        symptoms,
+        severity,
+        probability,
+        stage
+      });
+      localStorage.setItem('menopauseData', JSON.stringify(data));
+    }
+    
+    // Update symptoms chart
+    function updateSymptomsChart(symptoms) {
+      const symptomCounts = {
+        'hot_flashes': 0,
+        'night_sweats': 0,
+        'irregular_periods': 0,
+        'mood_swings': 0,
+        'sleep_problems': 0,
+        'vaginal_dryness': 0
+      };
+      
+      symptoms.forEach(symptom => {
+        if (symptomCounts.hasOwnProperty(symptom)) {
+          symptomCounts[symptom]++;
+        }
+      });
+      
+      const ctx = document.getElementById('symptomsChart').getContext('2d');
+      
+      if (window.symptomsChart) {
+        window.symptomsChart.destroy();
+      }
+      
+      window.symptomsChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: Object.keys(symptomCounts).map(s => s.replace(/_/g, ' ')),
+          datasets: [{
+            label: 'Your Symptoms',
+            data: Object.values(symptomCounts),
+            backgroundColor: 'rgba(108, 92, 231, 0.7)',
+            borderColor: 'rgba(108, 92, 231, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                stepSize: 1
+              }
+            }
+          }
+        }
+      });
+      
+      // Update symptoms detail
+      const symptomsDetail = document.getElementById('symptoms-detail');
+      symptomsDetail.innerHTML = `
+        <p>Your most common symptoms:</p>
+        <div style="margin-top: 10px;">
+          ${symptoms.map(s => `<span class="symptom-chip">${s.replace(/_/g, ' ')}</span>`).join('')}
+        </div>
+      `;
+    }
+    
+    // Export data
+    function exportData() {
+      const data = JSON.parse(localStorage.getItem('menopauseData'));
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `menopause-tracker-data-${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      showNotification('Data exported successfully!');
+    }
+    
+    // Generate PDF report (simulated)
+    function generateReport() {
+      showNotification('PDF report generation would be implemented with a library like jsPDF');
+    }
+    
+    // Initialize charts with empty data
+    function initCharts() {
+      const ctxSymptoms = document.getElementById('symptomsChart').getContext('2d');
+      window.symptomsChart = new Chart(ctxSymptoms, {
+        type: 'bar',
+        data: {
+          labels: ['Hot flashes', 'Night sweats', 'Irregular periods', 'Mood swings', 'Sleep problems', 'Vaginal dryness'],
+          datasets: [{
+            label: 'Your Symptoms',
+            data: [0, 0, 0, 0, 0, 0],
+            backgroundColor: 'rgba(108, 92, 231, 0.7)',
+            borderColor: 'rgba(108, 92, 231, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                stepSize: 1
+              }
+            }
+          }
+        }
+      });
+      
+      const ctxTrends = document.getElementById('trendsChart').getContext('2d');
+      window.trendsChart = new Chart(ctxTrends, {
+        type: 'line',
+        data: {
+          labels: [],
+          datasets: [
+            {
+              label: 'Symptom Count',
+              data: [],
+              borderColor: 'rgba(108, 92, 231, 1)',
+              backgroundColor: 'rgba(108, 92, 231, 0.1)',
+              tension: 0.3,
+              yAxisID: 'y'
+            },
+            {
+              label: 'Mood Level',
+              data: [],
+              borderColor: 'rgba(75, 108, 183, 1)',
+              backgroundColor: 'rgba(75, 108, 183, 0.1)',
+              tension: 0.3,
+              yAxisID: 'y1'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              type: 'linear',
+              display: true,
+              position: 'left',
+              title: {
+                display: true,
+                text: 'Symptom Count'
+              },
+              min: 0,
+              max: 10
+            },
+            y1: {
+              type: 'linear',
+              display: true,
+              position: 'right',
+              title: {
+                display: true,
+                text: 'Mood Level'
+              },
+              min: 1,
+              max: 5,
+              grid: {
+                drawOnChartArea: false
+              }
+            }
+          }
+        }
+      });
+    }
+    
+    // Initialize the app
+    document.addEventListener('DOMContentLoaded', function() {
+      initCharts();
+      
+      // Set current date as default for date inputs
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('track-date').value = today;
+      
+      // Load history if available
+      updateHistory();
+    });
+
+     // Mobile menu toggle
+     const menuBtn = document.getElementById('menuBtn');
+    const mainNav = document.getElementById('mainNav');
+    
+    menuBtn.addEventListener('click', () => {
+      mainNav.classList.toggle('active');
+      menuBtn.textContent = mainNav.classList.contains('active') ? '✕' : '☰';
+    });
+    
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        if(this.getAttribute('href') === '#') return;
+        
+        const target = document.querySelector(this.getAttribute('href'));
+        if(target) {
+          e.preventDefault();
+          window.scrollTo({
+            top: target.offsetTop - 100,
+            behavior: 'smooth'
+          });
+          
+          // Close mobile menu if open
+          if(mainNav.classList.contains('active')) {
+            mainNav.classList.remove('active');
+            menuBtn.textContent = '☰';
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
+    

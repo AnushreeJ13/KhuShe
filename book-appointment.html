@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Book Appointment</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --primary: #d94d94;
+      --secondary: #700249;
+      --accent: #FF69B4;
+      --dark: #121212;
+      --light: #F8F7FF;
+      --text: #ffffff;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    body {
+      background: var(--dark);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: var(--dark);
+      width: 100%; max-width: 500px;
+      padding: 2.5rem;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(217, 77, 148, 0.2);
+      border: 2px solid var(--accent);
+      position: relative;
+      overflow: hidden;
+    }
+    .container::before {
+      content: '';
+      position: absolute; top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: linear-gradient(45deg, transparent, var(--primary), transparent);
+      animation: rotate 6s linear infinite;
+      z-index: 0;
+    }
+    @keyframes rotate { 100% { transform: rotate(360deg); } }
+
+    h2 {
+      text-align: center;
+      color: var(--accent);
+      font-size: 1.8rem;
+      margin-bottom: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .input-group {
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--light);
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid var(--accent);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      background: var(--dark);
+      color: var(--text);
+    }
+    
+    .date-time-container {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .date-time-container .input-group {
+      flex: 1;
+    }
+    
+    .input-with-icon {
+      position: relative;
+    }
+    
+    .input-with-icon i {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--accent);
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: color 0.3s ease;
+      z-index: 2;
+    }
+    
+    .input-with-icon i:hover {
+      color: var(--primary);
+    }
+    
+    input::placeholder, select::placeholder { color: rgba(248, 247, 255, 0.6); }
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 10px rgba(217, 77, 148, 0.4);
+    }
+
+    button {
+      width: 100%; padding: 14px;
+      background: var(--accent);
+      color: var(--light);
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      margin-top: 1rem;
+      z-index: 1;
+    }
+    button:hover {
+      background: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(217, 77, 148, 0.4);
+    }
+    button::after {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: linear-gradient(45deg, transparent 20%, rgba(255,255,255,0.2) 50%, transparent 80%);
+      animation: buttonShine 3s infinite linear;
+    }
+    @keyframes buttonShine { from { transform: translateX(-100%) rotate(45deg); } to { transform: translateX(100%) rotate(45deg); } }
+
+    #appointmentBooked {
+      margin-top: 1.5rem;
+      padding: 2rem 1rem;
+      border-radius: 10px;
+      text-align: center;
+      font-weight: 500;
+      display: none;
+      background: #e8f5e9;
+      border: 1px solid #4BB543;
+      color: #2e7d32;
+      animation: fadeIn 0.5s ease forwards;
+      z-index: 1;
+      position: relative;
+    }
+    
+    #appointmentBooked i {
+      font-size: 3rem;
+      color: #4BB543;
+      margin-bottom: 1rem;
+      display: block;
+    }
+    
+    #appointmentBooked h3 {
+      margin-bottom: 0.5rem;
+      font-size: 1.4rem;
+    }
+    
+    #appointmentBooked p {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    #statusMessage {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      border-radius: 10px;
+      text-align: center;
+      font-weight: 500;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.4s ease;
+      z-index: 1;
+    }
+    .success { background: #e8f5e9; border: 1px solid #4BB543; color: #2e7d32; opacity: 1; transform: translateY(0); }
+    .error { background: #ffebee; border: 1px solid #ff4444; color: #d32f2f; opacity: 1; transform: translateY(0); }
+    .processing { background: #e3f2fd; border: 1px solid #2196f3; color: #1976d2; opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Book an Appointment</h2>
+    <form id="appointmentForm">
+      <div class="input-group">
+        <label for="name">Your Name</label>
+        <input type="text" id="name" placeholder="John Doe" required />
+      </div>
+      <div class="input-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" placeholder="john@example.com" required />
+      </div>
+      <div class="input-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" placeholder="+1 234 567 890" required />
+      </div>
+      <div class="date-time-container">
+        <div class="input-group">
+          <label for="date">Preferred Date</label>
+          <div class="input-with-icon">
+            <input type="date" id="date" required />
+            <i class="fas fa-calendar-alt" id="calendarIcon"></i>
+          </div>
+        </div>
+        <div class="input-group">
+          <label for="time">Preferred Time</label>
+          <div class="input-with-icon">
+            <input type="time" id="time" required />
+            <i class="fas fa-clock" id="clockIcon"></i>
+          </div>
+        </div>
+      </div>
+      <div class="input-group">
+        <label for="service">Select Service</label>
+        <select id="service">
+          <option value="General Consultation">General Consultation</option>
+          <option value="Gynecology">Gynecology</option>
+          <option value="Maternity Checkup">Maternity Checkup</option>
+          <option value="Ultrasound">Ultrasound</option>
+        </select>
+      </div>
+      <button type="submit">Book Appointment →</button>
+      <div id="statusMessage"></div>
+    </form>
+    
+    <div id="appointmentBooked">
+      <i class="fas fa-check-circle"></i>
+      <h3>Appointment Booked!</h3>
+      <p>Thank you for booking with us.</p>
+      <p id="bookingDetails"></p>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCHK5Sx4G1RhHLT-IiZ4inOmun2mw7771w",
+      authDomain: "ventapp-e3df4.firebaseapp.com",
+      projectId: "ventapp-e3df4",
+      storageBucket: "ventapp-e3df4.firebasestorage.app",
+      messagingSenderId: "327855378991",
+      appId: "1:327855378991:web:29e7c757dbab0495e1ecda",
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Make calendar and clock icons functional
+    document.getElementById("calendarIcon").addEventListener("click", function() {
+      document.getElementById("date").showPicker();
+    });
+    
+    document.getElementById("clockIcon").addEventListener("click", function() {
+      document.getElementById("time").showPicker();
+    });
+
+    document.getElementById("appointmentForm").addEventListener("submit", async function(event) {
+      event.preventDefault();
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const phone = document.getElementById("phone").value;
+      const date = document.getElementById("date").value;
+      const time = document.getElementById("time").value;
+      const service = document.getElementById("service").value;
+      const statusMessage = document.getElementById("statusMessage");
+      statusMessage.textContent = "Processing your appointment...";
+      statusMessage.className = "processing";
+
+      try {
+        await addDoc(collection(db, "appointments"), {
+          name, email, phone, date, time, service, createdAt: serverTimestamp()
+        });
+        
+        // Hide the form and status message
+        document.getElementById("appointmentForm").style.display = "none";
+        statusMessage.className = "";
+        
+        // Show the appointment booked message
+        const appointmentBooked = document.getElementById("appointmentBooked");
+        appointmentBooked.style.display = "block";
+        
+        // Format the date
+        const dateObj = new Date(date);
+        const formattedDate = dateObj.toLocaleDateString('en-US', { 
+          weekday: 'long', 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        });
+        
+        // Format the time
+        const timeParts = time.split(':');
+        const hours = parseInt(timeParts[0]);
+        const minutes = timeParts[1];
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        const formattedHours = hours % 12 || 12;
+        const formattedTime = `${formattedHours}:${minutes} ${ampm}`;
+        
+        // Display booking details
+        document.getElementById("bookingDetails").textContent = 
+          `Your ${service} is scheduled for ${formattedDate} at ${formattedTime}`;
+        
+      } catch (error) {
+        console.error("Error booking appointment: ", error);
+        statusMessage.textContent = "Failed to book appointment. Please try again.";
+        statusMessage.className = "error";
+      }
+    });
+  </script>
+</body>
+</html>

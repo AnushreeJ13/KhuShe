@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contraceptive Implant | SheCare</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --main-bg: #0a0a0a;
+            --accent: #4d9eff;
+            --accent-light: #85b3ff;
+            --text: #f0f0f0;
+            --text-light: #b0b0b0;
+            --dark-bg: #000000;
+            --secondary: #5a6acd;
+            --glass-bg: rgba(20, 30, 50, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --highlight: rgba(77, 158, 255, 0.15);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text);
+            overflow-x: hidden;
+            cursor: none;
+        }
+        
+        /* Smooth scrolling container */
+        #smooth-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+        
+        #smooth-content {
+            will-change: transform;
+        }
+        
+        /* Header styles */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(10px);
+        }
+        
+        .logo-container img {
+            height: 50px;
+            transition: transform 0.4s ease;
+            filter: brightness(0) invert(1);
+        }
+        
+        .logo-container:hover img {
+            transform: scale(1.1) rotate(-5deg);
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            position: relative;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 10%;
+            overflow: hidden;
+            background: radial-gradient(circle at 75% 30%, rgba(77, 158, 255, 0.1), transparent 70%);
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            z-index: 10;
+            text-align: center;
+        }
+        
+        .hero-content h1 {
+            font-size: 5rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(to right, var(--accent-light), var(--text));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.1;
+        }
+        
+        .hero-content p {
+            font-size: 1.5rem;
+            margin-bottom: 3rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Content sections */
+        .content-section {
+            padding: 5% 10%;
+            position: relative;
+            background: var(--main-bg);
+        }
+        
+        .section-title {
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, var(--accent), var(--secondary));
+            border-radius: 3px;
+        }
+        
+        .info-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 75% 30%, rgba(133, 179, 255, 0.1), transparent 70%);
+            z-index: -1;
+        }
+        
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border-color: var(--accent-light);
+            background: var(--highlight);
+        }
+        
+        .info-card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-light);
+        }
+        
+        .info-card p {
+            color: var(--text-light);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+        
+        .info-card ul {
+            color: var(--text-light);
+            padding-left: 1.5rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+        
+        .info-card li {
+            margin-bottom: 0.8rem;
+        }
+        
+        /* Background elements */
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .floating-element {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.15;
+            animation: float 15s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-50px) rotate(5deg);
+            }
+        }
+        
+        /* Custom cursor */
+        #cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            mix-blend-mode: screen;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease, width 0.3s ease, height 0.3s ease;
+        }
+        
+        #cursor-follower {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 1px solid var(--accent);
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: transform 0.4s ease, width 0.4s ease, height 0.4s ease;
+            opacity: 0.3;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 3rem;
+            }
+            
+            .hero-content p {
+                font-size: 1.2rem;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+                margin-bottom: 3rem;
+            }
+            
+            #cursor, #cursor-follower {
+                display: none;
+            }
+            
+            body {
+                cursor: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom cursor elements -->
+    <div id="cursor"></div>
+    <div id="cursor-follower"></div>
+    
+    <div id="smooth-wrapper">
+        <div id="smooth-content">
+            <!-- Floating background elements -->
+            <div class="floating-elements">
+                <div class="floating-element" style="width: 300px; height: 300px; background: var(--accent); top: 20%; left: 10%; animation-delay: 0s;"></div>
+                <div class="floating-element" style="width: 400px; height: 400px; background: var(--secondary); top: 60%; left: 70%; animation-delay: 2s;"></div>
+                <div class="floating-element" style="width: 200px; height: 200px; background: var(--accent-light); top: 30%; left: 50%; animation-delay: 4s;"></div>
+            </div>
+            
+            
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="hero-content">
+                    <br><br><br><br><br>
+                    <h1>Contraceptive Implant</h1>
+                    <p>A long-acting, reversible birth control method that's over 99% effective at preventing pregnancy.</p>
+                </div>
+            </section>
+            
+            <!-- Content Section -->
+            <section class="content-section">
+                <h2 class="section-title">About Contraceptive Implants</h2>
+                
+                <!-- What is the contraceptive implant? -->
+                <div class="info-card">
+                    <h2><i class="fas fa-barcode"></i> What is the contraceptive implant?</h2>
+                    <p>The contraceptive implant is a small, flexible plastic rod that's placed under the skin of your upper arm. It releases the hormone progestogen to prevent pregnancy and lasts for 3 years, though it can be taken out earlier if needed.</p>
+                    <p>The implant is one of the most effective birth control methods available - more than 99% effective. That means fewer than 1 in 100 women who use the implant will get pregnant in a year.</p>
+                </div>
+                
+                <!-- How effective is the contraceptive implant? -->
+                <div class="info-card">
+                    <h2><i class="fas fa-chart-line"></i> How effective is the contraceptive implant?</h2>
+                    <p>The implant is more than 99% effective at preventing pregnancy. This makes it one of the most effective birth control methods available — even more effective than the pill, patch, or ring.</p>
+                    <p>Once it's in place, you don't have to think about it again for up to 3 years. You don't have to remember to take a pill every day or get refills. And it works right away if it's inserted during the first 5 days of your period.</p>
+                </div>
+                
+                <!-- What side effects should I expect with the implant? -->
+                <div class="info-card">
+                    <h2><i class="fas fa-exclamation-triangle"></i> What side effects should I expect with the implant?</h2>
+                    <p>Some people may experience side effects from the implant, but these usually improve after a few months. Possible side effects include:</p>
+                    <ul>
+                        <li>Changes to your periods (they may stop, become irregular, lighter, heavier, or longer)</li>
+                        <li>Headaches</li>
+                        <li>Acne</li>
+                        <li>Mood changes</li>
+                        <li>Breast tenderness</li>
+                        <li>Weight gain</li>
+                    </ul>
+                    <p>For most people, these side effects are mild and go away after a few months. If they don't go away or are bothering you, talk to your doctor or nurse.</p>
+                </div>
+                
+                <!-- What are the benefits of the contraceptive implant? -->
+                <div class="info-card">
+                    <h2><i class="fas fa-check-circle"></i> What are the benefits of the contraceptive implant?</h2>
+                    <p>The contraceptive implant has many advantages:</p>
+                    <ul>
+                        <li>Works for 3 years</li>
+                        <li>More than 99% effective</li>
+                        <li>Doesn't interrupt sex</li>
+                        <li>Safe to use while breastfeeding</li>
+                        <li>Can make periods lighter, less painful, or stop altogether</li>
+                        <li>Can be taken out at any time by a doctor or nurse</li>
+                        <li>Fertility returns quickly after removal</li>
+                        <li>Doesn't contain estrogen</li>
+                    </ul>
+                </div>
+                
+                <!-- What are the disadvantages of the implant? -->
+                <div class="info-card">
+                    <h2><i class="fas fa-times-circle"></i> What are the disadvantages of the implant?</h2>
+                    <p>While the implant has many benefits, there are some potential drawbacks to consider:</p>
+                    <ul>
+                        <li>Requires a minor procedure to insert and remove</li>
+                        <li>May cause irregular bleeding or spotting, especially in the first 6-12 months</li>
+                        <li>Doesn't protect against STIs</li>
+                        <li>Possible side effects like headaches, acne, or mood changes</li>
+                        <li>Can't be removed whenever you want - you need to see a doctor or nurse</li>
+                    </ul>
+                </div>
+                
+                <!-- How is the implant inserted and removed? -->
+                <div class="info-card">
+                    <h2><i class="fas fa-procedures"></i> How is the implant inserted and removed?</h2>
+                    <p>The implant is inserted by a trained doctor or nurse. Here's what to expect:</p>
+                    <p><b>Insertion:</b> The area on the inside of your upper arm is numbed with local anesthetic. The implant is then inserted just under your skin using a special applicator. The procedure takes just a few minutes.</p>
+                    <p><b>Removal:</b> The area is numbed again, and a small cut is made in your skin to remove the implant. This also takes just a few minutes. You can have a new implant inserted at the same time if you want to continue using this method.</p>
+                    <p>After insertion, you'll be shown how to feel the implant to check it's in place. The implant can be removed at any time by a doctor or nurse if you want to get pregnant or switch to another method.</p>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/ScrollToPlugin.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Custom cursor effect
+            const cursor = document.getElementById('cursor');
+            const cursorFollower = document.getElementById('cursor-follower');
+            
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+                cursorFollower.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+            });
+            
+            document.querySelectorAll('button, a').forEach(element => {
+                element.addEventListener('mouseenter', () => {
+                    cursor.style.width = '40px';
+                    cursor.style.height = '40px';
+                    cursor.style.opacity = '0.5';
+                    cursorFollower.style.width = '30px';
+                    cursorFollower.style.height = '30px';
+                });
+                
+                element.addEventListener('mouseleave', () => {
+                    cursor.style.width = '20px';
+                    cursor.style.height = '20px';
+                    cursor.style.opacity = '1';
+                    cursorFollower.style.width = '60px';
+                    cursorFollower.style.height = '60px';
+                });
+            });
+            
+            // Smooth scrolling setup
+            const wrapper = document.querySelector('#smooth-wrapper');
+            const content = document.querySelector('#smooth-content');
+            
+            let height;
+            function setHeight() {
+                height = content.clientHeight;
+                document.body.style.height = height + 'px';
+            }
+            
+            ScrollTrigger.addEventListener('refreshInit', setHeight);
+            
+            gsap.to(content, {
+                y: () => -(height - document.documentElement.clientHeight),
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: document.body,
+                    start: 'top top',
+                    end: 'bottom bottom',
+                    scrub: 1,
+                    invalidateOnRefresh: true
+                }
+            });
+            
+            // Animate info cards on scroll
+            gsap.utils.toArray('.info-card').forEach((card, i) => {
+                gsap.from(card, {
+                    opacity: 0,
+                    y: 50,
+                    duration: 0.8,
+                    delay: i * 0.1,
+                    scrollTrigger: {
+                        trigger: card,
+                        start: "top 80%",
+                        toggleActions: "play none none none"
+                    }
+                });
+            });
+            
+            // Animate the hero section
+            gsap.from('.hero-content h1', {
+                opacity: 0,
+                y: 50,
+                duration: 1,
+                delay: 0.3
+            });
+            
+            gsap.from('.hero-content p', {
+                opacity: 0,
+                y: 50,
+                duration: 1,
+                delay: 0.5
+            });
+            
+            // Floating elements animation
+            gsap.to('.floating-element:nth-child(1)', {
+                x: 50,
+                y: -30,
+                duration: 15,
+                repeat: -1,
+                yoyo: true,
+                ease: 'sine.inOut'
+            });
+            
+            gsap.to('.floating-element:nth-child(2)', {
+                x: -70,
+                y: 40,
+                duration: 20,
+                repeat: -1,
+                yoyo: true,
+                ease: 'sine.inOut'
+            });
+            
+            gsap.to('.floating-element:nth-child(3)', {
+                x: 30,
+                y: -20,
+                duration: 18,
+                repeat: -1,
+                yoyo: true,
+                ease: 'sine.inOut'
+            });
+        });
+    </script>
+</body>
+</html>

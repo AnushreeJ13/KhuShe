@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contraceptive Methods | SheCare</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --main-bg: #0a0a0a;
+            --accent: #4d9eff;
+            --accent-light: #85b3ff;
+            --text: #f0f0f0;
+            --text-light: #b0b0b0;
+            --dark-bg: #000000;
+            --secondary: #5a6acd;
+            --glass-bg: rgba(20, 30, 50, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --highlight: rgba(77, 158, 255, 0.15);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text);
+            overflow-x: hidden;
+            cursor: none;
+        }
+        
+        /* Smooth scrolling container */
+        #smooth-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+        
+        #smooth-content {
+            will-change: transform;
+        }
+        
+        /* Header styles */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(10px);
+        }
+        
+        .logo-container img {
+            height: 50px;
+            transition: transform 0.4s ease;
+            filter: brightness(0) invert(1);
+        }
+        
+        .logo-container:hover img {
+            transform: scale(1.1) rotate(-5deg);
+        }
+        
+        /* Navigation */
+        nav ul {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: all 0.3s ease;
+        }
+        
+        nav a:hover {
+            color: var(--accent-light);
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+        
+        /* Login button */
+        .login-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .login-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(77, 158, 255, 0.3);
+            gap: 10px;
+            border: none;
+            cursor: none;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(77, 158, 255, 0.4);
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+        }
+        
+        /* Journey Section */
+        .journey-section {
+            position: relative;
+            height: 60vh; /* Reduced height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 10%;
+            overflow: hidden;
+            background: radial-gradient(circle at 75% 30%, rgba(77, 158, 255, 0.1), transparent 70%);
+        }
+        
+        .journey-content {
+            max-width: 800px;
+            z-index: 10;
+            text-align: center;
+        }
+        
+        .journey-content h1 {
+            font-size: 5rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(to right, var(--accent-light), var(--text));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.1;
+        }
+        
+        .journey-content p {
+            font-size: 1.5rem;
+            margin-bottom: 3rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Method boxes section */
+        .methods-section {
+            padding: 5% 10%; /* Reduced padding */
+            position: relative;
+            background: var(--main-bg);
+        }
+        
+        .section-title {
+            font-size: 3rem;
+            margin-bottom: 3rem; /* Reduced margin */
+            text-align: center;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, var(--accent), var(--secondary));
+            border-radius: 3px;
+        }
+        
+        .method-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+        
+        .method-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            position: relative;
+            overflow: hidden;
+            min-height: 450px;
+        }
+        
+        .method-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 75% 30%, rgba(133, 179, 255, 0.1), transparent 70%);
+            z-index: -1;
+        }
+        
+        .method-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: var(--accent-light);
+            background: var(--highlight);
+        }
+        
+        .method-icon {
+            font-size: 2.5rem;
+            color: var(--accent-light);
+            margin-bottom: 1.5rem;
+        }
+        
+        .method-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+        
+        .method-effectiveness {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .effectiveness-value {
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .effectiveness-label {
+            color: var(--text-light);
+        }
+        
+        .method-description {
+            margin-bottom: 2rem;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+        
+        .pros-cons {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
+        
+        .pros-cons h4 {
+            color: var(--accent-light);
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+        }
+        
+        .pros-cons ul {
+            color: var(--text-light);
+            padding-left: 1.2rem;
+            line-height: 1.8;
+        }
+        
+        .learn-more-btn {
+            position: absolute;
+            bottom: 2rem;
+            left: 2.5rem;
+            right: 2.5rem;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            color: var(--text);
+            cursor: none;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .learn-more-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--accent-light);
+        }
+        
+        /* Background elements */
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .floating-element {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.15;
+            animation: float 15s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-50px) rotate(5deg);
+            }
+        }
+        
+        /* Custom cursor */
+        #cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            mix-blend-mode: screen;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease, width 0.3s ease, height 0.3s ease;
+        }
+        
+        #cursor-follower {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 1px solid var(--accent);
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: transform 0.4s ease, width 0.4s ease, height 0.4s ease;
+            opacity: 0.3;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .journey-content h1 {
+                font-size: 3rem;
+            }
+            
+            .journey-content p {
+                font-size: 1.2rem;
+            }
+            
+            nav ul {
+                display: none; /* Consider mobile menu */
+            }
+            
+            .method-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+                margin-bottom: 3rem;
+            }
+            
+            #cursor, #cursor-follower {
+                display: none;
+            }
+            
+            body {
+                cursor: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom cursor elements -->
+    <div id="cursor"></div>
+    <div id="cursor-follower"></div>
+    
+    <div id="smooth-wrapper">
+        <div id="smooth-content">
+            <!-- Floating background elements -->
+            <div class="floating-elements">
+                <div class="floating-element" style="width: 300px; height: 300px; background: var(--accent); top: 20%; left: 10%; animation-delay: 0s;"></div>
+                <div class="floating-element" style="width: 400px; height: 400px; background: var(--secondary); top: 60%; left: 70%; animation-delay: 2s;"></div>
+                <div class="floating-element" style="width: 200px; height: 200px; background: var(--accent-light); top: 30%; left: 50%; animation-delay: 4s;"></div>
+            </div>
+            
+            <header>
+                <div class="logo-container">
+                    <img src="SheCareLogo1.jpg" alt="SheCare" class="logo">
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html" class="protected-link"><i class="fas fa-home"></i> Home</a></li>
+                        <li><a href="https://shecare.onrender.com/" class="protected-link" target="_blank" rel="noopener noreferrer"><i class="fas fa-capsules"></i> PillPickr</a></li>
+                        <li><a href="faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+                        <li><a href="methods.html"><i class="fas fa-heartbeat"></i> Contraceptives</a></li>
+                        <li><a href="oc.html" class="protected-link"><i class="fas fa-calendar-alt"></i> Track Cycle</a></li>
+                    </ul>
+                </nav>
+                <div class="login-container">
+                    <button class="login-btn" id="loginButton">
+                        <i class="fas fa-user"></i> Login
+                    </button>
+                    <div class="user-info" id="userInfo">
+                        <span id="userEmail"></span>
+                        <span class="logout-btn" id="logoutButton">Logout</span>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Begin Your Journey Section -->
+            <section class="journey-section">
+                <div class="journey-content">
+                <br>
+            <br>
+            <br>
+            <br><br>
+                    <h1>Begin Your Contraceptive Journey</h1>
+                    <p>Discover the perfect birth control method tailored to your body and lifestyle with our comprehensive guide.</p>
+                </div>
+            </section>
+            <!-- Contraceptive Methods Section -->
+            <section class="methods-section" id="methodsSection">
+                <h2 class="section-title">Contraceptive Methods</h2>
+                
+                <div class="method-grid">
+                    <!-- Method 1 -->
+                    <div class="method-card">
+                        <div class="method-icon">
+                            <i class="fas fa-pills"></i>
+                        </div>
+                        <h3 class="method-title">Birth Control Pills</h3>
+                        <div class="method-effectiveness">
+                            <span class="effectiveness-value">99%</span>
+                            <span class="effectiveness-label">effectiveness</span>
+                        </div>
+                        <p class="method-description">
+                            Daily oral contraceptive pills that prevent pregnancy by stopping ovulation and thickening cervical mucus.
+                        </p>
+                        <div class="pros-cons">
+                            <div>
+                                <h4>Pros</h4>
+                                <ul>
+                                    <li>Highly effective when taken correctly</li>
+                                    <li>Can make periods lighter and more regular</li>
+                                    <li>May improve acne</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4>Cons</h4>
+                                <ul>
+                                    <li>Must take at the same time daily</li>
+                                    <li>Possible side effects like nausea</li>
+                                    <li>Doesn't protect against STIs</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <a href="pill.html" class="learn-more-btn">Learn More</a>
+
+                    </div>
+                    
+                    <!-- Method 2 -->
+                    <div class="method-card">
+                        <div class="method-icon">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                        <h3 class="method-title">IUD (Intrauterine Device)</h3>
+                        <div class="method-effectiveness">
+                            <span class="effectiveness-value">99%</span>
+                            <span class="effectiveness-label">effectiveness</span>
+                        </div>
+                        <p class="method-description">
+                            A small T-shaped device inserted into the uterus that provides long-term pregnancy prevention.
+                        </p>
+                        <div class="pros-cons">
+                            <div>
+                                <h4>Pros</h4>
+                                <ul>
+                                    <li>Lasts 3-10 years</li>
+                                    <li>Highly effective immediately</li>
+                                    <li>Low maintenance</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4>Cons</h4>
+                                <ul>
+                                    <li>Requires insertion by a doctor</li>
+                                    <li>Possible cramping after insertion</li>
+                                    <li>May cause irregular bleeding</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <a href="iud.html" class="learn-more-btn">Learn More</a>
+                    </div>
+                    
+                    <!-- Method 3 -->
+                    <div class="method-card">
+                        <div class="method-icon">
+                            <i class="fas fa-barcode"></i>
+                        </div>
+                        <h3 class="method-title">Contraceptive Implant</h3>
+                        <div class="method-effectiveness">
+                            <span class="effectiveness-value">99%</span>
+                            <span class="effectiveness-label">effectiveness</span>
+                        </div>
+                        <p class="method-description">
+                            A small rod inserted under the skin of the upper arm that releases hormones to prevent pregnancy.
+                        </p>
+                        <div class="pros-cons">
+                            <div>
+                                <h4>Pros</h4>
+                                <ul>
+                                    <li>Lasts up to 3 years</li>
+                                    <li>Highly effective immediately</li>
+                                    <li>Discreet and low maintenance</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4>Cons</h4>
+                                <ul>
+                                    <li>Requires minor procedure</li>
+                                    <li>May cause irregular bleeding</li>
+                                    <li>Possible side effects</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <a href="implant.html" class="learn-more-btn">Learn More</a>
+                    </div>
+                    
+                    <!-- Method 4 -->
+                    <div class="method-card">
+                        <div class="method-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3 class="method-title">Condoms</h3>
+                        <div class="method-effectiveness">
+                            <span class="effectiveness-value">85%</span>
+                            <span class="effectiveness-label">effectiveness</span>
+                        </div>
+                        <p class="method-description">
+                            Barrier method that covers the penis or lines the vagina to prevent pregnancy and STIs.
+                        </p>
+                        <div class="pros-cons">
+                            <div>
+                                <h4>Pros</h4>
+                                <ul>
+                                    <li>Protects against STIs</li>
+                                    <li>No hormones</li>
+                                    <li>Widely available</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4>Cons</h4>
+                                <ul>
+                                    <li>Must use correctly every time</li>
+                                    <li>Can break or slip</li>
+                                    <li>May reduce sensation</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <button class="learn-more-btn">Learn More</button>
+                    </div>
+                    
+                    <!-- Method 5 -->
+                    <div class="method-card">
+                        <div class="method-icon">
+                            <i class="fas fa-band-aid"></i>
+                        </div>
+                        <h3 class="method-title">Contraceptive Patch</h3>
+                        <div class="method-effectiveness">
+                            <span class="effectiveness-value">91%</span>
+                            <span class="effectiveness-label">effectiveness</span>
+                        </div>
+                        <p class="method-description">
+                            A small sticky patch worn on the skin that releases hormones to prevent pregnancy.
+                        </p>
+                        <div class="pros-cons">
+                            <div>
+                                <h4>Pros</h4>
+                                <ul>
+                                    <li>Changed weekly</li>
+                                    <li>Easy to use</li>
+                                    <li>May regulate periods</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4>Cons</h4>
+                                <ul>
+                                    <li>Visible on skin</li>
+                                    <li>Possible skin irritation</li>
+                                    <li>Same side effects as pill</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <button class="learn-more-btn">Learn More</button>
+                    </div>
+                    
+                    <!-- Method 6 -->
+                    <div class="method-card">
+                        <div class="method-icon">
+                            <i class="fas fa-ring"></i>
+                        </div>
+                        <h3 class="method-title">Vaginal Ring</h3>
+                        <div class="method-effectiveness">
+                            <span class="effectiveness-value">91%</span>
+                            <span class="effectiveness-label">effectiveness</span>
+                        </div>
+                        <p class="method-description">
+                            A flexible ring inserted into the vagina that releases hormones to prevent pregnancy.
+                        </p>
+                        <div class="pros-cons">
+                            <div>
+                                <h4>Pros</h4>
+                                <ul>
+                                    <li>Changed monthly</li>
+                                    <li>Discreet</li>
+                                    <li>May regulate periods</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4>Cons</h4>
+                                <ul>
+                                    <li>May cause vaginal irritation</li>
+                                    <li>Possible side effects</li>
+                                    <li>Must remember to replace</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <button class="learn-more-btn">Learn More</button>
+                    </div>
+                    
+                    <!-- Method 7 -->
+                    <div class="method-card">
+                        <div class="method-icon"><i class="fas fa-user-lock"></i></div>
+                        <h3 class="method-title">Sterilization</h3>
+                        <div class="method-effectiveness">
+                            <span class="effectiveness-value">99%</span>
+                            <span class="effectiveness-label">effectiveness</span>
+                        </div>
+                        <p class="method-description">
+                            A permanent surgical procedure for those who are certain they do not want future pregnancies.
+                        </p>
+                        <div class="pros-cons">
+                            <div>
+                                <h4>Pros</h4>
+                                <ul>
+                                    <li>Permanently prevents pregnancy</li>
+                                    <li>One-time procedure</li>
+                                    <li>No ongoing maintenance</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4>Cons</h4>
+                                <ul>
+                                    <li>Requires surgery</li>
+                                    <li>Not reversible in most cases</li>
+                                    <li>No STI protection</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <button class="learn-more-btn">Learn More</button>
+                    </div>
+                    
+                    <!-- Method 8 -->
+                    <div class="method-card">
+                        <div class="method-icon"><i class="fas fa-seedling"></i></div>
+                        <h3 class="method-title">Fertility Awareness</h3>
+                        <div class="method-effectiveness">
+                            <span class="effectiveness-value">76%</span>
+                            <span class="effectiveness-label">effectiveness</span>
+                        </div>
+                        <p class="method-description">
+                            Natural family planning method where you track your cycle and avoid sex during fertile days.
+                        </p>
+                        <div class="pros-cons">
+                            <div>
+                                <h4>Pros</h4>
+                                <ul>
+                                    <li>No side effects</li>
+                                    <li>Cost-effective</li>
+                                    <li>Empowering for body awareness</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4>Cons</h4>
+                                <ul>
+                                    <li>Less effective than other methods</li>
+                                    <li>Requires daily tracking</li>
+                                    <li>No STI protection</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <button class="learn-more-btn">Learn More</button>
+                    </div>
+                    
+                    <!-- Method 9 -->
+                    <div class="method-card">
+                        <div class="method-icon"><i class="fas fa-capsules"></i></div>
+                        <h3 class="method-title">Emergency Contraception</h3>
+                        <div class="method-effectiveness">
+                            <span class="effectiveness-value">89%</span>
+                            <span class="effectiveness-label">effectiveness</span>
+                        </div>
+                        <p class="method-description">
+                            Pills taken after unprotected sex to prevent pregnancy. Most effective within 72 hours.
+                        </p>
+                        <div class="pros-cons">
+                            <div>
+                                <h4>Pros</h4>
+                                <ul>
+                                    <li>Easy to access</li>
+                                    <li>Can prevent pregnancy after contraceptive failure</li>
+                                    <li>Non-invasive</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4>Cons</h4>
+                                <ul>
+                                    <li>Not for regular use</li>
+                                    <li>May cause nausea</li>
+                                    <li>No STI protection</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <button class="learn-more-btn">Learn More</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/ScrollToPlugin.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Custom cursor effect
+            const cursor = document.getElementById('cursor');
+            const cursorFollower = document.getElementById('cursor-follower');
+            
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+                cursorFollower.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+            });
+            
+            document.querySelectorAll('button, a').forEach(element => {
+                element.addEventListener('mouseenter', () => {
+                    cursor.style.width = '40px';
+                    cursor.style.height = '40px';
+                    cursor.style.opacity = '0.5';
+                    cursorFollower.style.width = '30px';
+                    cursorFollower.style.height = '30px';
+                });
+                
+                element.addEventListener('mouseleave', () => {
+                    cursor.style.width = '20px';
+                    cursor.style.height = '20px';
+                    cursor.style.opacity = '1';
+                    cursorFollower.style.width = '60px';
+                    cursorFollower.style.height = '60px';
+                });
+            });
+            
+            // Smooth scrolling setup
+            const wrapper = document.querySelector('#smooth-wrapper');
+            const content = document.querySelector('#smooth-content');
+            
+            let height;
+            function setHeight() {
+                height = content.clientHeight;
+                document.body.style.height = height + 'px';
+            }
+            
+            ScrollTrigger.addEventListener('refreshInit', setHeight);
+            
+            gsap.to(content, {
+                y: () => -(height - document.documentElement.clientHeight),
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: document.body,
+                    start: 'top top',
+                    end: 'bottom bottom',
+                    scrub: 1,
+                    invalidateOnRefresh: true
+                }
+            });
+            
+            // Animate method cards on scroll
+            gsap.utils.toArray('.method-card').forEach((card, i) => {
+                gsap.from(card, {
+                    opacity: 0,
+                    y: 50,
+                    duration: 0.8,
+                    delay: i * 0.1,
+                    scrollTrigger: {
+                        trigger: card,
+                        start: "top 80%",
+                        toggleActions: "play none none none"
+                    }
+                });
+            });
+            
+            // Login/logout functionality
+            const loginBtn = document.getElementById('loginButton');
+            const userInfo = document.getElementById('userInfo');
+            const userEmail = document.getElementById('userEmail');
+            const logoutBtn = document.getElementById('logoutButton');
+            const protectedElements = document.querySelectorAll('.protected-link');
+            
+            function checkAuth() {
+                const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+                const storedEmail = sessionStorage.getItem('userEmail');
+                
+                if (isLoggedIn && storedEmail) {
+                    loginBtn.style.display = 'none';
+                    userInfo.style.display = 'flex';
+                    userEmail.textContent = storedEmail;
+                } else {
+                    loginBtn.style.display = 'inline-flex';
+                    userInfo.style.display = 'none';
+                }
+            }
+            
+            loginBtn.addEventListener('click', function() {
+                window.location.href = 'auth.html';
+            });
+            
+            logoutBtn.addEventListener('click', function() {
+                sessionStorage.removeItem('isLoggedIn');
+                sessionStorage.removeItem('userEmail');
+                checkAuth();
+                window.location.reload();
+            });
+            
+            protectedElements.forEach(element => {
+                element.addEventListener('click', function(e) {
+                    if (!sessionStorage.getItem('isLoggedIn')) {
+                        e.preventDefault();
+                        alert('Please login to access this feature');
+                        window.location.href = 'auth.html';
+                    }
+                });
+            });
+            
+            checkAuth();
+            
+            // Animate the journey section
+            gsap.from('.journey-content h1', {
+                opacity: 0,
+                y: 50,
+                duration: 1,
+                delay: 0.3
+            });
+            
+            gsap.from('.journey-content p', {
+                opacity: 0,
+                y: 50,
+                duration: 1,
+                delay: 0.5
+            });
+            
+            // Floating elements animation
+            gsap.to('.floating-element:nth-child(1)', {
+                x: 50,
+                y: -30,
+                duration: 15,
+                repeat: -1,
+                yoyo: true,
+                ease: 'sine.inOut'
+            });
+            
+            gsap.to('.floating-element:nth-child(2)', {
+                x: -70,
+                y: 40,
+                duration: 20,
+                repeat: -1,
+                yoyo: true,
+                ease: 'sine.inOut'
+            });
+            
+            gsap.to('.floating-element:nth-child(3)', {
+                x: 30,
+                y: -20,
+                duration: 18,
+                repeat: -1,
+                yoyo: true,
+                ease: 'sine.inOut'
+            });
+        });
+    </script>
+</body>
+</html>
