@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IUD (Intrauterine Device) | SheCare</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --main-bg: #0a0a0a;
+            --accent: #4d9eff;
+            --accent-light: #85b3ff;
+            --text: #f0f0f0;
+            --text-light: #b0b0b0;
+            --dark-bg: #000000;
+            --secondary: #5a6acd;
+            --glass-bg: rgba(20, 30, 50, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --highlight: rgba(77, 158, 255, 0.15);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text);
+            overflow-x: hidden;
+            cursor: none;
+        }
+        
+        /* Smooth scrolling container */
+        #smooth-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+        
+        #smooth-content {
+            will-change: transform;
+        }
+        
+        /* Header styles */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(10px);
+        }
+        
+        .logo-container img {
+            height: 50px;
+            transition: transform 0.4s ease;
+            filter: brightness(0) invert(1);
+        }
+        
+        .logo-container:hover img {
+            transform: scale(1.1) rotate(-5deg);
+        }
+        
+        /* Navigation */
+        nav ul {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: all 0.3s ease;
+        }
+        
+        nav a:hover {
+            color: var(--accent-light);
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+        
+        /* Login button */
+        .login-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .login-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(77, 158, 255, 0.3);
+            gap: 10px;
+            border: none;
+            cursor: none;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(77, 158, 255, 0.4);
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            position: relative;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 10%;
+            overflow: hidden;
+            background: radial-gradient(circle at 75% 30%, rgba(77, 158, 255, 0.1), transparent 70%);
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            z-index: 10;
+            text-align: center;
+        }
+        
+        .hero-content h1 {
+            font-size: 5rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(to right, var(--accent-light), var(--text));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.1;
+        }
+        
+        .hero-content p {
+            font-size: 1.5rem;
+            margin-bottom: 3rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Content sections */
+        .content-section {
+            padding: 5% 10%;
+            position: relative;
+            background: var(--main-bg);
+        }
+        
+        .section-title {
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, var(--accent), var(--secondary));
+            border-radius: 3px;
+        }
+        
+        .info-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 75% 30%, rgba(133, 179, 255, 0.1), transparent 70%);
+            z-index: -1;
+        }
+        
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border-color: var(--accent-light);
+            background: var(--highlight);
+        }
+        
+        .info-card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-light);
+        }
+        
+        .info-card p {
+            color: var(--text-light);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+        
+        .info-card ul {
+            color: var(--text-light);
+            padding-left: 1.5rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+        
+        .info-card li {
+            margin-bottom: 0.8rem;
+        }
+        
+        /* Background elements */
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .floating-element {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.15;
+            animation: float 15s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-50px) rotate(5deg);
+            }
+        }
+        
+        /* Custom cursor */
+        #cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            mix-blend-mode: screen;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease, width 0.3s ease, height 0.3s ease;
+        }
+        
+        #cursor-follower {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 1px solid var(--accent);
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: transform 0.4s ease, width 0.4s ease, height 0.4s ease;
+            opacity: 0.3;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 3rem;
+            }
+            
+            .hero-content p {
+                font-size: 1.2rem;
+            }
+            
+            nav ul {
+                display: none;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+                margin-bottom: 3rem;
+            }
+            
+            #cursor, #cursor-follower {
+                display: none;
+            }
+            
+            body {
+                cursor: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom cursor elements -->
+    <div id="cursor"></div>
+    <div id="cursor-follower"></div>
+    
+    <div id="smooth-wrapper">
+        <div id="smooth-content">
+            <!-- Floating background elements -->
+            <div class="floating-elements">
+                <div class="floating-element" style="width: 300px; height: 300px; background: var(--accent); top: 20%; left: 10%; animation-delay: 0s;"></div>
+                <div class="floating-element" style="width: 400px; height: 400px; background: var(--secondary); top: 60%; left: 70%; animation-delay: 2s;"></div>
+                <div class="floating-element" style="width: 200px; height: 200px; background: var(--accent-light); top: 30%; left: 50%; animation-delay: 4s;"></div>
+            </div>
+            
+            
+            
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="hero-content">
+                    <br><br><br><br><br>
+                    <h1>IUD (Intrauterine Device)</h1>
+                    <p>A long-acting, reversible contraceptive that's over 99% effective at preventing pregnancy.</p>
+                </div>
+            </section>
+            
+            <!-- Content Section -->
+            <section class="content-section">
+                <h2 class="section-title">About IUDs</h2>
+                
+                <!-- What is an IUD? -->
+                <div class="info-card">
+                    <h2><i class="fas fa-plus-square"></i> What is an IUD?</h2>
+                    <p>An intrauterine device (IUD) is a small, T-shaped device that's inserted into the uterus to prevent pregnancy. It's one of the most effective forms of birth control available, with a failure rate of less than 1%.</p>
+                    <p><b>There are two main types of IUDs:</b></p>
+                    <ul>
+                        <li><b>Hormonal IUDs</b> - Release progestin to prevent pregnancy (last 3-8 years depending on brand)</li>
+                        <li><b>Copper IUDs</b> - Use copper to prevent pregnancy (can last up to 10 years)</li>
+                    </ul>
+                </div>
+                
+                <!-- How effective is the IUD? -->
+                <div class="info-card">
+                    <h2><i class="fas fa-chart-line"></i> How effective is the IUD?</h2>
+                    <p>The IUD is one of the most effective birth control methods available:</p>
+                    <ul>
+                        <li>More than 99% effective at preventing pregnancy</li>
+                        <li>Works continuously for 3-10 years depending on type</li>
+                        <li>No need to remember to take a pill or use protection</li>
+                        <li>Works immediately after insertion (copper IUD) or within 7 days (hormonal IUD)</li>
+                    </ul>
+                    <p>Less than 1 out of 100 women will get pregnant each year if they use an IUD.</p>
+                </div>
+                
+                <!-- What are the side effects of IUDs? -->
+                <div class="info-card">
+                    <h2><i class="fas fa-exclamation-triangle"></i> What are the side effects of IUDs?</h2>
+                    <p>Side effects vary depending on whether you have a hormonal or copper IUD:</p>
+                    <p><b>Hormonal IUD side effects may include:</b></p>
+                    <ul>
+                        <li>Irregular bleeding and spotting (especially in the first 3-6 months)</li>
+                        <li>Lighter periods or no periods at all</li>
+                        <li>Mood changes</li>
+                        <li>Breast tenderness</li>
+                        <li>Acne</li>
+                    </ul>
+                    <p><b>Copper IUD side effects may include:</b></p>
+                    <ul>
+                        <li>Heavier, longer periods (especially in the first few months)</li>
+                        <li>More painful cramps</li>
+                        <li>Spotting between periods</li>
+                    </ul>
+                    <p>Most side effects improve after the first few months. Serious complications are rare but can include perforation of the uterus or expulsion of the IUD.</p>
+                </div>
+                
+                <!-- What are the benefits of an IUD? -->
+                <div class="info-card">
+                    <h2><i class="fas fa-check-circle"></i> What are the benefits of an IUD?</h2>
+                    <p>IUDs offer many advantages over other birth control methods:</p>
+                    <ul>
+                        <li><b>Highly effective</b> - Over 99% effective at preventing pregnancy</li>
+                        <li><b>Long-lasting</b> - Works for 3-10 years depending on type</li>
+                        <li><b>Reversible</b> - Fertility returns quickly after removal</li>
+                        <li><b>Low maintenance</b> - No daily or monthly tasks to remember</li>
+                        <li><b>Discreet</b> - No one can tell you're using it</li>
+                        <li><b>Cost-effective</b> - More affordable over time than other methods</li>
+                        <li><b>Hormonal options</b> - Can make periods lighter or stop them altogether</li>
+                    </ul>
+                </div>
+                
+                <!-- What are the disadvantages of an IUD? -->
+                <div class="info-card">
+                    <h2><i class="fas fa-times-circle"></i> What are the disadvantages of an IUD?</h2>
+                    <p>While IUDs are safe for most people, there are some potential drawbacks:</p>
+                    <ul>
+                        <li><b>Insertion can be uncomfortable</b> - Some people experience pain during the procedure</li>
+                        <li><b>Requires a healthcare provider</b> - Must be inserted and removed by a professional</li>
+                        <li><b>Possible side effects</b> - Especially in the first few months</li>
+                        <li><b>No STD protection</b> - Doesn't protect against sexually transmitted infections</li>
+                        <li><b>Rare but serious risks</b> - Including perforation or expulsion</li>
+                        <li><b>Upfront cost</b> - Can be expensive without insurance (but cost-effective over time)</li>
+                    </ul>
+                </div>
+                
+                <!-- Who can use an IUD? -->
+                <div class="info-card">
+                    <h2><i class="fas fa-user-check"></i> Who can use an IUD?</h2>
+                    <p>Most people can safely use an IUD, including:</p>
+                    <ul>
+                        <li>People who have never been pregnant</li>
+                        <li>People of all ages, including teenagers</li>
+                        <li>People who want long-term but reversible birth control</li>
+                        <li>People who want to avoid remembering to take a pill</li>
+                    </ul>
+                    <p>IUDs may not be recommended for people with:</p>
+                    <ul>
+                        <li>Certain uterine abnormalities</li>
+                        <li>Active pelvic infections</li>
+                        <li>Certain cancers</li>
+                        <li>Unexplained vaginal bleeding</li>
+                        <li>Allergy to copper (for copper IUDs)</li>
+                    </ul>
+                    <p>Talk to your healthcare provider to see if an IUD is right for you.</p>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/ScrollToPlugin.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Custom cursor effect
+            const cursor = document.getElementById('cursor');
+            const cursorFollower = document.getElementById('cursor-follower');
+            
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+                cursorFollower.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+            });
+            
+            document.querySelectorAll('button, a').forEach(element => {
+                element.addEventListener('mouseenter', () => {
+                    cursor.style.width = '40px';
+                    cursor.style.height = '40px';
+                    cursor.style.opacity = '0.5';
+                    cursorFollower.style.width = '30px';
+                    cursorFollower.style.height = '30px';
+                });
+                
+                element.addEventListener('mouseleave', () => {
+                    cursor.style.width = '20px';
+                    cursor.style.height = '20px';
+                    cursor.style.opacity = '1';
+                    cursorFollower.style.width = '60px';
+                    cursorFollower.style.height = '60px';
+                });
+            });
+            
+            // Smooth scrolling setup
+            const wrapper = document.querySelector('#smooth-wrapper');
+            const content = document.querySelector('#smooth-content');
+            
+            let height;
+            function setHeight() {
+                height = content.clientHeight;
+                document.body.style.height = height + 'px';
+            }
+            
+            ScrollTrigger.addEventListener('refreshInit', setHeight);
+            
+            gsap.to(content, {
+                y: () => -(height - document.documentElement.clientHeight),
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: document.body,
+                    start: 'top top',
+                    end: 'bottom bottom',
+                    scrub: 1,
+                    invalidateOnRefresh: true
+                }
+            });
+            
+            // Animate info cards on scroll
+            gsap.utils.toArray('.info-card').forEach((card, i) => {
+                gsap.from(card, {
+                    opacity: 0,
+                    y: 50,
+                    duration: 0.8,
+                    delay: i * 0.1,
+                    scrollTrigger: {
+                        trigger: card,
+                        start: "top 80%",
+                        toggleActions: "play none none none"
+                    }
+                });
+            });
+            
+            // Login/logout functionality
+            const loginBtn = document.getElementById('loginButton');
+            const userInfo = document.getElementById('userInfo');
+            const userEmail = document.getElementById('userEmail');
+            const logoutBtn = document.getElementById('logoutButton');
+            const protectedElements = document.querySelectorAll('.protected-link');
+            
+            function checkAuth() {
+                const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+                const storedEmail = sessionStorage.getItem('userEmail');
+                
+                if (isLoggedIn && storedEmail) {
+                    loginBtn.style.display = 'none';
+                    userInfo.style.display = 'flex';
+                    userEmail.textContent = storedEmail;
+                } else {
+                    loginBtn.style.display = 'inline-flex';
+                    userInfo.style.display = 'none';
+                }
+            }
+            
+            loginBtn.addEventListener('click', function() {
+                window.location.href = 'auth.html';
+            });
+            
+            logoutBtn.addEventListener('click', function() {
+                sessionStorage.removeItem('isLoggedIn');
+                sessionStorage.removeItem('userEmail');
+                checkAuth();
+                window.location.reload();
+            });
+            
+            protectedElements.forEach(element => {
+                element.addEventListener('click', function(e) {
+                    if (!sessionStorage.getItem('isLoggedIn')) {
+                        e.preventDefault();
+                        alert('Please login to access this feature');
+                        window.location.href = 'auth.html';
+                    }
+                });
+            });
+            
+            checkAuth();
+            
+            // Animate the hero section
+            gsap.from('.hero-content h1', {
+                opacity: 0,
+                y: 50,
+                duration: 1,
+                delay: 0.3
+            });
+            
+            gsap.from('.hero-content p', {
+                opacity: 0,
+                y: 50,
+                duration: 1,
+                delay: 0.5
+            });
+            
+            // Floating elements animation
+            gsap.to('.floating-element:nth-child(1)', {
+                x: 50,
+                y: -30,
+                duration: 15,
+                repeat: -1,
+                yoyo: true,
+                ease: 'sine.inOut'
+            });
+            
+            gsap.to('.floating-element:nth-child(2)', {
+                x: -70,
+                y: 40,
+                duration: 20,
+                repeat: -1,
+                yoyo: true,
+                ease: 'sine.inOut'
+            });
+            
+            gsap.to('.floating-element:nth-child(3)', {
+                x: 30,
+                y: -20,
+                duration: 18,
+                repeat: -1,
+                yoyo: true,
+                ease: 'sine.inOut'
+            });
+        });
+    </script>
+</body>
+</html>
