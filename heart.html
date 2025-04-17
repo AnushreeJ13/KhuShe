@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Health Tracker | Wisdom Years</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #EC4899;
+            --primary-dark: #DB2777;
+            --secondary: #7C3AED;
+            --dark: #0F172A;
+            --darker: #020617;
+            --light: #F8FAFC;
+            --gray: #94A3B8;
+            --dark-gray: #334155;
+            --card-bg: rgba(30, 41, 59, 0.6);
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            --success: #2ED573;
+            --warning: #FFA502;
+            --danger: #FF4757;
+            --heart: #FF6B6B;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--darker);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 1000;
+            backdrop-filter: blur(12px);
+            background: rgba(2, 6, 23, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-icon {
+            margin-right: 0.5rem;
+            font-size: 2rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav ul li a {
+            font-weight: 500;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: var(--transition);
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: var(--transition);
+        }
+
+        nav ul li a:hover,
+        nav ul li a.active {
+            color: var(--primary);
+        }
+
+        nav ul li a:hover::after,
+        nav ul li a.active::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(236, 72, 153, 0.4);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        .main {
+            padding: 10rem 5% 5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .page-header p {
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+
+        /* Tracker Sections */
+        .tracker-section {
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-title .icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--heart), #FF8E8E);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        /* Assessment Card */
+        .assessment-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: var(--transition);
+        }
+
+        .assessment-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border-color: rgba(236, 72, 153, 0.3);
+        }
+
+        .assessment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .assessment-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .assessment-score {
+            background: rgba(46, 213, 115, 0.15);
+            color: var(--success);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .assessment-score.warning {
+            background: rgba(255, 165, 2, 0.15);
+            color: var(--warning);
+        }
+
+        .assessment-score.danger {
+            background: rgba(255, 71, 87, 0.15);
+            color: var(--danger);
+        }
+
+        .score-display {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .score-display span {
+            font-weight: 700;
+            color: var(--heart);
+        }
+
+        .progress-container {
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--heart), #FF8E8E);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .risk-factors {
+            margin-top: 2rem;
+        }
+
+        .risk-factors h4 {
+            margin-bottom: 1rem;
+            color: var(--light);
+        }
+
+        .factor-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .factor-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .factor-item .icon {
+            color: var(--heart);
+            font-size: 1.2rem;
+        }
+
+        /* Risk Assessment Form */
+        .risk-assessment-form {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
+        .form-section h3 {
+            margin-bottom: 1.5rem;
+            color: var(--light);
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .form-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--heart), #FF8E8E);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--light);
+            font-weight: 500;
+        }
+
+        .form-group input, 
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--light);
+            font-family: 'Inter', sans-serif;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus, 
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--heart);
+            box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.2);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .radio-option input {
+            accent-color: var(--heart);
+        }
+
+        /* Heart Rate Tracker */
+        .heart-tracker {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .heart-form {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .heart-form h3 {
+            margin-bottom: 1.5rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.9rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, var(--heart), #FF8E8E);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+        }
+
+        .heart-visual {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .heart-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: conic-gradient(
+                var(--heart) 0% 60%,
+                rgba(255, 255, 255, 0.1) 60% 100%
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .heart-circle::before {
+            content: '';
+            position: absolute;
+            width: 85%;
+            height: 85%;
+            background: var(--darker);
+            border-radius: 50%;
+        }
+
+        .heart-rate {
+            position: relative;
+            z-index: 1;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--heart), #FF8E8E);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .heart-goal {
+            text-align: center;
+            color: var(--gray);
+        }
+
+        .heart-goal span {
+            color: var(--light);
+            font-weight: 600;
+        }
+
+        /* Exercise Recommendations */
+        .exercise-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .exercise-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: var(--transition);
+        }
+
+        .exercise-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 107, 107, 0.3);
+        }
+
+        .exercise-card h4 {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .exercise-card h4 .icon {
+            color: var(--heart);
+        }
+
+        .exercise-card p {
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+
+        .exercise-card .benefits {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .exercise-card .benefit {
+            background: rgba(255, 107, 107, 0.1);
+            color: var(--heart);
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+        }
+
+        /* Resources Section */
+        .resources-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .resource-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: var(--transition);
+        }
+
+        .resource-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 107, 107, 0.3);
+        }
+
+        .resource-card h4 {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .resource-card h4 .icon {
+            color: var(--heart);
+        }
+
+        .resource-card p {
+            color: var(--gray);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .resource-link {
+            color: var(--heart);
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .resource-link:hover {
+            color: #FF8E8E;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .heart-tracker {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem 5%;
+            }
+            
+            nav {
+                position: fixed;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background: var(--darker);
+                padding: 1rem 5%;
+                transform: translateY(-150%);
+                transition: var(--transition);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            
+            nav.active {
+                transform: translateY(0);
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .main {
+                padding-top: 8rem;
+            }
+            
+            .page-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-header h1 {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .assessment-card, .heart-form, .heart-visual {
+                padding: 1.5rem;
+            }
+            
+            .heart-circle {
+                width: 150px;
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="#" class="logo">
+            <span class="logo-icon">🌸</span>
+            Wisdom Years
+        </a>
+        <nav id="mainNav">
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Bone Health</a></li>
+                <li><a href="#" class="active">Heart Health</a></li>
+                <li><a href="#">Brain Health</a></li>
+                <li><a href="#">Resources</a></li>
+                <li><a href="#" class="nav-cta">Get Started</a></li>
+            </ul>
+        </nav>
+        <button class="mobile-menu-btn" id="menuBtn">☰</button>
+    </header>
+
+    <main class="main">
+        <div class="page-header">
+            <h1>Heart Health Tracker</h1>
+            <p>Monitor your cardiovascular health, track vital signs, and discover heart-healthy habits to maintain optimal heart function.</p>
+        </div>
+
+        <!-- Heart Disease Risk Assessment -->
+        <section class="tracker-section">
+            <h2 class="section-title">
+                <span class="icon">❤️</span>
+                Heart Disease Risk Assessment
+            </h2>
+            
+            <div class="assessment-card" id="riskResultCard" style="display: none;">
+                <div class="assessment-header">
+                    <div class="assessment-title">Your Heart Health Score</div>
+                    <div class="assessment-score" id="riskLevel">Moderate Risk</div>
+                </div>
+                
+                <div class="score-display">
+                    Your risk score: <span id="calculatedScore">0</span>/100
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="riskProgress"></div>
+                    </div>
+                    <div class="progress-labels">
+                        <span>Low Risk</span>
+                        <span>High Risk</span>
+                    </div>
+                </div>
+                
+                <div class="risk-factors">
+                    <h4>Your Key Risk Factors:</h4>
+                    <div class="factor-list" id="riskFactorsList">
+                        <!-- Risk factors will be added here by JavaScript -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="risk-assessment-form">
+                <form id="heartDiseaseForm">
+                    <div class="form-section">
+                        <h3>Personal Information</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="age">Age</label>
+                                <select id="age" required>
+                                    <option value="">Select age range</option>
+                                    <option value="0">Under 40</option>
+                                    <option value="5">40-49 years</option>
+                                    <option value="10">50-59 years</option>
+                                    <option value="15">60-69 years</option>
+                                    <option value="20">70+ years</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="gender">Gender</label>
+                                <select id="gender" required>
+                                    <option value="">Select gender</option>
+                                    <option value="0">Female</option>
+                                    <option value="5">Male</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="weight">BMI</label>
+                                <select id="weight" required>
+                                    <option value="">Select BMI range</option>
+                                    <option value="0">Normal (18.5-24.9)</option>
+                                    <option value="5">Overweight (25-29.9)</option>
+                                    <option value="10">Obese (30+)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h3>Family History</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Parent had heart disease before 55?</label>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="heartDiseaseYes" name="heartDisease" value="10" required>
+                                        <label for="heartDiseaseYes">Yes</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="heartDiseaseNo" name="heartDisease" value="0">
+                                        <label for="heartDiseaseNo">No</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>High blood pressure in family?</label>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="hypertensionYes" name="hypertension" value="5" required>
+                                        <label for="hypertensionYes">Yes</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="hypertensionNo" name="hypertension" value="0">
+                                        <label for="hypertensionNo">No</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h3>Lifestyle Factors</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="smoking">Smoking Status</label>
+                                <select id="smoking" required>
+                                    <option value="">Select smoking status</option>
+                                    <option value="0">Never smoked</option>
+                                    <option value="5">Former smoker</option>
+                                    <option value="15">Current smoker</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="activity">Physical Activity</label>
+                                <select id="activity" required>
+                                    <option value="">Select activity level</option>
+                                    <option value="0">Regular exercise (150+ mins/week)</option>
+                                    <option value="5">Some activity</option>
+                                    <option value="10">Sedentary lifestyle</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="diet">Diet Quality</label>
+                                <select id="diet" required>
+                                    <option value="">Select diet quality</option>
+                                    <option value="0">Heart-healthy diet</option>
+                                    <option value="5">Average diet</option>
+                                    <option value="10">Poor diet (high in processed foods)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h3>Medical History</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>High blood pressure?</label>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="bpYes" name="bp" value="15" required>
+                                        <label for="bpYes">Yes</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="bpNo" name="bp" value="0">
+                                        <label for="bpNo">No</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>High cholesterol?</label>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="cholesterolYes" name="cholesterol" value="10" required>
+                                        <label for="cholesterolYes">Yes</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="cholesterolNo" name="cholesterol" value="0">
+                                        <label for="cholesterolNo">No</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Diabetes or prediabetes?</label>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="diabetesYes" name="diabetes" value="15" required>
+                                        <label for="diabetesYes">Yes</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="diabetesNo" name="diabetes" value="0">
+                                        <label for="diabetesNo">No</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Stress level?</label>
+                                <select id="stress" required>
+                                    <option value="">Select stress level</option>
+                                    <option value="0">Low stress</option>
+                                    <option value="5">Moderate stress</option>
+                                    <option value="10">High stress</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Calculate My Risk</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Heart Rate Tracker -->
+        <section class="tracker-section">
+            <h2 class="section-title">
+                <span class="icon">💓</span>
+                Heart Rate Tracker
+            </h2>
+            
+            <div class="heart-tracker">
+                <div class="heart-form">
+                    <h3>Track Your Heart Rate</h3>
+                    
+                    <div class="form-group">
+                        <label for="heart-rate-type">Measurement Type</label>
+                        <select id="heart-rate-type">
+                            <option value="">Select type</option>
+                            <option value="resting">Resting Heart Rate</option>
+                            <option value="active">Active Heart Rate</option>
+                            <option value="recovery">Recovery Heart Rate</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="heart-rate-value">Heart Rate (bpm)</label>
+                        <input type="number" id="heart-rate-value" placeholder="e.g. 72">
+                    </div>
+                    
+                    <button class="btn btn-primary">Add Measurement</button>
+                </div>
+                
+                <div class="heart-visual">
+                    <div class="heart-circle">
+                        <div class="heart-rate">72bpm</div>
+                    </div>
+                    <div class="heart-goal">
+                        Healthy Range: <span>60-100bpm</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Heart-Healthy Recommendations -->
+        <section class="tracker-section">
+            <h2 class="section-title">
+                <span class="icon">🏃‍♂️</span>
+                Heart-Healthy Habits
+            </h2>
+            
+            <p style="color: var(--gray); margin-bottom: 1.5rem;">These lifestyle recommendations are specifically designed to improve cardiovascular health.</p>
+            
+            <div class="exercise-grid">
+                <div class="exercise-card">
+                    <h4><span class="icon">🧘‍♀️</span> Stress Management</h4>
+                    <p>Techniques like meditation, deep breathing, and yoga to reduce stress and lower blood pressure.</p>
+                    <div class="benefits">
+                        <span class="benefit">Lower BP</span>
+                        <span class="benefit">Reduce stress</span>
+                    </div>
+                </div>
+                
+                <div class="exercise-card">
+                    <h4><span class="icon">🥗</span> Heart-Healthy Diet</h4>
+                    <p>Foods rich in omega-3s, fiber, and antioxidants to support cardiovascular function.</p>
+                    <div class="benefits">
+                        <span class="benefit">Lower cholesterol</span>
+                        <span class="benefit">Reduce inflammation</span>
+                    </div>
+                </div>
+                
+                <div class="exercise-card">
+                    <h4><span class="icon">🚶‍♂️</span> Aerobic Exercise</h4>
+                    <p>Activities like walking, swimming, or cycling to strengthen your heart and improve circulation.</p>
+                    <div class="benefits">
+                        <span class="benefit">Improve circulation</span>
+                        <span class="benefit">Strengthen heart</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Heart Health Resources -->
+        <section class="tracker-section">
+            <h2 class="section-title">
+                <span class="icon">📚</span>
+                Heart Health Resources
+            </h2>
+            
+            <div class="resources-list">
+                <div class="resource-card">
+                    <h4><span class="icon">📖</span> Cardiovascular Health Guide</h4>
+                    <p>Comprehensive guide to understanding and preventing heart disease through lifestyle changes.</p>
+                    <a href="#" class="resource-link">Read Guide <span>→</span></a>
+                </div>
+                
+                <div class="resource-card">
+                    <h4><span class="icon">🍽️</span> Heart-Healthy Meal Plans</h4>
+                    <p>7-day meal plan packed with foods that support cardiovascular health.</p>
+                    <a href="#" class="resource-link">View Plans <span>→</span></a>
+                </div>
+                
+                <div class="resource-card">
+                    <h4><span class="icon">🎥</span> Cardio Workout Videos</h4>
+                    <p>Guided exercise routines specifically designed for heart health.</p>
+                    <a href="#" class="resource-link">Watch Videos <span>→</span></a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('menuBtn');
+        const mainNav = document.getElementById('mainNav');
+        
+        menuBtn.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+            menuBtn.textContent = mainNav.classList.contains('active') ? '✕' : '☰';
+        });
+        
+        // Heart Disease Risk Calculator
+        document.getElementById('heartDiseaseForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get all form values
+            const ageScore = parseInt(document.getElementById('age').value);
+            const genderScore = parseInt(document.getElementById('gender').value);
+            const weightScore = parseInt(document.getElementById('weight').value);
+            const heartDiseaseScore = parseInt(document.querySelector('input[name="heartDisease"]:checked').value);
+            const hypertensionScore = parseInt(document.querySelector('input[name="hypertension"]:checked').value);
+            const smokingScore = parseInt(document.getElementById('smoking').value);
+            const activityScore = parseInt(document.getElementById('activity').value);
+            const dietScore = parseInt(document.getElementById('diet').value);
+            const bpScore = parseInt(document.querySelector('input[name="bp"]:checked').value);
+            const cholesterolScore = parseInt(document.querySelector('input[name="cholesterol"]:checked').value);
+            const diabetesScore = parseInt(document.querySelector('input[name="diabetes"]:checked').value);
+            const stressScore = parseInt(document.getElementById('stress').value);
+            
+            // Calculate total score
+            const totalScore = ageScore + genderScore + weightScore + heartDiseaseScore + 
+                              hypertensionScore + smokingScore + activityScore + dietScore + 
+                              bpScore + cholesterolScore + diabetesScore + stressScore;
+            
+            // Determine risk level
+            let riskLevel, riskPercentage, riskColor, riskClass;
+            if (totalScore <= 20) {
+                riskLevel = "Low Risk";
+                riskPercentage = "25%";
+                riskColor = "var(--success)";
+                riskClass = "";
+            } else if (totalScore <= 40) {
+                riskLevel = "Moderate Risk";
+                riskPercentage = "50%";
+                riskColor = "var(--warning)";
+                riskClass = "warning";
+            } else if (totalScore <= 60) {
+                riskLevel = "High Risk";
+                riskPercentage = "75%";
+                riskColor = "var(--danger)";
+                riskClass = "danger";
+            } else {
+                riskLevel = "Very High Risk";
+                riskPercentage = "90%";
+                riskColor = "var(--danger)";
+                riskClass = "danger";
+            }
+            
+            // Display results
+            const riskLevelElement = document.getElementById('riskLevel');
+            riskLevelElement.textContent = riskLevel;
+            riskLevelElement.style.backgroundColor = riskColor;
+            riskLevelElement.className = `assessment-score ${riskClass}`;
+            
+            // Display the calculated score
+            document.getElementById('calculatedScore').textContent = totalScore;
+            
+            const progressFill = document.getElementById('riskProgress');
+            progressFill.style.width = riskPercentage;
+            progressFill.style.backgroundColor = riskColor;
+            
+            // Generate risk factors list
+            const riskFactorsList = document.getElementById('riskFactorsList');
+            riskFactorsList.innerHTML = '';
+            
+            const riskFactors = [];
+            
+            if (ageScore > 0) {
+                let ageText = "";
+                if (ageScore === 5) ageText = "Age 40-49";
+                else if (ageScore === 10) ageText = "Age 50-59";
+                else if (ageScore === 15) ageText = "Age 60-69";
+                else if (ageScore === 20) ageText = "Age 70+";
+                riskFactors.push({text: ageText, icon: "👵"});
+            }
+            
+            if (genderScore > 0) {
+                riskFactors.push({text: "Male", icon: "👨"});
+            }
+            
+            if (weightScore > 0) {
+                let weightText = "";
+                if (weightScore === 5) weightText = "Overweight";
+                else if (weightScore === 10) weightText = "Obese";
+                riskFactors.push({text: weightText, icon: "⚖️"});
+            }
+            
+            if (heartDiseaseScore > 0) {
+                riskFactors.push({text: "Family heart disease", icon: "👨‍👩‍👧‍👦"});
+            }
+            
+            if (hypertensionScore > 0) {
+                riskFactors.push({text: "Family hypertension", icon: "🩸"});
+            }
+            
+            if (smokingScore > 0) {
+                let smokingText = smokingScore === 5 ? "Former smoker" : "Current smoker";
+                riskFactors.push({text: smokingText, icon: "🚬"});
+            }
+            
+            if (activityScore > 0) {
+                let activityText = activityScore === 5 ? "Some activity" : "Sedentary";
+                riskFactors.push({text: activityText, icon: "🛋️"});
+            }
+            
+            if (bpScore > 0) {
+                riskFactors.push({text: "High blood pressure", icon: "💓"});
+            }
+            
+            if (cholesterolScore > 0) {
+                riskFactors.push({text: "High cholesterol", icon: "🧪"});
+            }
+            
+            if (diabetesScore > 0) {
+                riskFactors.push({text: "Diabetes", icon: "🩺"});
+            }
+            
+            if (stressScore > 0) {
+                let stressText = stressScore === 5 ? "Moderate stress" : "High stress";
+                riskFactors.push({text: stressText, icon: "😫"});
+            }
+            
+            // Display top 4 risk factors (or all if less than 4)
+            const factorsToShow = riskFactors.slice(0, 4);
+            factorsToShow.forEach(factor => {
+                const factorItem = document.createElement('div');
+                factorItem.className = 'factor-item';
+                factorItem.innerHTML = `<span class="icon">${factor.icon}</span><span>${factor.text}</span>`;
+                riskFactorsList.appendChild(factorItem);
+            });
+            
+            // Show the results card
+            document.getElementById('riskResultCard').style.display = 'block';
+            
+            // Scroll to results
+            document.getElementById('riskResultCard').scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        // Heart rate tracker functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simulate loading data
+            setTimeout(() => {
+                // Update heart circle animation
+                const heartCircle = document.querySelector('.heart-circle');
+                heartCircle.style.background = 'conic-gradient(var(--heart) 0% 60%, rgba(255, 255, 255, 0.1) 60% 100%)';
+            }, 500);
+            
+            // Form submission would go here in a real implementation
+            const heartForm = document.querySelector('.heart-form');
+            if (heartForm) {
+                heartForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    // In a real app, this would update the heart rate tracking
+                    alert('Heart rate logged! This would update your tracking in a real application.');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

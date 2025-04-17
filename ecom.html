@@ -1,0 +1,1534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khushe - Reproductive Wellness</title>
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Montserrat', sans-serif;
+        color: #fff;
+    }
+
+    body {
+        background-color: #0a0a0a;
+        overflow-x: hidden;
+        position: relative;
+    }
+
+    /* Animated Gradient Overlay */
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, 
+            #0a0a0a 0%, 
+            #1a0a0f 50%, 
+            #0a0a0a 100%);
+        background-size: 200% 200%;
+        animation: gradientFlow 15s ease infinite;
+        z-index: -1;
+    }
+
+    @keyframes gradientFlow {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    /* Floating Particles */
+    .particles {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        overflow: hidden;
+    }
+
+    .particle {
+        position: absolute;
+        background: rgba(245, 155, 175, 0.15);
+        border-radius: 50%;
+        animation: float linear infinite;
+        filter: blur(1px);
+    }
+
+    @keyframes float {
+        0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+        10% { opacity: 0.5; }
+        90% { opacity: 0.5; }
+        100% { transform: translateY(-20vh) translateX(20vw); opacity: 0; }
+    }
+
+    #main {
+        position: relative;
+    }
+
+    .cursor {
+        height: 20px;
+        width: 20px;
+        border-radius: 50%;
+        position: fixed;
+        background-color: #f59baf;
+        z-index: 999;
+        mix-blend-mode: difference;
+        transition: all 0.3s ease;
+        pointer-events: none;
+    }
+
+    .cursor.grow {
+        transform: scale(4);
+        background-color: rgba(255, 255, 255, 0.4);
+    }
+
+    .cursor.shrink {
+        transform: scale(0.5);
+    }
+
+    #home {
+        position: relative;
+        height: 100vh;
+        width: 100vw;
+        overflow: hidden;
+    }
+
+    #home video {
+        height: 100vh;
+        width: 100vw;
+        object-fit: cover;
+        position: absolute;
+        filter: brightness(0.6);
+    }
+
+    #home-content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        z-index: 10;
+    }
+
+    #home-content h1 {
+        font-size: 4vw;
+        font-weight: 900;
+        position: relative;
+        margin-bottom: 1vw;
+        text-shadow: 0 0 20px rgba(245, 155, 175, 0.3);
+        animation: fadeInUp 1s ease-out both;
+    }
+
+    #home-content h1:after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60%;
+        height: 3px;
+        background-color: #f59baf;
+        animation: expandWidth 0.8s ease-out 0.5s both;
+    }
+
+    #home-content p {
+        font-size: 1.5vw;
+        font-weight: 400;
+        width: 60%;
+        margin-bottom: 2vw;
+        animation: fadeInUp 1s ease-out 0.3s both;
+    }
+
+    #explore-btn {
+        padding: 1vw 2vw;
+        font-size: 1vw;
+        font-weight: 600;
+        background-color: #f59baf;
+        color: #000;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        animation: fadeInUp 1s ease-out 0.6s both;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(245, 155, 175, 0.3);
+    }
+
+    #explore-btn:hover {
+        background-color: #fff;
+        transform: scale(1.05);
+        box-shadow: 0 8px 20px rgba(245, 155, 175, 0.4);
+    }
+
+    #explore-btn::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+            to bottom right,
+            rgba(255,255,255,0) 0%,
+            rgba(255,255,255,0.3) 50%,
+            rgba(255,255,255,0) 100%
+        );
+        transform: rotate(30deg);
+        animation: shine 4s infinite;
+        opacity: 0.5;
+    }
+
+    @keyframes shine {
+        0% { transform: translateX(-100%) rotate(30deg); }
+        20% { transform: translateX(100%) rotate(30deg); }
+        100% { transform: translateX(100%) rotate(30deg); }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes expandWidth {
+        from { width: 0; }
+        to { width: 60%; }
+    }
+
+    .category-section {
+        padding: 5vw;
+        position: relative;
+        animation: sectionFadeIn 1s ease-out both;
+    }
+
+    .category-section:nth-child(1) { animation-delay: 0.3s; }
+    .category-section:nth-child(2) { animation-delay: 0.5s; }
+    .category-section:nth-child(3) { animation-delay: 0.7s; }
+    .category-section:nth-child(4) { animation-delay: 0.9s; }
+
+    @keyframes sectionFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .category-heading {
+        font-size: 3vw;
+        font-weight: 800;
+        margin-bottom: 2vw;
+        position: relative;
+    }
+
+    .category-heading:after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background-color: #f59baf;
+        animation: expandWidth 0.8s ease-out both;
+    }
+
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2vw;
+        margin-top: 3vw;
+    }
+
+    .product-card {
+        background-color: #141414;
+        border-radius: 15px;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        cursor: pointer;
+        position: relative;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+    }
+
+    .product-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, rgba(245,155,175,0.1) 0%, rgba(245,155,175,0) 50%);
+        z-index: 1;
+        transition: all 0.5s ease;
+        opacity: 0;
+    }
+
+    .product-card:hover::before {
+        opacity: 1;
+    }
+
+    .product-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(245, 155, 175, 0.3);
+    }
+
+    .product-image {
+        height: 200px;
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .product-image::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 50%;
+        background: linear-gradient(to top, rgba(10,10,10,0.8) 0%, transparent 100%);
+        z-index: 1;
+    }
+
+    .product-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .product-card:hover .product-image img {
+        transform: scale(1.1);
+    }
+
+    .product-info {
+        padding: 1.5vw;
+    }
+
+    .product-tag {
+        background-color: #f59baf;
+        color: #000;
+        padding: 0.3vw 0.8vw;
+        border-radius: 20px;
+        font-size: 0.7vw;
+        font-weight: 600;
+        display: inline-block;
+        margin-bottom: 0.8vw;
+    }
+
+    .product-title {
+        font-size: 1.2vw;
+        font-weight: 700;
+        margin-bottom: 0.5vw;
+    }
+
+    .product-price {
+        font-size: 1vw;
+        font-weight: 600;
+        color: #f59baf;
+        margin-bottom: 1vw;
+    }
+
+    .product-description {
+        font-size: 0.9vw;
+        color: #aaa;
+        margin-bottom: 1vw;
+        line-height: 1.5;
+    }
+
+    .product-action {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .add-to-cart {
+        padding: 0.5vw 1vw;
+        background-color: #f59baf;
+        color: #000;
+        border: none;
+        border-radius: 20px;
+        font-size: 0.8vw;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .add-to-cart:hover {
+        background-color: #fff;
+        transform: scale(1.05);
+    }
+
+    .heart-icon {
+        font-size: 1.2vw;
+        color: #aaa;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .heart-icon:hover {
+        color: #f59baf;
+        transform: scale(1.2);
+    }
+
+    #wellness-guides {
+        padding: 5vw;
+        background-color: #0d0d0d;
+        animation: sectionFadeIn 1s ease-out 1.1s both;
+    }
+
+    .guides-heading {
+        font-size: 3vw;
+        font-weight: 800;
+        margin-bottom: 3vw;
+        position: relative;
+    }
+
+    .guides-heading:after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background-color: #f59baf;
+        animation: expandWidth 0.8s ease-out both;
+    }
+
+    .guides-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+        gap: 2vw;
+    }
+
+    .guide-card {
+        position: relative;
+        height: 250px;
+        border-radius: 15px;
+        overflow: hidden;
+        cursor: pointer;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .guide-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(245, 155, 175, 0.3);
+    }
+
+    .guide-image {
+        height: 100%;
+        width: 100%;
+    }
+
+    .guide-image img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+        filter: brightness(0.7);
+    }
+
+    .guide-card:hover .guide-image img {
+        transform: scale(1.1);
+        filter: brightness(0.5);
+    }
+
+    .guide-info {
+        position: absolute;
+        bottom: 0;
+        padding: 1.5vw;
+        transition: all 0.3s ease;
+    }
+
+    .guide-card:hover .guide-info {
+        bottom: 10px;
+    }
+
+    .guide-tag {
+        background-color: #f59baf;
+        color: #000;
+        padding: 0.3vw 0.8vw;
+        border-radius: 20px;
+        font-size: 0.7vw;
+        font-weight: 600;
+        display: inline-block;
+        margin-bottom: 0.8vw;
+    }
+
+    .guide-title {
+        font-size: 1.5vw;
+        font-weight: 700;
+        margin-bottom: 0.5vw;
+    }
+
+    #consultation {
+        padding: 5vw;
+        background-color: #0a0a0a;
+        position: relative;
+        overflow: hidden;
+        animation: sectionFadeIn 1s ease-out 1.3s both;
+    }
+
+    .consultation-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.1;
+        z-index: 1;
+    }
+
+    .consultation-content {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .consultation-heading {
+        font-size: 3vw;
+        font-weight: 800;
+        margin-bottom: 1vw;
+        position: relative;
+    }
+
+    .consultation-heading:after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background-color: #f59baf;
+        animation: expandWidth 0.8s ease-out both;
+    }
+
+    .consultation-text {
+        font-size: 1.2vw;
+        width: 60%;
+        margin-bottom: 2vw;
+        color: #aaa;
+    }
+
+    .consultation-btn {
+        padding: 1vw 2vw;
+        font-size: 1vw;
+        font-weight: 600;
+        background-color: #f59baf;
+        color: #000;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .consultation-btn:hover {
+        background-color: #fff;
+        transform: scale(1.05);
+    }
+
+    .consultation-btn::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+            to bottom right,
+            rgba(255,255,255,0) 0%,
+            rgba(255,255,255,0.3) 50%,
+            rgba(255,255,255,0) 100%
+        );
+        transform: rotate(30deg);
+        animation: shine 4s infinite;
+        opacity: 0.5;
+    }
+
+    #footer {
+        padding: 5vw;
+        background-color: #0a0a0a;
+        border-top: 1px solid #222;
+    }
+
+    .footer-content {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    .footer-logo {
+        flex: 1;
+        min-width: 300px;
+        margin-bottom: 2vw;
+    }
+
+    .footer-logo h2 {
+        font-size: 2vw;
+        font-weight: 800;
+        margin-bottom: 1vw;
+    }
+
+    .footer-logo p {
+        font-size: 0.9vw;
+        color: #aaa;
+        width: 80%;
+    }
+
+    .footer-links {
+        flex: 1;
+        min-width: 200px;
+        margin-bottom: 2vw;
+    }
+
+    .footer-links h3 {
+        font-size: 1.2vw;
+        font-weight: 700;
+        margin-bottom: 1vw;
+        position: relative;
+    }
+
+    .footer-links h3:after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 30px;
+        height: 2px;
+        background-color: #f59baf;
+    }
+
+    .footer-links ul {
+        list-style: none;
+    }
+
+    .footer-links ul li {
+        margin-bottom: 0.8vw;
+    }
+
+    .footer-links ul li a {
+        font-size: 0.9vw;
+        color: #aaa;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .footer-links ul li a:hover {
+        color: #f59baf;
+        padding-left: 5px;
+    }
+
+    .footer-newsletter {
+        flex: 1;
+        min-width: 300px;
+    }
+
+    .footer-newsletter h3 {
+        font-size: 1.2vw;
+        font-weight: 700;
+        margin-bottom: 1vw;
+        position: relative;
+    }
+
+    .footer-newsletter h3:after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 30px;
+        height: 2px;
+        background-color: #f59baf;
+    }
+
+    .footer-newsletter p {
+        font-size: 0.9vw;
+        color: #aaa;
+        margin-bottom: 1vw;
+    }
+
+    .newsletter-form {
+        display: flex;
+    }
+
+    .newsletter-input {
+        flex: 1;
+        padding: 0.8vw;
+        background-color: #141414;
+        border: 1px solid #222;
+        color: #fff;
+        font-size: 0.9vw;
+        border-radius: 5px 0 0 5px;
+        transition: all 0.3s ease;
+    }
+
+    .newsletter-input:focus {
+        outline: none;
+        border-color: #f59baf;
+    }
+
+    .newsletter-btn {
+        padding: 0.8vw 1.5vw;
+        background-color: #f59baf;
+        color: #000;
+        border: none;
+        font-size: 0.9vw;
+        font-weight: 600;
+        border-radius: 0 5px 5px 0;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .newsletter-btn:hover {
+        background-color: #fff;
+    }
+
+    .copyright {
+        margin-top: 3vw;
+        text-align: center;
+        font-size: 0.8vw;
+        color: #aaa;
+    }
+
+    /* Floating Cart Button */
+    .cart-button {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background-color: #f59baf;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+        z-index: 999;
+        transition: all 0.3s ease;
+    }
+
+    .cart-button:hover {
+        transform: scale(1.1);
+    }
+
+    .cart-icon {
+        font-size: 24px;
+        color: #000;
+    }
+
+    .cart-count {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background-color: #fff;
+        color: #000;
+        width: 22px;
+        height: 22px;
+        font-size: 12px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+    }
+
+    /* Interactive Quiz Button */
+    .quiz-button {
+        position: fixed;
+        bottom: 30px;
+        left: 30px;
+        background-color: #fff;
+        color: #000;
+        padding: 15px 25px;
+        border-radius: 30px;
+        font-weight: 600;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+        z-index: 999;
+        transition: all 0.3s ease;
+    }
+
+    .quiz-button:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Products Search Bar */
+    .search-container {
+        position: fixed;
+        top: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 50%;
+        z-index: 999;
+        transition: all 0.3s ease;
+    }
+
+    .search-bar {
+        width: 100%;
+        padding: 15px 20px;
+        border-radius: 30px;
+        border: none;
+        background-color: rgba(20, 20, 20, 0.8);
+        backdrop-filter: blur(10px);
+        color: #fff;
+        font-size: 16px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .search-bar:focus {
+        outline: none;
+        box-shadow: 0 5px 20px rgba(245, 155, 175, 0.4);
+    }
+
+    /* Age-based filtering buttons */
+    .age-filters {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin: 30px 0;
+        flex-wrap: wrap;
+    }
+
+    .age-filter-btn {
+        padding: 10px 20px;
+        background-color: #141414;
+        border: 1px solid #222;
+        color: #fff;
+        border-radius: 30px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .age-filter-btn:hover, .age-filter-btn.active {
+        background-color: #f59baf;
+        color: #000;
+        border-color: #f59baf;
+    }
+
+    /* Product Scroll Indicator */
+    .scroll-indicator {
+        position: fixed;
+        top: 50%;
+        right: 30px;
+        transform: translateY(-50%);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        z-index: 999;
+    }
+
+    .scroll-indicator-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #333;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .scroll-indicator-dot.active {
+        background-color: #f59baf;
+        transform: scale(1.5);
+    }
+    
+    /* Pulse Animation */
+    .pulse {
+        animation: pulse 0.5s ease;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.2); }
+        100% { transform: scale(1); }
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        #home-content h1 {
+            font-size: 8vw;
+        }
+        
+        #home-content p {
+            font-size: 3.5vw;
+            width: 90%;
+        }
+        
+        #explore-btn {
+            padding: 3vw 6vw;
+            font-size: 3vw;
+        }
+        
+        .category-heading {
+            font-size: 6vw;
+        }
+        
+        .product-title {
+            font-size: 4vw;
+        }
+        
+        .product-price {
+            font-size: 3.5vw;
+        }
+        
+        .product-description {
+            font-size: 3vw;
+        }
+        
+        .add-to-cart {
+            padding: 2vw 4vw;
+            font-size: 3vw;
+        }
+        
+        .guide-title {
+            font-size: 4vw;
+        }
+        
+        .consultation-heading {
+            font-size: 6vw;
+        }
+        
+        .consultation-text {
+            font-size: 3.5vw;
+            width: 90%;
+        }
+        
+        .consultation-btn {
+            padding: 3vw 6vw;
+            font-size: 3vw;
+        }
+        
+        .footer-logo h2 {
+            font-size: 5vw;
+        }
+        
+        .footer-logo p {
+            font-size: 3vw;
+            width: 100%;
+        }
+        
+        .footer-links h3, .footer-newsletter h3 {
+            font-size: 4vw;
+        }
+        
+        .footer-links ul li a, .footer-newsletter p {
+            font-size: 3vw;
+        }
+        
+        .search-container {
+            width: 80%;
+        }
+    }
+</style>
+</head>
+<body>
+     <div class="gradient-bg"></div>
+    <div class="particles" id="particles"></div>
+    <div class="cursor"></div>
+    
+    <div id="main">
+        <!-- Search Bar -->
+        <div class="search-container">
+            <input type="text" class="search-bar" placeholder="Search products, concerns, or symptoms...">
+        </div>
+        
+        <!-- Home Section -->
+        <div id="home">
+            <video autoplay muted loop>
+                <source src="/api/placeholder/1920/1080" type="video/mp4">
+            </video>
+            <div id="home-content">
+                <h1>Reproductive Wellness Journey</h1>
+                <p>Your trusted partner for comprehensive reproductive health products and solutions at every stage of life.</p>
+                <button id="explore-btn">Explore Products</button>
+            </div>
+        </div>
+        
+        <!-- Age Filters -->
+        <div class="age-filters">
+            <button class="age-filter-btn active" data-age-group="all">All Products</button>
+            <button class="age-filter-btn" data-age-group="teen">Teen (13-19)</button>
+            <button class="age-filter-btn" data-age-group="young-adult">Young Adult (20-35)</button>
+            <button class="age-filter-btn" data-age-group="adult">Adult (36-45)</button>
+            <button class="age-filter-btn" data-age-group="perimenopause">Perimenopause (45-55)</button>
+            <button class="age-filter-btn" data-age-group="menopause">Menopause (55+)</button>
+        </div>
+        
+        <!-- Menstrual Products Section -->
+        <div class="category-section" id="menstrual">
+            <h2 class="category-heading">Menstrual Care</h2>
+            <div class="product-grid">
+                <div class="product-card" data-age-groups="teen,young-adult,adult">
+                    <div class="product-image">
+                        <img src="/api/placeholder/300/200" alt="Organic Cotton Tampons">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-tag">Organic</span>
+                        <h3 class="product-title">Organic Cotton Tampons</h3>
+                        <p class="product-price">$12.99</p>
+                        <p class="product-description">Chemical-free, biodegradable tampons made from 100% organic cotton.</p>
+                        <div class="product-action">
+                            <button class="add-to-cart">Add to Cart</button>
+                            <div class="heart-icon">♡</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-age-groups="teen,young-adult,adult">
+                    <div class="product-image">
+                        <img src="/api/placeholder/300/200" alt="Menstrual Cup">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-tag">Eco-Friendly</span>
+                        <h3 class="product-title">Silicone Menstrual Cup</h3>
+                        <p class="product-price">$29.99</p>
+                        <p class="product-description">Reusable medical-grade silicone cup with 12-hour protection.</p>
+                        <div class="product-action">
+                            <button class="add-to-cart">Add to Cart</button>
+                            <div class="heart-icon">♡</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-age-groups="teen,young-adult,adult">
+                    <div class="product-image">
+                        <img src="/api/placeholder/300/200" alt="Period Underwear">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-tag">Reusable</span>
+                        <h3 class="product-title">Absorbent Period Underwear</h3>
+                        <p class="product-price">$34.99</p>
+                        <p class="product-description">Super-absorbent, leak-proof underwear that replaces pads and tampons.</p>
+                        <div class="product-action">
+                            <button class="add-to-cart">Add to Cart</button>
+                            <div class="heart-icon">♡</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-age-groups="young-adult,adult">
+                    <div class="product-image">
+                        <img src="/api/placeholder/300/200" alt="Menstrual Disc">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-tag">Innovative</span>
+                        <h3 class="product-title">Flexible Menstrual Disc</h3>
+                        <p class="product-price">$39.99</p>
+                        <p class="product-description">Comfortable disc that sits at the vaginal fornix for up to 12 hours of protection.</p>
+                        <div class="product-action">
+                            <button class="add-to-cart">Add to Cart</button>
+                            <div class="heart-icon">♡</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Fertility Products Section -->
+        <div class="category-section" id="fertility">
+            <h2 class="category-heading">Fertility & Conception</h2>
+            <div class="product-grid">
+                <div class="product-card" data-age-groups="young-adult,adult">
+                    <div class="product-image">
+                        <img src="/api/placeholder/300/200" alt="Ovulation Test Kit">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-tag">Accurate</span>
+                        <h3 class="product-title">Digital Ovulation Predictor</h3>
+                        <p class="product-price">$49.99</p>
+                        <p class="product-description">Advanced digital test that identifies your 4 most fertile days.</p>
+                        <div class="product-action">
+                            <button class="add-to-cart">Add to Cart</button>
+                            <div class="heart-icon">♡</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-age-groups="young-adult,adult,perimenopause">
+                    <div class="product-image">
+                        <img src="/api/placeholder/300/200" alt="Fertility Tracking Thermometer">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-tag">Smart Tech</span>
+                        <h3 class="product-title">Basal Body Temperature Tracker</h3>
+                        <p class="product-price">$89.99</p>
+                        <p class="product-description">Wireless smart thermometer that syncs with fertility app for accurate cycle tracking.</p>
+                        <div class="product-action">
+                            <button class="add-to-cart">Add to Cart</button>
+                            <div class="heart-icon">♡</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-age-groups="young-adult,adult,perimenopause">
+                    <div class="product-image">
+                        <img src="/api/placeholder/300/200" alt="Fertility Supplement">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-tag">Supplement</span>
+                        <h3 class="product-title">Fertility Boost Supplement</h3>
+                        <p class="product-price">$44.99</p>
+                        <p class="product-description">Natural ingredients to support reproductive health and fertility.</p>
+                        <div class="product-action">
+                            <button class="add-to-cart">Add to Cart</button>
+                            <div class="heart-icon">♡</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-age-groups="young-adult,adult">
+                    <div class="product-image">
+                        <img src="/api/placeholder/300/200" alt="Sperm Analysis Kit">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-tag">At-Home Test</span>
+                        <h3 class="product-title">Home Sperm Analysis Kit</h3>
+                        <p class="product-price">$79.99</p>
+                        <p class="product-description">Accurate at-home testing kit for sperm count and motility analysis.</p>
+                        <div class="product-action">
+                            <button class="add-to-cart">Add to Cart</button>
+                            <div class="heart-icon">♡</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Intimate Wellness Section -->
+        <div class="category-section" id="wellness">
+            <h2 class="category-heading">Intimate Wellness</h2>
+            <div class="product-grid">
+                <div class="product-card" data-age-groups="teen,young-adult,adult,perimenopause,menopause">
+                    <div class="product-image">
+                        <img src="/api/placeholder/300/200" alt="pH Balanced Intimate Wash">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-tag">pH Balanced</span>
+                        <h3 class="product-title">Gentle Intimate Wash</h3>
+                        <p class="product-price">$19.99</p>
+                        <p class="product-description">Gynecologist-tested intimate wash that maintains natural pH balance.</p>
+                        <div class="product-action">
+                            <button class="add-to-cart">Add to Cart</button>
+                            <div class="heart-icon">♡</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-age-groups="adult,perimenopause,menopause">
+                    <div class="product-image">
+                        <img src="/api/placeholder/300/200" alt="Vaginal Moisturizer">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-tag">Hydrating</span>
+                        <h3 class="product-title">Vaginal Moisturizer</h3>
+                        <p class="product-price">$24.99</p>
+                        <p class="product-description">Hormone-free moisturizer for vaginal dryness relief.</p>
+                        <div class="product-action">
+                            <button class="add-to-cart">Add to Cart</button>
+                            <div class="heart-icon">♡</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-age-groups="young-adult,adult,perimenopause,menopause">
+                    <div class="product-image">
+                        <img src="/api/placeholder/300/200" alt="Probiotic Supplement">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-tag">Probiotic</span>
+                        <h3 class="product-title">Vaginal Health Probiotic</h3>
+                        <p class="product-price">$29.99</p>
+                        <p class="product-description">Clinically proven probiotic strains to support vaginal microbiome balance.</p>
+                        <div class="product-action">
+                            <button class="add-to-cart">Add to Cart</button>
+                            <div class="heart-icon">♡</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-age-groups="adult,perimenopause,menopause">
+                    <div class="product-image">
+                        <img src="/api/placeholder/300/200" alt="Pelvic Floor Trainer">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-tag">Smart Device</span>
+                        <h3 class="product-title">Pelvic Floor Exercise Device</h3>
+                        <p class="product-price">$129.99</p>
+                        <p class="product-description">Interactive smart trainer with app-guided pelvic floor exercises.</p>
+                        <div class="product-action">
+                            <button class="add-to-cart">Add to Cart</button>
+                            <div class="heart-icon">♡</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Menopause Support Section -->
+        <div class="category-section" id="menopause">
+            <h2 class="category-heading">Menopause Support</h2>
+            <div class="product-grid">
+                <div class="product-card" data-age-groups="perimenopause,menopause">
+                    <div class="product-image">
+                        <img src="/api/placeholder/300/200" alt="Cooling Pillow">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-tag">Hot Flash Relief</span>
+                        <h3 class="product-title">Temperature-Regulating Pillow</h3>
+                        <p class="product-price">$59.99</p>
+                        <p class="product-description">Cooling gel pillow to relieve night sweats and hot flashes.</p>
+                        <div class="product-action">
+                            <button class="add-to-cart">Add to Cart</button>
+                            <div class="heart-icon">♡</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-age-groups="perimenopause,menopause">
+                    <div class="product-image">
+                        <img src="/api/placeholder/300/200" alt="Herbal Supplement">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-tag">Natural Relief</span>
+                        <h3 class="product-title">Menopause Support Supplement</h3>
+                        <p class="product-price">$39.99</p>
+                        <p class="product-description">Herbal blend to support hormonal balance and reduce symptoms.</p>
+                        <div class="product-action">
+                            <button class="add-to-cart">Add to Cart</button>
+                            <div class="heart-icon">♡</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-age-groups="perimenopause,menopause">
+                    <div class="product-image">
+                        <img src="/api/placeholder/300/200" alt="Vaginal Estrogen">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-tag">Prescription</span>
+                        <h3 class="product-title">Low-Dose Vaginal Estrogen</h3>
+                        <p class="product-price">$89.99</p>
+                        <p class="product-description">Doctor-prescribed treatment for vaginal atrophy and dryness.</p>
+                        <div class="product-action">
+                            <button class="add-to-cart">Add to Cart</button>
+                            <div class="heart-icon">♡</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-age-groups="perimenopause,menopause">
+                    <div class="product-image">
+                        <img src="/api/placeholder/300/200" alt="Sleep Aid">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-tag">Sleep Support</span>
+                        <h3 class="product-title">Menopause Sleep Formula</h3>
+                        <p class="product-price">$34.99</p>
+                        <p class="product-description">Natural sleep aid specifically formulated for menopausal insomnia.</p>
+                        <div class="product-action">
+                            <button class="add-to-cart">Add to Cart</button>
+                            <div class="heart-icon">♡</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Wellness Guides Section -->
+        <div id="wellness-guides">
+            <h2 class="guides-heading">Wellness Guides</h2>
+            <div class="guides-grid">
+                <div class="guide-card">
+                    <div class="guide-image">
+                        <img src="/api/placeholder/400/250" alt="Period Guide">
+                    </div>
+                    <div class="guide-info">
+                        <span class="guide-tag">Education</span>
+                        <h3 class="guide-title">Understanding Your Cycle</h3>
+                    </div>
+                </div>
+                
+                <div class="guide-card">
+                    <div class="guide-image">
+                        <img src="/api/placeholder/400/250" alt="Fertility Guide">
+                    </div>
+                    <div class="guide-info">
+                        <span class="guide-tag">Fertility</span>
+                        <h3 class="guide-title">Optimizing Conception</h3>
+                    </div>
+                </div>
+                
+                <div class="guide-card">
+                    <div class="guide-image">
+                        <img src="/api/placeholder/400/250" alt="Menopause Guide">
+                    </div>
+                    <div class="guide-info">
+                        <span class="guide-tag">Menopause</span>
+                        <h3 class="guide-title">Navigating The Change</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Consultation Section -->
+        <div id="consultation">
+            <div class="consultation-bg">
+                <img src="/api/placeholder/1920/1080" alt="Background pattern" style="width:100%;height:100%;object-fit:cover;">
+            </div>
+            <div class="consultation-content">
+                <h2 class="consultation-heading">Personalized Care</h2>
+                <p class="consultation-text">Connect with our network of reproductive health specialists for personalized consultations and treatment plans.</p>
+                <button class="consultation-btn">Book a Consultation</button>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div id="footer">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2>Khushe</h2>
+                    <p>Your trusted partner for comprehensive reproductive health products and solutions at every stage of life.</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Our Products</a></li>
+                        <li><a href="#">Wellness Resources</a></li>
+                        <li><a href="#">Consultations</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Shipping & Returns</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-newsletter">
+                    <h3>Stay Connected</h3>
+                    <p>Subscribe to our newsletter for health tips, product updates, and special offers.</p>
+                    <form class="newsletter-form">
+                        <input type="email" class="newsletter-input" placeholder="Your email address">
+                        <button type="submit" class="newsletter-btn">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 Khushe Reproductive Wellness. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Floating Cart Button -->
+    <div class="cart-button">
+        <div class="cart-icon">🛒</div>
+        <div class="cart-count">0</div>
+    </div>
+    
+    <!-- Interactive Quiz Button -->
+    <div class="quiz-button">
+        Take Our Wellness Quiz
+    </div>
+    
+    <!-- Product Scroll Indicator -->
+    <div class="scroll-indicator">
+        <div class="scroll-indicator-dot active" data-section="home"></div>
+        <div class="scroll-indicator-dot" data-section="menstrual"></div>
+        <div class="scroll-indicator-dot" data-section="fertility"></div>
+        <div class="scroll-indicator-dot" data-section="wellness"></div>
+        <div class="scroll-indicator-dot" data-section="menopause"></div>
+        <div class="scroll-indicator-dot" data-section="consultation"></div>
+    </div>
+    
+    <script>
+        // Custom cursor effect
+        const cursor = document.querySelector('.cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.pageX + 'px';
+            cursor.style.top = e.pageY + 'px';
+        });
+        
+        // Cursor hover effects
+        document.querySelectorAll('button, a, .product-card, .guide-card').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.classList.add('grow');
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.classList.remove('grow');
+            });
+        });
+        
+        // Age filter functionality
+        const ageFilterBtns = document.querySelectorAll('.age-filter-btn');
+        const productCards = document.querySelectorAll('.product-card');
+        
+        ageFilterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                ageFilterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                const ageGroup = btn.dataset.ageGroup;
+                
+                productCards.forEach(card => {
+                    if (ageGroup === 'all') {
+                        card.style.display = 'block';
+                    } else {
+                        const ageGroups = card.dataset.ageGroups.split(',');
+                        if (ageGroups.includes(ageGroup)) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    }
+                });
+            });
+        });
+        
+        // Add to cart functionality
+        const addToCartBtns = document.querySelectorAll('.add-to-cart');
+        const cartCount = document.querySelector('.cart-count');
+        let count = 0;
+        
+        addToCartBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                count++;
+                cartCount.textContent = count;
+                
+                // Pulse animation for cart button
+                const cartBtn = document.querySelector('.cart-button');
+                cartBtn.classList.add('pulse');
+                setTimeout(() => {
+                    cartBtn.classList.remove('pulse');
+                }, 300);
+            });
+        });
+        
+        // Wishlist functionality
+        const heartIcons = document.querySelectorAll('.heart-icon');
+        heartIcons.forEach(icon => {
+            icon.addEventListener('click', () => {
+                icon.textContent = icon.textContent === '♡' ? '♥' : '♡';
+                icon.style.color = icon.textContent === '♥' ? '#f59baf' : '#aaa';
+            });
+        });
+        
+        // Scroll indicator functionality
+        const sections = document.querySelectorAll('section');
+        const dots = document.querySelectorAll('.scroll-indicator-dot');
+        
+        window.addEventListener('scroll', () => {
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                
+                if (pageYOffset >= (sectionTop - sectionHeight / 3)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            dots.forEach(dot => {
+                dot.classList.remove('active');
+                if (dot.getAttribute('data-section') === current) {
+                    dot.classList.add('active');
+                }
+            });
+        });
+        
+        // Smooth scroll for indicator dots
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const sectionId = dot.getAttribute('data-section');
+                const section = document.getElementById(sectionId);
+                window.scrollTo({
+                    top: section.offsetTop,
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Search functionality
+        const searchBar = document.querySelector('.search-bar');
+        searchBar.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            // Filter products based on search term (implementation would depend on your product data structure)
+        });
+        
+        // Quiz button functionality
+        const quizBtn = document.querySelector('.quiz-button');
+        quizBtn.addEventListener('click', () => {
+            // Open quiz modal (implementation would require modal creation)
+            alert('Wellness quiz would open here!');
+        });
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = window.innerWidth < 768 ? 20 : 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random size between 2px and 6px
+                const size = Math.random() * 4 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}vw`;
+                particle.style.top = `${Math.random() * 100}vh`;
+                
+                // Random animation duration between 10s and 30s
+                const duration = Math.random() * 20 + 10;
+                particle.style.animationDuration = `${duration}s`;
+                
+                // Random delay
+                particle.style.animationDelay = `${Math.random() * 10}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Initialize particles when page loads
+        window.addEventListener('load', createParticles);
+    </script>
+</body>
+</html>

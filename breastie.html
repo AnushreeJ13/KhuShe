@@ -1,0 +1,1715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breast Cancer Awareness</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            color: #e4e4e7;
+        }
+
+        body {
+            background-color: #09090b;
+            overflow-x: hidden;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #18181b;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+            padding: 20px 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            border-right: 1px solid #27272a;
+        }
+
+        .sidebar-title {
+            padding: 0 20px 20px 20px;
+            font-size: 40px;
+            font-weight: 600;
+            color: #db2777;
+            border-bottom: 1px solid #27272a;
+            text-align: center;
+        }
+
+        .nav-links {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .nav-links li {
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+
+        .nav-links li:hover, .nav-links li.active {
+            background-color: #27272a;
+            border-left: 4px solid #db2777;
+        }
+
+        .nav-links li a {
+            text-decoration: none;
+            color: #e4e4e7;
+            font-size: 16px;
+            display: block;
+        }
+
+        .content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #db2777;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 60px;
+            height: 3px;
+            background-color: #db2777;
+        }
+
+        .card {
+            background-color: #18181b;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease;
+            border: 1px solid #27272a;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #db2777;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #db2777;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: #be185d;
+            transform: translateY(-2px);
+        }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #a1a1aa;
+        }
+
+        .guide-step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .step-number {
+            background-color: #db2777;
+            color: #fff;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #e4e4e7;
+        }
+
+        .symptom-form, .quiz-form, .risk-form, .env-form {
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #e4e4e7;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #27272a;
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: #27272a;
+            color: #e4e4e7;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #db2777;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 5px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+        }
+
+        .radio-option input {
+            margin-right: 5px;
+            accent-color: #db2777;
+        }
+
+        .result-box {
+            background-color: #27272a;
+            border-left: 4px solid #db2777;
+            padding: 15px;
+            margin-top: 20px;
+            display: none;
+            color: #e4e4e7;
+        }
+
+        .myth-fact-card {
+            background-color: #27272a;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #db2777;
+        }
+
+        .myth-fact-question {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #e4e4e7;
+        }
+
+        .myth-fact-options {
+            margin-bottom: 15px;
+        }
+
+        .myth-fact-result {
+            display: none;
+            padding: 10px;
+            background-color: #3f3f46;
+            border-radius: 5px;
+            margin-top: 10px;
+            color: #e4e4e7;
+        }
+
+        .story-card {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 30px;
+            background-color: #18181b;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid #27272a;
+        }
+
+        .story-image {
+            height: 200px;
+            background-color: #27272a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #a1a1aa;
+            font-weight: 500;
+        }
+
+        .story-content {
+            padding: 20px;
+        }
+
+        .story-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #db2777;
+        }
+
+        .env-factor {
+            background-color: #27272a;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #db2777;
+        }
+
+        .env-factor-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #e4e4e7;
+        }
+
+        .alert {
+            background-color: #27272a;
+            border-left: 4px solid #ef4444;
+            padding: 15px;
+            margin-top: 20px;
+            color: #ef4444;
+            border-radius: 5px;
+        }
+
+        .success {
+            background-color: #27272a;
+            border-left: 4px solid #10b981;
+            color: #10b981;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        strong {
+            color: #e4e4e7;
+            font-weight: 600;
+        }
+
+        /* New styles for enhanced features */
+        .risk-meter {
+            height: 30px;
+            width: 100%;
+            background-color: #27272a;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .risk-indicator {
+            height: 100%;
+            background: linear-gradient(to right, #10b981, #f59e0b, #ef4444);
+            width: 0;
+            transition: width 1s ease-in-out;
+        }
+
+        .risk-marker {
+            position: absolute;
+            top: -10px;
+            width: 10px;
+            height: 50px;
+            background-color: white;
+            transform: translateX(-50%);
+        }
+
+        .barcode-scanner {
+            background-color: #27272a;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 1px dashed #db2777;
+        }
+
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            margin-top: 20px;
+        }
+
+        .calendar-day {
+            background-color: #27272a;
+            border-radius: 5px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .calendar-day.reminder {
+            background-color: rgba(219, 39, 119, 0.3);
+            border: 1px solid #db2777;
+        }
+
+        .calendar-header {
+            background-color: #db2777;
+            color: white;
+            border-radius: 5px;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .schedule-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #27272a;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 4px solid #db2777;
+        }
+
+        .schedule-date {
+            font-weight: bold;
+            color: #db2777;
+        }
+
+        .schedule-type {
+            color: #e4e4e7;
+        }
+
+        .schedule-actions button {
+            background: none;
+            border: none;
+            color: #db2777;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .env-map {
+            height: 300px;
+            background-color: #27272a;
+            border-radius: 10px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #3f3f46;
+        }
+
+        .map-marker {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: rgba(219, 39, 119, 0.7);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .community-post {
+            background-color: #27272a;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #db2777;
+        }
+
+        .post-author {
+            font-weight: bold;
+            color: #db2777;
+            margin-bottom: 5px;
+        }
+
+        .post-date {
+            font-size: 12px;
+            color: #71717a;
+            margin-bottom: 10px;
+        }
+
+        .post-content {
+            color: #d4d4d8;
+        }
+
+        .resource-card {
+            background-color: #27272a;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #db2777;
+            display: flex;
+            align-items: center;
+        }
+
+        .resource-icon {
+            width: 50px;
+            height: 50px;
+            background-color: #3f3f46;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: #db2777;
+            font-size: 24px;
+        }
+
+        .resource-details {
+            flex: 1;
+        }
+
+        .resource-title {
+            font-weight: bold;
+            color: #e4e4e7;
+            margin-bottom: 5px;
+        }
+
+        .resource-description {
+            color: #a1a1aa;
+            font-size: 14px;
+        }
+
+        /* Environmental impact visualization */
+        .impact-visual {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .impact-item {
+            background-color: #27272a;
+            border-radius: 10px;
+            padding: 15px;
+            flex: 1;
+            min-width: 150px;
+            border-top: 3px solid;
+            text-align: center;
+        }
+
+        .impact-item:nth-child(1) {
+            border-top-color: #ef4444;
+        }
+
+        .impact-item:nth-child(2) {
+            border-top-color: #f59e0b;
+        }
+
+        .impact-item:nth-child(3) {
+            border-top-color: #10b981;
+        }
+
+        .impact-item:nth-child(4) {
+            border-top-color: #3b82f6;
+        }
+
+        .impact-value {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .impact-label {
+            color: #a1a1aa;
+            font-size: 14px;
+        }
+
+        /* Product scanner */
+        .product-scan-results {
+            margin-top: 20px;
+        }
+
+        .product-ingredient {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #27272a;
+        }
+
+        .ingredient-name {
+            color: #e4e4e7;
+        }
+
+        .ingredient-risk {
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        .risk-high {
+            background-color: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .risk-medium {
+            background-color: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+
+        .risk-low {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        /* Tabs within cards */
+        .tab-container {
+            margin: 20px 0;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .tab-button {
+            padding: 10px 20px;
+            background-color: #27272a;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #a1a1aa;
+            transition: all 0.3s ease;
+        }
+
+        .tab-button.active {
+            background-color: #db2777;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* New section: Community Forum */
+        #community-section .community-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .new-post-form {
+            background-color: #27272a;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .new-post-form textarea {
+            width: 100%;
+            background-color: #3f3f46;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            color: #e4e4e7;
+            margin-bottom: 10px;
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        /* Self-check reminders */
+        .reminder-setup {
+            background-color: #27272a;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+            margin-left: 10px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #3f3f46;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #db2777;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .reminder-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .reminder-label {
+            flex: 1;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="sidebar-title">Breastie!</div>
+            <ul class="nav-links">
+                <li class="active" data-section="intro-section"><a href="#intro">Introduction</a></li>
+                <li data-section="self-check-section"><a href="#self-check">Self-Check Guide</a></li>
+                <li data-section="symptom-section"><a href="#symptoms">Symptom Checker</a></li>
+                <li data-section="myth-fact-section"><a href="#myths">Myth vs. Fact</a></li>
+                <li data-section="risk-section"><a href="#risk">Risk Insights</a></li>
+                <li data-section="stories-section"><a href="#stories">Survivor Stories</a></li>
+                
+                <li data-section="resources-section"><a href="#resources">Resources</a></li>
+            </ul>
+        </div>
+
+        <div class="content">
+            <!-- Introduction Section -->
+            <div id="intro-section" class="section active">
+                <h2 class="section-title">Breast Cancer Awareness</h2>
+                <div class="card">
+                    <h3 class="card-title">Early Detection Saves Lives</h3>
+                    <p>Breast cancer is one of the most common cancers affecting women worldwide. When detected early, the chances of successful treatment are significantly higher.</p>
+                    <p>This resource offers important information and tools for women in their reproductive years and perimenopause to understand, detect, and seek appropriate care for breast cancer.</p>
+                    <p>Use the navigation menu on the left to explore different aspects of breast cancer awareness and care.</p>
+                    <a href="#self-check" class="btn" onclick="showSection('self-check-section')">Get Started</a>
+                </div>
+                
+                <div class="impact-visual">
+                    <div class="impact-item">
+                        <div class="impact-value">1 in 8</div>
+                        <div class="impact-label">Women will develop breast cancer</div>
+                    </div>
+                    <div class="impact-item">
+                        <div class="impact-value">90%</div>
+                        <div class="impact-label">5-year survival with early detection</div>
+                    </div>
+                    <div class="impact-item">
+                        <div class="impact-value">30%</div>
+                        <div class="impact-label">Reduction in mortality through screening</div>
+                    </div>
+                    <div class="impact-item">
+                        <div class="impact-value">2.3M</div>
+                        <div class="impact-label">Survivors in the US</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Self-Check Guide Section -->
+            <div id="self-check-section" class="section">
+                <h2 class="section-title">Interactive Self-Check Guide</h2>
+                <div class="card">
+                    <h3 class="card-title">How to Perform a Breast Self-Examination</h3>
+                    <p>Regular self-examinations can help you become familiar with how your breasts normally look and feel, making it easier to notice any changes.</p>
+                    
+                    <div class="tab-container">
+                        <div class="tab-buttons">
+                            <button class="tab-button active" onclick="switchTab('guide-tab', 'steps-content')">Step by Step</button>
+                            <button class="tab-button" onclick="switchTab('guide-tab', 'video-content')">Video Tutorial</button>
+                            <button class="tab-button" onclick="switchTab('guide-tab', 'reminder-content')">Set Reminders</button>
+                        </div>
+                        
+                        <div id="steps-content" class="tab-content active">
+                            <div class="guide-step">
+                                <div class="step-number">1</div>
+                                <div class="step-content">
+                                    <div class="step-title">Look at your breasts in the mirror</div>
+                                    <p>Stand with your shoulders straight and arms on your hips. Look for any changes in size, shape, or color, as well as any visible distortion or swelling.</p>
+                                </div>
+                            </div>
+
+                            <div class="guide-step">
+                                <div class="step-number">2</div>
+                                <div class="step-content">
+                                    <div class="step-title">Raise your arms</div>
+                                    <p>Look for the same changes with your arms raised above your head.</p>
+                                </div>
+                            </div>
+
+                            <div class="guide-step">
+                                <div class="step-number">3</div>
+                                <div class="step-content">
+                                    <div class="step-title">Check for discharge</div>
+                                    <p>Look for any signs of fluid coming from one or both nipples (could be watery, milky, yellow, or bloody).</p>
+                                </div>
+                            </div>
+
+                            <div class="guide-step">
+                                <div class="step-number">4</div>
+                                <div class="step-content">
+                                    <div class="step-title">Feel your breasts while lying down</div>
+                                    <p>Use the pads of your fingers to feel all parts of the breast tissue, using a firm, smooth touch. Cover the entire breast from collarbone to the top of your abdomen, and from armpit to cleavage.</p>
+                                </div>
+                            </div>
+
+                            <div class="guide-step">
+                                <div class="step-number">5</div>
+                                <div class="step-content">
+                                    <div class="step-title">Feel your breasts while standing or sitting</div>
+                                    <p>Repeat the examination while standing or sitting, preferably in the shower when the skin is wet and slippery.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+  <iframe 
+    src="https://www.youtube.com/watch?v=XKtTymNkcj0&list=PPSV" 
+    title="Breast Self-Exam Video"
+    frameborder="0"
+    allowfullscreen
+    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+  </iframe>
+</div>
+
+
+                        
+                        <div id="reminder-content" class="tab-content">
+                            <div class="reminder-setup">
+                                <h4 style="margin-bottom: 15px; color: #e4e4e7;">Set Monthly Self-Check Reminders</h4>
+                                
+                                <div class="reminder-option">
+                                    <div class="reminder-label">Enable monthly reminders</div>
+                                    <label class="switch">
+                                        <input type="checkbox" id="reminder-toggle">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="reminder-day">Preferred day of month</label>
+                                    <select id="reminder-day" class="form-control">
+                                        <option value="">Select day</option>
+                                        <option value="1">1st day</option>
+                                        <option value="5">5th day</option>
+                                        <option value="10">10th day</option>
+                                        <option value="15">15th day</option>
+                                        <option value="20">20th day</option>
+                                        <option value="25">25th day</option>
+                                        <option value="after-period">3-5 days after period</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="reminder-method">Reminder method</label>
+                                    <select id="reminder-method" class="form-control">
+                                        <option value="email">Email</option>
+                                        <option value="sms">SMS</option>
+                                        <option value="app">App notification</option>
+                                        <option value="calendar">Calendar invite</option>
+                                    </select>
+                                </div>
+                                
+                                <button class="btn" onclick="setupReminder()">Save Reminder Settings</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p><strong>Important:</strong> If you notice any changes or abnormalities during your self-check, consult a healthcare provider promptly.</p>
+                    <p>Recommended frequency: Once a month, preferably 3-5 days after your period ends. For women in perimenopause or post-menopause, choose a specific day each month.</p>
+                </div>
+            </div>
+
+            <!-- Symptom Checker Section -->
+            <div id="symptom-section" class="section">
+                <h2 class="section-title">Symptom Checker</h2>
+                <div class="card">
+                    <h3 class="card-title">Breast Cancer Symptom Quiz</h3>
+                    <p>This symptom checker helps you assess potential warning signs of breast cancer. Please note that this is not a medical diagnosis - consult a healthcare provider for proper evaluation.</p>
+
+                    <form id="symptom-form" class="symptom-form">
+                        <div class="form-group">
+                            <label>Have you noticed a new lump in your breast or underarm (armpit)?</label>
+                            <div class="radio-group">
+                                <div class="radio-option">
+                                    <input type="radio" name="lump" id="lump-yes" value="yes">
+                                    <label for="lump-yes">Yes</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" name="lump" id="lump-no" value="no">
+                                    <label for="lump-no">No</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Have you experienced swelling or thickening of part of the breast?</label>
+                            <div class="radio-group">
+                                <div class="radio-option">
+                                    <input type="radio" name="swelling" id="swelling-yes" value="yes">
+                                    <label for="swelling-yes">Yes</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" name="swelling" id="swelling-no" value="no">
+                                    <label for="swelling-no">No</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Have you noticed dimpling or irritation of breast skin?</label>
+                            <div class="radio-group">
+                                <div class="radio-option">
+                                    <input type="radio" name="dimpling" id="dimpling-yes" value="yes">
+                                    <label for="dimpling-yes">Yes</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" name="dimpling" id="dimpling-no" value="no">
+                                    <label for="dimpling-no">No</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Have you noticed redness or flaky skin in the nipple area or breast?</label>
+                            <div class="radio-group">
+                                <div class="radio-option">
+                                    <input type="radio" name="redness" id="redness-yes" value="yes">
+                                    <label for="redness-yes">Yes</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" name="redness" id="redness-no" value="no">
+                                    <label for="redness-no">No</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Have you experienced pulling in of the nipple or pain in the nipple area?</label>
+                            <div class="radio-group">
+                                <div class="radio-option">
+                                    <input type="radio" name="nipple" id="nipple-yes" value="yes">
+                                    <label for="nipple-yes">Yes</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" name="nipple" id="nipple-no" value="no">
+                                    <label for="nipple-no">No</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Have you noticed nipple discharge other than breast milk?</label>
+                            <div class="radio-group">
+                                <div class="radio-option">
+                                    <input type="radio" name="discharge" id="discharge-yes" value="yes">
+                                    <label for="discharge-yes">Yes</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" name="discharge" id="discharge-no" value="no">
+                                    <label for="discharge-no">No</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Have you noticed any change in the size or shape of the breast?</label>
+                            <div class="radio-group">
+                                <div class="radio-option">
+                                    <input type="radio" name="size" id="size-yes" value="yes">
+                                    <label for="size-yes">Yes</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" name="size" id="size-no" value="no">
+                                    <label for="size-no">No</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn" onclick="checkSymptoms()">Check My Symptoms</button>
+                    </form>
+
+                    <div id="symptom-result" class="result-box">
+                        <!-- Results will be displayed here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Myth vs. Fact Section -->
+            <div id="myth-fact-section" class="section">
+                <h2 class="section-title">Myth vs. Fact Quiz</h2>
+                <div class="card">
+                    <h3 class="card-title">Test Your Knowledge</h3>
+                    <p>Take this quiz to learn the truth about common breast cancer myths and misconceptions.</p>
+
+                    <div class="myth-fact-card">
+                        <div class="myth-fact-question">1. Only women with a family history of breast cancer are at risk.</div>
+                        <div class="myth-fact-options">
+                            <div class="radio-option">
+                                <input type="radio" name="q1" id="q1-myth" value="myth">
+                                <label for="q1-myth">Myth</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q1" id="q1-fact" value="fact">
+                                <label for="q1-fact">Fact</label>
+                            </div>
+                        </div>
+                        <button class="btn" onclick="checkMythFact(1)">Check Answer</button>
+                        <div id="result-1" class="myth-fact-result"></div>
+                    </div>
+
+                    <div class="myth-fact-card">
+                        <div class="myth-fact-question">2. Wearing underwire bras can cause breast cancer.</div>
+                        <div class="myth-fact-options">
+                            <div class="radio-option">
+                                <input type="radio" name="q2" id="q2-myth" value="myth">
+                                <label for="q2-myth">Myth</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q2" id="q2-fact" value="fact">
+                                <label for="q2-fact">Fact</label>
+                            </div>
+                        </div>
+                        <button class="btn" onclick="checkMythFact(2)">Check Answer</button>
+                        <div id="result-2" class="myth-fact-result"></div>
+                    </div>
+
+                    <div class="myth-fact-card">
+                        <div class="myth-fact-question">3. Breast cancer always presents as a lump.</div>
+                        <div class="myth-fact-options">
+                            <div class="radio-option">
+                                <input type="radio" name="q3" id="q3-myth" value="myth">
+                                <label for="q3-myth">Myth</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q3" id="q3-fact" value="fact">
+                                <label for="q3-fact">Fact</label>
+                            </div>
+                        </div>
+                        <button class="btn" onclick="checkMythFact(3)">Check Answer</button>
+                        <div id="result-3" class="myth-fact-result"></div>
+                    </div>
+
+                    <div class="myth-fact-card">
+                        <div class="myth-fact-question">4. Mammograms can prevent breast cancer.</div>
+                        <div class="myth-fact-options">
+                            <div class="radio-option">
+                                <input type="radio" name="q4" id="q4-myth" value="myth">
+                                <label for="q4-myth">Myth</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q4" id="q4-fact" value="fact">
+                                <label for="q4-fact">Fact</label>
+                            </div>
+                        </div>
+                        <button class="btn" onclick="checkMythFact(4)">Check Answer</button>
+                        <div id="result-4" class="myth-fact-result"></div>
+                    </div>
+
+                    <div class="myth-fact-card">
+                        <div class="myth-fact-question">5. Men cannot get breast cancer.</div>
+                        <div class="myth-fact-options">
+                            <div class="radio-option">
+                                <input type="radio" name="q5" id="q5-myth" value="myth">
+                                <label for="q5-myth">Myth</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q5" id="q5-fact" value="fact">
+                                <label for="q5-fact">Fact</label>
+                            </div>
+                        </div>
+                        <button class="btn" onclick="checkMythFact(5)">Check Answer</button>
+                        <div id="result-5" class="myth-fact-result"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Risk Insights Section -->
+            <div id="risk-section" class="section">
+                <h2 class="section-title">Personalized Risk Insights</h2>
+                <div class="card">
+                    <h3 class="card-title">Assess Your Risk Factors</h3>
+                    <p>Complete this brief 3-question survey to get insights about your general risk level. Remember, this is not a medical diagnosis but can help you understand factors that may contribute to breast cancer risk.</p>
+
+                    <form id="risk-form" class="risk-form">
+                        <div class="form-group">
+                            <label for="age">What is your age group?</label>
+                            <select id="age" class="form-control">
+                                <option value="">Select your age group</option>
+                                <option value="20-30">20-30 years</option>
+                                <option value="31-40">31-40 years</option>
+                                <option value="41-50">41-50 years</option>
+                                <option value="51-60">51-60 years</option>
+                                <option value="60+">Over 60 years</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Do you have a first-degree relative (mother, sister, daughter) who has had breast cancer?</label>
+                            <div class="radio-group">
+                                <div class="radio-option">
+                                    <input type="radio" name="family" id="family-yes" value="yes">
+                                    <label for="family-yes">Yes</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" name="family" id="family-no" value="no">
+                                    <label for="family-no">No</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" name="family" id="family-unknown" value="unknown">
+                                    <label for="family-unknown">I don't know</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Have you used hormone replacement therapy for menopause symptoms for more than 5 years?</label>
+                            <div class="radio-group">
+                                <div class="radio-option">
+                                    <input type="radio" name="hormones" id="hormones-yes" value="yes">
+                                    <label for="hormones-yes">Yes</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" name="hormones" id="hormones-no" value="no">
+                                    <label for="hormones-no">No</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" name="hormones" id="hormones-na" value="na">
+                                    <label for="hormones-na">Not applicable</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn" onclick="assessRisk()">Get Risk Insights</button>
+                    </form>
+
+                    <div id="risk-result" class="result-box">
+                        <!-- Results will be displayed here -->
+                    </div>
+                    
+                    <div class="risk-meter">
+                        <div class="risk-indicator" id="risk-indicator"></div>
+                        <div class="risk-marker" id="risk-marker"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Survivor Stories Section -->
+            <div id="stories-section" class="section">
+                <h2 class="section-title">Real Survivor Stories</h2>
+                
+                <div class="story-card">
+                    <div class="story-content">
+                        <h3 class="story-title">Sarah's Journey - Diagnosed at 35</h3>
+                        <p>"I never thought breast cancer could happen to me at such a young age. Early detection saved my life. I found a lump during a self-exam and immediately went to my doctor. Five years later, I'm cancer-free and advocating for young women to take breast health seriously."</p>
+                        <button class="btn" ><a href= "https://medium.com/@shoshanablagin/the-breasts-the-silence-and-the-spell-that-broke-1da191920967">Watch Sarah's Story</a></button>
+                    </div>
+                </div>
+
+                <div class="story-card">
+                    <div class="story-content">
+                        <h3 class="story-title">Michelle's Experience - Perimenopause and Diagnosis</h3>
+                        <p>"Going through perimenopause was already a challenging time with all the hormonal changes. When I received my breast cancer diagnosis, it felt overwhelming. What helped me was connecting with other survivors and focusing on one day at a time."</p>
+                        <button class="btn" ><a href="https://medium.com/@1carolmonteiro/a-scar-means-you-survived-but-its-not-who-you-are-f49ccfb8d10b">Listen to Michelle's Story</a></button>
+                    </div>
+                </div>
+
+                <div class="story-card">
+                    <div class="story-content">
+                        <h3 class="story-title">Lisa's Recovery - The Power of Support</h3>
+                        <p>"My journey through treatment showed me how important a support system is. From my family to my healthcare team to support groups, each person played a crucial role in my recovery. Now I volunteer to support newly diagnosed women."</p>
+                        <button class="btn" ><a href="https://medium.com/@tulisaneesa/7-things-i-now-know-one-year-after-chemo-6f6b87d2e276">Watch Lisa's Story</a></button>
+                    </div>
+                </div>
+            </div>
+
+           
+            <!-- Community Support Section -->
+            <div id="community-section" class="section">
+                <h2 class="section-title">Community Support</h2>
+                <div class="card">
+                    <div class="community-header">
+                        <h3 class="card-title">Connect with Others</h3>
+                        <button class="btn" onclick="showNewPostForm()">New Post</button>
+                    </div>
+                    
+                    <p>Share your experiences, ask questions, and find support from others going through similar journeys.</p>
+                    
+                    <div id="new-post-form" class="new-post-form hidden">
+                        <h4>Create New Post</h4>
+                        <textarea id="post-content" placeholder="Share your thoughts, questions, or experiences..."></textarea>
+                        <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                            <button class="btn" style="background-color: #3f3f46;" onclick="hideNewPostForm()">Cancel</button>
+                            <button class="btn" onclick="submitPost()">Post</button>
+                        </div>
+                    </div>
+                    
+                    <div class="community-post">
+                        <div class="post-author">Maria G. <span style="color: #71717a; font-weight: normal;">(Perimenopause)</span></div>
+                        <div class="post-date">Posted 2 days ago</div>
+                        <div class="post-content">
+                            <p>I'm 48 and recently found a lump during my self-exam. My doctor ordered a mammogram and ultrasound. Waiting for results is the hardest part. Any advice on coping with the anxiety?</p>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <button class="btn" style="padding: 5px 10px; font-size: 14px;" onclick="replyToPost(1)">Reply</button>
+                        </div>
+                    </div>
+                    
+                    <div class="community-post">
+                        <div class="post-author">Sarah T. <span style="color: #71717a; font-weight: normal;">(5-year survivor)</span></div>
+                        <div class="post-date">Posted 1 week ago</div>
+                        <div class="post-content">
+                            <p>For those newly diagnosed: You're stronger than you think. The first weeks are overwhelming, but you'll find your footing. Ask your care team ALL the questions - no question is too small.</p>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <button class="btn" style="padding: 5px 10px; font-size: 14px;" onclick="replyToPost(2)">Reply</button>
+                        </div>
+                    </div>
+                    
+                    <div class="community-post">
+                        <div class="post-author">Lisa M.</div>
+                        <div class="post-date">Posted 2 weeks ago</div>
+                        <div class="post-content">
+                            <p>Does anyone have recommendations for comfortable post-surgery bras? I'm having a lumpectomy next month and want to be prepared.</p>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <button class="btn" style="padding: 5px 10px; font-size: 14px;" onclick="replyToPost(3)">Reply</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resources Section -->
+            <div id="resources-section" class="section">
+                <h2 class="section-title">Helpful Resources</h2>
+                <div class="card">
+                    <h3 class="card-title">Local and Online Support</h3>
+                    <p>Find organizations, support groups, and educational materials to help you on your journey.</p>
+                    
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="fas fa-hand-holding-heart"></i>
+                        </div>
+                        <div class="resource-details">
+                            <div class="resource-title">National Breast Cancer Foundation</div>
+                            <div class="resource-description">Free mammograms for those in need, educational resources, and survivor support.</div>
+                            <a href="https://www.who.int/news-room/fact-sheets/detail/breast-cancer" style="color: #db2777; font-size: 14px;" >Visit Website</a>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="resource-details">
+                            <div class="resource-title">Young Survival Coalition</div>
+                            <div class="resource-description">Support and resources specifically for women under 40 diagnosed with breast cancer.</div>
+                            <a href="https://www.mayoclinic.org/diseases-conditions/breast-cancer/symptoms-causes/syc-20352470" style="color: #db2777; font-size: 14px;">Visit Website</a>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="fas fa-book-medical"></i>
+                        </div>
+                        <div class="resource-details">
+                            <div class="resource-title">BreastCancer.org</div>
+                            <div class="resource-description">Comprehensive medical information and active discussion boards.</div>
+                            <a href="https://my.clevelandclinic.org/health/diseases/3986-breast-cancer" style="color: #db2777; font-size: 14px;" >Visit Website</a>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="resource-details">
+                            <div class="resource-title">Local Support Groups</div>
+                            <div class="resource-description">Find in-person support groups and services in your area.</div>
+                            <button class="btn" style="padding: 5px 10px; font-size: 14px; margin-top: 5px;" onclick="findLocalGroups()">Search Near Me</button>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="resource-details">
+                            <div class="resource-title">MyHealth Apps</div>
+                            <div class="resource-description">Recommended apps for tracking symptoms, treatments, and self-checks.</div>
+                            <button class="btn" style="padding: 5px 10px; font-size: 14px; margin-top: 5px;" onclick="showHealthApps()">View Apps</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Navigation functionality
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Update active nav link
+            document.querySelectorAll('.nav-links li').forEach(li => {
+                li.classList.remove('active');
+                if (li.dataset.section === sectionId) {
+                    li.classList.add('active');
+                }
+            });
+        }
+        
+        // Initialize navigation
+        document.querySelectorAll('.nav-links li').forEach(li => {
+            li.addEventListener('click', function() {
+                showSection(this.dataset.section);
+            });
+        });
+        
+        // Tab switching
+        function switchTab(tabGroup, tabId) {
+            // Hide all tabs in this group
+            const tabPrefix = tabGroup.split('-')[0];
+            document.querySelectorAll(`.tab-content.${tabPrefix}-tab`).forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabId).classList.add('active');
+            
+            // Update active tab button
+            const container = document.getElementById(tabId).closest('.tab-container');
+            container.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+        
+        // Symptom Checker
+        function checkSymptoms() {
+            const form = document.getElementById('symptom-form');
+            const resultDiv = document.getElementById('symptom-result');
+            const symptoms = Array.from(form.querySelectorAll('input[type="radio"]:checked')).map(input => input.value);
+            
+            const yesCount = symptoms.filter(val => val === 'yes').length;
+            
+            if (yesCount === 0) {
+                resultDiv.innerHTML = '<p class="success">No concerning symptoms detected. Continue with regular self-checks and screenings as recommended for your age group.</p>';
+            } else if (yesCount <= 2) {
+                resultDiv.innerHTML = '<div class="alert"><p>You reported ' + yesCount + ' potential symptom(s). While these could have benign causes, we recommend consulting a healthcare provider for evaluation.</p></div>';
+            } else {
+                resultDiv.innerHTML = '<div class="alert"><p>You reported ' + yesCount + ' potential symptoms. Please consult a healthcare provider promptly for evaluation. Early detection improves outcomes.</p></div>';
+            }
+            
+            resultDiv.style.display = 'block';
+        }
+        
+        // Myth vs. Fact Quiz
+        function checkMythFact(questionNum) {
+            const selectedOption = document.querySelector('input[name="q' + questionNum + '"]:checked');
+            const resultDiv = document.getElementById('result-' + questionNum);
+            
+            if (!selectedOption) {
+                alert('Please select an answer first');
+                return;
+            }
+            
+            const answers = {
+                1: { correct: 'myth', explanation: 'Fact: Most women diagnosed with breast cancer have no family history. Only about 5-10% of cases are hereditary.' },
+                2: { correct: 'myth', explanation: 'Fact: There is no scientific evidence linking underwire bras to breast cancer.' },
+                3: { correct: 'myth', explanation: 'Fact: While lumps are common, breast cancer can also present as skin changes, nipple changes, or pain.' },
+                4: { correct: 'myth', explanation: 'Fact: Mammograms detect but don\'t prevent breast cancer. Regular screenings help with early detection.' },
+                5: { correct: 'myth', explanation: 'Fact: Though rare, men can get breast cancer (about 1% of all cases).' }
+            };
+            
+            if (selectedOption.value === answers[questionNum].correct) {
+                resultDiv.innerHTML = '<p class="success">Correct! ' + answers[questionNum].explanation + '</p>';
+            } else {
+                resultDiv.innerHTML = '<div class="alert">Incorrect. ' + answers[questionNum].explanation + '</div>';
+            }
+            
+            resultDiv.style.display = 'block';
+        }
+        
+        // Risk Assessment
+        function assessRisk() {
+            const age = document.getElementById('age').value;
+            const family = document.querySelector('input[name="family"]:checked')?.value;
+            const hormones = document.querySelector('input[name="hormones"]:checked')?.value;
+            const resultDiv = document.getElementById('risk-result');
+            
+            if (!age || !family || !hormones) {
+                alert('Please answer all questions');
+                return;
+            }
+            
+            let riskScore = 0;
+            
+            // Age scoring
+            if (age === '20-30') riskScore += 1;
+            else if (age === '31-40') riskScore += 2;
+            else if (age === '41-50') riskScore += 3;
+            else if (age === '51-60') riskScore += 4;
+            else if (age === '60+') riskScore += 5;
+            
+            // Family history
+            if (family === 'yes') riskScore += 3;
+            else if (family === 'unknown') riskScore += 1;
+            
+            // Hormones
+            if (hormones === 'yes') riskScore += 2;
+            
+            let riskLevel, recommendations;
+            let riskPercentage = Math.min(100, Math.max(5, riskScore * 8));
+            
+            if (riskScore <= 3) {
+                riskLevel = 'Low Risk';
+                recommendations = [
+                    'Continue regular self-exams',
+                    'Follow standard screening guidelines for your age',
+                    'Maintain healthy lifestyle habits'
+                ];
+            } else if (riskScore <= 6) {
+                riskLevel = 'Moderate Risk';
+                recommendations = [
+                    'Be diligent with monthly self-exams',
+                    'Discuss screening options with your doctor',
+                    'Consider genetic counseling if family history is present',
+                    'Review lifestyle factors'
+                ];
+            } else {
+                riskLevel = 'Higher Risk';
+                recommendations = [
+                    'Consult with a breast health specialist',
+                    'Discuss enhanced screening options',
+                    'Consider genetic testing',
+                    'Implement risk-reduction strategies'
+                ];
+            }
+            
+            // Update risk meter
+            document.getElementById('risk-indicator').style.width = riskPercentage + '%';
+            document.getElementById('risk-marker').style.left = riskPercentage + '%';
+            
+            let html = `<h4>Your Risk Level: <span style="color: ${riskScore <= 3 ? '#10b981' : riskScore <= 6 ? '#f59e0b' : '#ef4444'}">${riskLevel}</span></h4>`;
+            html += `<p>Based on your responses, your estimated risk score is ${riskScore}/10 (${riskPercentage}%)</p>`;
+            html += '<p>Recommendations:</p><ul>';
+            
+            recommendations.forEach(rec => {
+                html += `<li>${rec}</li>`;
+            });
+            
+            html += '</ul><p>Remember: This is not a medical diagnosis. Discuss your individual risk with a healthcare provider.</p>';
+            
+            resultDiv.innerHTML = html;
+            resultDiv.style.display = 'block';
+        }
+        
+        // Product Scanner
+        function checkProduct() {
+            const category = document.getElementById('product-category').value;
+            const productName = document.getElementById('product-name').value;
+            const resultsDiv = document.getElementById('product-results');
+            const ingredientList = document.getElementById('ingredient-list');
+            const alternativesList = document.getElementById('alternatives-list');
+            const productNameDisplay = document.getElementById('product-name-display');
+            const concernLevel = document.getElementById('concern-level');
+            
+            if (!category) {
+                alert('Please select a product category');
+                return;
+            }
+            
+            // Sample data - in a real app this would come from a database
+            const productDatabase = {
+                'cosmetics': {
+                    ingredients: [
+                        { name: 'Parabens', risk: 'high', desc: 'Potential endocrine disruptors' },
+                        { name: 'Fragrance', risk: 'medium', desc: 'May contain phthalates' },
+                        { name: 'Retinyl Palmitate', risk: 'low', desc: 'Generally safe in cosmetics' }
+                    ],
+                    alternatives: [
+                        'Alba Botanica Even Advanced Moisturizer',
+                        'Pacifica Beauty Sea & C Love Serum',
+                        '100% Pure Fruit Pigmented Lip Gloss'
+                    ]
+                },
+                'cleaning': {
+                    ingredients: [
+                        { name: 'Nonylphenol Ethoxylates', risk: 'high', desc: 'Hormone disruptor' },
+                        { name: 'Ammonia', risk: 'medium', desc: 'Respiratory irritant' },
+                        { name: 'Chlorine', risk: 'medium', desc: 'Can form toxic byproducts' }
+                    ],
+                    alternatives: [
+                        'Seventh Generation Free & Clean All-Purpose Cleaner',
+                        'Ecover Zero Dish Soap',
+                        'Better Life All-Purpose Cleaner'
+                    ]
+                },
+                'plastics': {
+                    ingredients: [
+                        { name: 'BPA (Bisphenol A)', risk: 'high', desc: 'Known endocrine disruptor' },
+                        { name: 'Phthalates', risk: 'high', desc: 'Linked to hormone disruption' },
+                        { name: 'Polystyrene', risk: 'medium', desc: 'Possible carcinogen' }
+                    ],
+                    alternatives: [
+                        'Glass food storage containers',
+                        'Stainless steel water bottles',
+                        'Silicone food covers instead of plastic wrap'
+                    ]
+                },
+                'food': {
+                    ingredients: [
+                        { name: 'BHA/BHT', risk: 'medium', desc: 'Possible endocrine disruptor' },
+                        { name: 'Artificial Colors', risk: 'low', desc: 'Some concerns about certain dyes' },
+                        { name: 'High Fructose Corn Syrup', risk: 'low', desc: 'Linked to obesity' }
+                    ],
+                    alternatives: [
+                        'Fresh, unprocessed foods',
+                        'Organic packaged foods',
+                        'Foods with simple ingredient lists'
+                    ]
+                }
+            };
+            
+            // Reset display
+            ingredientList.innerHTML = '';
+            alternativesList.innerHTML = '';
+            resultsDiv.classList.remove('hidden');
+            document.getElementById('safer-alternatives').classList.add('hidden');
+            
+            // Display product name if provided
+            if (productName) {
+                productNameDisplay.textContent = productName;
+            } else {
+                productNameDisplay.textContent = 'Selected ' + document.getElementById('product-category').options[document.getElementById('product-category').selectedIndex].text;
+            }
+            
+            // Determine overall concern level
+            const highRiskCount = productDatabase[category].ingredients.filter(i => i.risk === 'high').length;
+            if (highRiskCount > 1) {
+                concernLevel.innerHTML = '<span style="color: #ef4444">High Concern</span>: This product category contains multiple high-risk ingredients.';
+            } else if (highRiskCount === 1) {
+                concernLevel.innerHTML = '<span style="color: #f59e0b">Moderate Concern</span>: This product category contains one high-risk ingredient.';
+            } else {
+                concernLevel.innerHTML = '<span style="color: #10b981">Low Concern</span>: No high-risk ingredients in this category.';
+            }
+            
+            // List ingredients
+            productDatabase[category].ingredients.forEach(ingredient => {
+                const div = document.createElement('div');
+                div.className = 'product-ingredient';
+                
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'ingredient-name';
+                nameSpan.textContent = ingredient.name;
+                
+                const riskSpan = document.createElement('span');
+                riskSpan.className = 'ingredient-risk risk-' + ingredient.risk;
+                riskSpan.textContent = ingredient.risk.charAt(0).toUpperCase() + ingredient.risk.slice(1);
+                
+                div.appendChild(nameSpan);
+                div.appendChild(riskSpan);
+                ingredientList.appendChild(div);
+                
+                // Add tooltip with description
+                div.title = ingredient.desc;
+            });
+            
+            // Add safer alternatives
+            productDatabase[category].alternatives.forEach(alt => {
+                const li = document.createElement('li');
+                li.textContent = alt;
+                alternativesList.appendChild(li);
+            });
+            
+            document.getElementById('safer-alternatives').classList.remove('hidden');
+        }
+        
+        // Barcode scanner (simulated)
+        function startBarcodeScanner() {
+            const scannerView = document.getElementById('scanner-view');
+            scannerView.classList.remove('hidden');
+            scannerView.innerHTML = '<div style="text-align: center;"><i class="fas fa-camera" style="font-size: 48px; margin-bottom: 10px;"></i><p>Point camera at product barcode</p></div>';
+            
+            // Simulate scanning after 3 seconds
+            setTimeout(() => {
+                scannerView.innerHTML = '<div style="text-align: center;"><i class="fas fa-check-circle" style="font-size: 48px; color: #10b981; margin-bottom: 10px;"></i><p>Product scanned successfully!</p></div>';
+                
+                // Auto-populate with sample data
+                setTimeout(() => {
+                    document.getElementById('product-category').value = 'cosmetics';
+                    document.getElementById('product-name').value = 'Popular Brand Moisturizer';
+                    checkProduct();
+                    switchTab('env-tab', 'scanner-content');
+                }, 1000);
+            }, 3000);
+        }
+        
+        // Community forum functions
+        function showNewPostForm() {
+            document.getElementById('new-post-form').classList.remove('hidden');
+        }
+        
+        function hideNewPostForm() {
+            document.getElementById('new-post-form').classList.add('hidden');
+            document.getElementById('post-content').value = '';
+        }
+        
+        function submitPost() {
+            const content = document.getElementById('post-content').value.trim();
+            if (!content) {
+                alert('Please enter some content for your post');
+                return;
+            }
+            
+            // In a real app, this would send to a server
+            alert('Post submitted! In a full implementation, this would appear in the community feed.');
+            hideNewPostForm();
+        }
+        
+        function replyToPost(postId) {
+            alert('In a full implementation, this would open a reply form for post ' + postId);
+        }
+        
+        // Appointment scheduling
+        function scheduleAppointment() {
+            const type = document.getElementById('appointment-type').value;
+            const date = document.getElementById('appointment-date').value;
+            const time = document.getElementById('appointment-time').value;
+            const location = document.getElementById('appointment-location').value;
+            
+            if (!type || !date || !time) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            // In a real app, this would save to a database
+            alert('Appointment scheduled! In a full implementation, this would be added to your calendar.');
+            document.getElementById('appointment-form').reset();
+            switchTab('scheduler-tab', 'calendar-content');
+        }
+        
+        function editAppointment(id) {
+            alert('Editing appointment ' + id + '. In a full implementation, this would open an edit form.');
+        }
+        
+        function cancelAppointment(id) {
+            if (confirm('Are you sure you want to cancel this appointment?')) {
+                alert('Appointment ' + id + ' cancelled. In a full implementation, this would remove it from your schedule.');
+            }
+        }
+        
+        // Resource links
+        function openResource(type) {
+            const urls = {
+                'nbc': 'https://www.mayoclinic.org/diseases-conditions/breast-cancer/symptoms-causes/syc-20352470',
+                'ysc': 'https://my.clevelandclinic.org/health/diseases/3986-breast-cancer',
+                'bco': 'https://www.who.int/news-room/fact-sheets/detail/breast-cancer'
+            };
+            
+            alert('In a full implementation, this would open: ' + urls[type]);
+            // window.open(urls[type], '_blank');
+        }
+        
+        function findLocalGroups() {
+            alert('In a full implementation, this would show local support groups based on your location.');
+        }
+        
+        function showHealthApps() {
+            alert('In a full implementation, this would display recommended health apps.');
+        }
+        
+        // Story player
+        function playStory(storyId) {
+            alert('Playing ' + storyId + "'s story. In a full implementation, this would launch the video/audio player.");
+        }
+        
+        // Reminder setup
+        function setupReminder() {
+            const enabled = document.getElementById('reminder-toggle').checked;
+            const day = document.getElementById('reminder-day').value;
+            const method = document.getElementById('reminder-method').value;
+            
+            if (enabled && !day) {
+                alert('Please select your preferred reminder day');
+                return;
+            }
+            
+            alert(`Reminders ${enabled ? 'enabled' : 'disabled'}. In a full implementation, this would configure ${method} reminders for day ${day}.`);
+        }
+        
+        // Initialize with intro section active
+        showSection('intro-section');
+    </script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+</html>

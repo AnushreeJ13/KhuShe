@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafetyGuard - Women's Safety</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --primary-color: #0c0837;
+            --secondary-color: #121212;
+            --dark-color: #0a0a0a;
+            --light-color: #f0f0f0;
+            --text-color: #e0e0e0;
+            --accent-color: #dcd4ed;
+            --card-bg: #1e1e1e;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            --gradient: linear-gradient(135deg, #0c0d27, #381c44);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        header {
+            background: var(--gradient);
+            color: var(--light-color);
+            text-align: center;
+            padding: 2rem 0;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+            animation: rotate 20s linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        header .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        .main-title {
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .col {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .assessment-section, .info-section {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .assessment-section:hover, .info-section:hover {
+            transform: translateY(-5px);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        .question {
+            margin-bottom: 1.5rem;
+            padding: 1.2rem;
+            background-color: rgba(125, 65, 255, 0.1);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .question:hover {
+            transform: translateX(5px);
+            background-color: rgba(9, 3, 24, 0.15);
+        }
+
+        .question-text {
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .option-btn {
+            background-color: rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: 0.7rem 1.5rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            min-width: 90px;
+            text-align: center;
+        }
+
+        .option-btn:hover {
+            background-color: rgba(190, 172, 238, 0.456);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px  rgba(1, 13, 26, 0.5);
+        }
+
+        .option-btn.selected {
+            background: var(--gradient);
+            color: var(--light-color);
+            border-color: transparent;
+            box-shadow: 0 5px 15px rgba(1, 13, 26, 0.5);
+        }
+
+        .button {
+            display: inline-block;
+            background: var(--gradient);
+            color: var(--light-color);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            text-align: center;
+            margin-top: 1rem;
+            box-shadow: 0 5px 15px rgba(43, 2, 26, 0.4);
+        }
+
+        .button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px  rgba(1, 13, 26, 0.5);
+        }
+
+        .button.full-width {
+            width: 100%;
+            font-size: 1.2rem;
+            margin-top: 2rem;
+        }
+
+        .button.pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 65, 108, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(255, 65, 108, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 65, 108, 0);
+            }
+        }
+
+        .result-section {
+            display: none;
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .risk-level {
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+        .risk-low {
+            background-color: rgba(39, 174, 96, 0.2);
+            border-left: 4px solid #27ae60;
+        }
+
+        .risk-medium {
+            background-color: rgba(241, 196, 15, 0.2);
+            border-left: 4px solid #f1c40f;
+        }
+
+        .risk-high {
+            background-color: rgba(231, 76, 60, 0.2);
+            border-left: 4px solid #e74c3c;
+        }
+
+        .info-card {
+            padding: 1.5rem;
+            background-color: rgba(255, 65, 108, 0.1);
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--accent-color);
+            transition: transform 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateX(5px);
+        }
+
+        .info-title {
+            font-size: 1.3rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .action-list {
+            list-style-type: none;
+        }
+
+        .action-item {
+            margin-bottom: 0.8rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .action-item:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        .emergency-contacts {
+            margin-top: 2rem;
+            background-color: rgba(255, 65, 108, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--accent-color);
+            animation: pulse 2s infinite;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            width: 90%;
+            max-width: 600px;
+            border-radius: 15px;
+            padding: 2.5rem;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transform: scale(0.9);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 65, 108, 0.1);
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-color);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 65, 108, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .resource-link {
+            display: inline-block;
+            margin-top: 0.5rem;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 2px;
+        }
+
+        .resource-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            transition: width 0.3s;
+        }
+
+        .resource-link:hover::after {
+            width: 100%;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+            background-color: var(--dark-color);
+            position: relative;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient);
+        }
+
+        /* Loading screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--secondary-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            
+        }
+
+        .loading-content {
+            text-align: center;
+        }
+
+        
+
+
+        .loading-text {
+            font-size: 1.5rem;
+            color: var(--text-color);
+            letter-spacing: 2px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px var(--accent-color),
+                            0 0 10px var(--accent-color);
+            }
+            to {
+                text-shadow: 0 0 10px var(--accent-color),
+                            0 0 20px var(--accent-color),
+                            0 0 30px var(--accent-color);
+            }
+        }
+
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            display: block;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 15s infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .options {
+                flex-direction: column;
+            }
+            
+            .option-btn {
+                width: 100%;
+            }
+            
+            .main-title {
+                font-size: 2rem;
+            }
+        }
+
+        
+    </style>
+</head>
+<body>
+   
+    <header>
+        <div class="particles" id="particles"></div>
+        <div class="container">
+            <h1 class="main-title">SafetyGuard</h1>
+            <p class="subtitle">Empowering adolescent girls with safety knowledge</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="main-content">
+            <!-- Left Column -->
+            <div class="col">
+                <section class="assessment-section">
+                    <h2 class="section-title">Safety Assessment</h2>
+                    <p>Answer these questions to determine if you might be in a potentially unsafe situation:</p>
+                    
+                    <div id="questions-container">
+                        <div class="question" id="question-1">
+                            <p class="question-text">1. Do you feel uncomfortable or unsafe in your current surroundings?</p>
+                            <div class="options">
+                                <button class="option-btn" data-value="yes" data-question="1">Yes</button>
+                                <button class="option-btn" data-value="unsure" data-question="1">Not sure</button>
+                                <button class="option-btn" data-value="no" data-question="1">No</button>
+                            </div>
+                        </div>
+                        
+                        <div class="question" id="question-2">
+                            <p class="question-text">2. Is someone making unwanted physical contact or getting too close to you?</p>
+                            <div class="options">
+                                <button class="option-btn" data-value="yes" data-question="2">Yes</button>
+                                <button class="option-btn" data-value="unsure" data-question="2">Not sure</button>
+                                <button class="option-btn" data-value="no" data-question="2">No</button>
+                            </div>
+                        </div>
+                        
+                        <div class="question" id="question-3">
+                            <p class="question-text">3. Is someone making inappropriate comments or gestures towards you?</p>
+                            <div class="options">
+                                <button class="option-btn" data-value="yes" data-question="3">Yes</button>
+                                <button class="option-btn" data-value="unsure" data-question="3">Not sure</button>
+                                <button class="option-btn" data-value="no" data-question="3">No</button>
+                            </div>
+                        </div>
+                        
+                        <div class="question" id="question-4">
+                            <p class="question-text">4. Do you feel pressured or coerced to do something you don't want to do?</p>
+                            <div class="options">
+                                <button class="option-btn" data-value="yes" data-question="4">Yes</button>
+                                <button class="option-btn" data-value="unsure" data-question="4">Not sure</button>
+                                <button class="option-btn" data-value="no" data-question="4">No</button>
+                            </div>
+                        </div>
+                        
+                        <div class="question" id="question-5">
+                            <p class="question-text">5. Are you alone with someone you don't trust or feel uncomfortable with?</p>
+                            <div class="options">
+                                <button class="option-btn" data-value="yes" data-question="5">Yes</button>
+                                <button class="option-btn" data-value="unsure" data-question="5">Not sure</button>
+                                <button class="option-btn" data-value="no" data-question="5">No</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button id="submit-assessment" class="button full-width">Submit Assessment</button>
+                </section>
+
+                <section class="result-section" id="result-section">
+                    <h2 class="section-title">Your Safety Assessment</h2>
+                    <div id="risk-level" class="risk-level"></div>
+                    
+                    <div class="info-card">
+                        <h3 class="info-title">Immediate Actions</h3>
+                        <ul class="action-list" id="immediate-actions">
+                            <!-- Will be filled by JavaScript -->
+                        </ul>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h3 class="info-title">Safety Strategies</h3>
+                        <ul class="action-list" id="safety-strategies">
+                            <!-- Will be filled by JavaScript -->
+                        </ul>
+                    </div>
+
+                    <div class="emergency-contacts">
+                        <h3 class="info-title">Emergency Contacts</h3>
+                        <p>Police: 100👮</p>
+                        <p>Women's Helpline: 1091🚺</p>
+                        <p>Child Helpline: 1098🧒🏻</p>
+                    </div>
+                    
+                    <button id="sos-button" class="button full-width pulse">SOS - Emergency Help</button>
+                </section>
+            </div>
+
+            <!-- Right Column -->
+            <div class="col">
+                <section class="info-section">
+                    <h2 class="section-title">Understanding & Handling Molestation</h2>
+                    
+                    <div class="info-card">
+                        <h3 class="info-title">What is Molestation?</h3>
+                        <p>Molestation refers to unwanted touching, groping, or any physical contact of a sexual nature without consent. It is a form of sexual assault and is never the victim's fault.</p>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h3 class="info-title">Warning Signs</h3>
+                        <ul class="action-list">
+                            <li class="action-item">Someone touching you in a way that makes you uncomfortable</li>
+                            <li class="action-item">Inappropriate comments about your body or appearance</li>
+                            <li class="action-item">Someone trying to get you alone or isolated from others</li>
+                            <li class="action-item">Being pressured to keep physical contact a secret</li>
+                            <li class="action-item">Someone consistently ignoring your personal boundaries</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h3 class="info-title">Safety Strategies</h3>
+                        <ul class="action-list">
+                            <li class="action-item">Trust your instincts - if something feels wrong, it probably is</li>
+                            <li class="action-item">Use clear, direct language: "Stop touching me," "Leave me alone"</li>
+                            <li class="action-item">Create distance between yourself and the person</li>
+                            <li class="action-item">Move to populated areas where others can see you</li>
+                            <li class="action-item">Use a confident posture and loud voice to assert yourself</li>
+                        </ul>
+                    </div>
+                    
+                    <button id="show-molestation-modal" class="button full-width">Learn More About Prevention & Response</button>
+                </section>
+
+                <section class="info-section">
+                    <h2 class="section-title">Self-Defense Basics</h2>
+                    
+                    <div class="info-card">
+                        <h3 class="info-title">The SING Method</h3>
+                        <p>If physically threatened, remember SING:</p>
+                        <ul class="action-list">
+                            <li class="action-item"><strong>S</strong>olar plexus (strike to the middle of the torso)</li>
+                            <li class="action-item"><strong>I</strong>nstep (stomp hard on the top of their foot)</li>
+                            <li class="action-item"><strong>N</strong>ose (strike upward on the nose)</li>
+                            <li class="action-item"><strong>G</strong>roin (knee or strike to the groin area)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h3 class="info-title">Vulnerable Points</h3>
+                        <ul class="action-list">
+                            <li class="action-item">Eyes - use fingers to poke or gouge</li>
+                            <li class="action-item">Throat - strike with the side of your hand</li>
+                            <li class="action-item">Knees - kick to the side of the knee</li>
+                            <li class="action-item">Ears - cup hands and clap over both ears</li>
+                        </ul>
+                    </div>
+                    
+                    <button id="defense-resources" class="button full-width">Access Self-Defense Resources</button>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Molestation Information Modal -->
+    <div class="modal" id="molestation-modal">
+        <div class="modal-content">
+            <button class="close-btn" data-modal="molestation-modal">&times;</button>
+            <h2 class="section-title">Understanding & Responding to Molestation</h2>
+            
+            <div class="info-card">
+                <h3 class="info-title">How to Respond in the Moment</h3>
+                <ul class="action-list">
+                    <li class="action-item">Say "NO" loudly and clearly. Use a firm voice to communicate that the behavior is unwanted.</li>
+                    <li class="action-item">Create distance between yourself and the person immediately if possible.</li>
+                    <li class="action-item">Draw attention by shouting for help or making noise to alert others nearby.</li>
+                    <li class="action-item">If in public, move toward crowded areas or seek help from authority figures.</li>
+                    <li class="action-item">Use self-defense techniques if necessary - aim for vulnerable areas.</li>
+                    <li class="action-item">Call emergency numbers (100 for Police, 1091 for Women's Helpline) as soon as possible.</li>
+                </ul>
+            </div>
+            
+            <div class="info-card">
+                <h3 class="info-title">After an Incident</h3>
+                <ul class="action-list">
+                    <li class="action-item">Get to a safe location as quickly as possible.</li>
+                    <li class="action-item">Tell someone you trust about what happened.</li>
+                    <li class="action-item">Remember that it is not your fault - the perpetrator is responsible for their actions.</li>
+                    <li class="action-item">Consider reporting the incident to authorities.</li>
+                    <li class="action-item">Seek medical attention if needed.</li>
+                    <li class="action-item">Consider speaking with a counselor or therapist to process the emotional impact.</li>
+                </ul>
+            </div>
+            
+            <div class="info-card">
+                <h3 class="info-title">Prevention Tips</h3>
+                <ul class="action-list">
+                    <li class="action-item">Stay in groups when possible, especially in unfamiliar places.</li>
+                    <li class="action-item">Be aware of your surroundings and avoid isolated areas.</li>
+                    <li class="action-item">Keep trusted contacts informed about your whereabouts.</li>
+                    <li class="action-item">Trust your instincts - if something feels wrong, remove yourself from the situation.</li>
+                    <li class="action-item">Consider taking self-defense classes to build confidence and skills.</li>
+                    <li class="action-item">Use your phone to share your location with trusted friends when going somewhere new.</li>
+                    <li class="action-item">Remember that setting boundaries is your right.</li>
+                </ul>
+            </div>
+            
+            <div class="info-card">
+                <h3 class="info-title">What Molestation Is NOT</h3>
+                <ul class="action-list">
+                    <li class="action-item">Your fault, no matter what you were wearing or doing</li>
+                    <li class="action-item">A sign of your weakness or inability to protect yourself</li>
+                    <li class="action-item">Something to be ashamed of or kept secret</li>
+                    <li class="action-item">Ever justified or deserved, regardless of circumstances</li>
+                </ul>
+            </div>
+            
+            <button id="resources-button" class="button full-width">Access Support Resources</button>
+        </div>
+    </div>
+
+    <!-- SOS Modal -->
+    <div class="modal" id="sos-modal">
+        <div class="modal-content">
+            <button class="close-btn" data-modal="sos-modal">&times;</button>
+            <h2 class="section-title">Emergency Help</h2>
+            
+            <div class="info-card">
+                <h3 class="info-title">Emergency Contacts</h3>
+                <p><strong>Police:</strong> 100</p>
+                <p><strong>Women's Helpline:</strong> 1091</p>
+                <p><strong>Child Helpline:</strong> 1098</p>
+                <p><strong>National Emergency Number:</strong> 112</p>
+            </div>
+            
+            <div class="info-card">
+                <h3 class="info-title">What to Say When You Call</h3>
+                <ul class="action-list">
+                    <li class="action-item">State your name and that you need immediate help</li>
+                    <li class="action-item">Share your exact location or address</li>
+                    <li class="action-item">Briefly describe the situation</li>
+                    <li class="action-item">Answer any questions the operator may ask</li>
+                    <li class="action-item">Stay on the line until help arrives if possible</li>
+                </ul>
+            </div>
+            
+            <div class="info-card">
+                <h3 class="info-title">Alert Your Emergency Contacts</h3>
+                <p>Use the button below to send your location to your pre-configured emergency contacts:</p>
+                <button id="share-location" class="button full-width">Share My Location</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resources Modal -->
+    <div class="modal" id="resources-modal">
+        <div class="modal-content">
+            <button class="close-btn" data-modal="resources-modal">&times;</button>
+            <h2 class="section-title">Safety Resources</h2>
+            
+            <div class="info-card">
+                <h3 class="info-title">Helplines</h3>
+                <p><strong>National Commission for Women:</strong> 011-26942369, 26944754</p>
+                <p><strong>National Commission for Protection of Child Rights:</strong> 1800-121-2830</p>
+                <p><strong>National Human Rights Commission:</strong> 1800-2339-950</p>
+            </div>
+            
+            <div class="info-card">
+                <h3 class="info-title">Support Resources</h3>
+                <ul class="action-list">
+                    <li class="action-item">Understanding Consent <a href="#" class="resource-link">Learn More</a></li>
+                    <li class="action-item">Self-Defense Techniques <a href="#" class="resource-link">Learn More</a></li>
+                    <li class="action-item">Recognizing Warning Signs <a href="#" class="resource-link">Learn More</a></li>
+                    <li class="action-item">Body Safety Education <a href="#" class="resource-link">Learn More</a></li>
+                    <li class="action-item">Peer Support Networks <a href="#" class="resource-link">Find Groups</a></li>
+                    <li class="action-item">Trauma Recovery Resources <a href="#" class="resource-link">Find Help</a></li>
+                </ul>
+            </div>
+            
+            <div class="info-card">
+                <h3 class="info-title">Safety Apps</h3>
+                <ul class="action-list">
+                    <li class="action-item">VithU - Emergency Alert App</li>
+                    <li class="action-item">Himmat - Delhi Police Women Safety App</li>
+                    <li class="action-item">Nirbhaya - Women Safety Alert</li>
+                    <li class="action-item">Shake2Safety - Emergency SOS</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Self-Defense Resources Modal -->
+    <div class="modal" id="defense-modal">
+        <div class="modal-content">
+            <button class="close-btn" data-modal="defense-modal">&times;</button>
+            <h2 class="section-title">Self-Defense Resources</h2>
+            
+            <div class="info-card">
+                <h3 class="info-title">Basic Self-Defense Techniques</h3>
+                <ul class="action-list">
+                    <li class="action-item"><strong>The Hammer Strike:</strong> Using your fist with keys between your fingers, swing down with force</li>
+                    <li class="action-item"><strong>Heel Palm Strike:</strong> Strike upward forcefully with the heel of your palm under the attacker's nose</li>
+                    <li class="action-item"><strong>Elbow Strike:</strong> Use your elbow to strike backward into an attacker's face or body</li>
+                    <li class="action-item"><strong>Bear Hug Defense:</strong> If grabbed from behind, drop your weight and strike back with elbows or stomp on feet</li>
+                </ul>
+            </div>
+            
+            <div class="info-card">
+                <h3 class="info-title">Using Everyday Items</h3>
+                <ul class="action-list">
+                    <li class="action-item"><strong>Keys:</strong> Hold between fingers to strengthen punches or use to strike sensitive areas</li>
+                    <li class="action-item"><strong>Pen/Pencil:</strong> Can be used to strike pressure points like the throat, temple, or eyes</li>
+                    <li class="action-item"><strong>Bag/Purse:</strong> Swing as a defensive weapon or use as a shield</li>
+                    <li class="action-item"><strong>Mobile Phone:</strong> Use edge to strike at pressure points or call for help</li>
+                </ul>
+            </div>
+            
+            <div class="info-card">
+                <h3 class="info-title">Verbal Self-Defense</h3>
+                <p>Sometimes your voice is your strongest weapon:</p>
+                <ul class="action-list">
+                    <li class="action-item">Use a firm, loud voice to say "NO" or "STOP"</li>
+                    <li class="action-item">Yell specific commands like "CALL THE POLICE" (rather than just screaming)</li>
+                    <li class="action-item">Make noise - blow a whistle, activate a personal alarm, or shout</li>
+                    <li class="action-item">Create confusion by saying unexpected things to throw off an attacker</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>SafetyGuard - Empowering adolescent girls with safety knowledge and resources.</p>
+            <p>If you're in immediate danger, always call emergency services: 100</p>
+        </div>
+    </footer>
+
+    <script>
+        // Create animated floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 15;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('span');
+                particle.className = 'particle';
+                
+                const size = Math.random() * 30 + 10;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const speed = Math.random() * 30 + 10;
+                const delay = Math.random() * 5;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                particle.style.animationDuration = `${speed}s`;
+                particle.style.animationDelay = `${delay}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // Loading screen
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // Create particles for the header
+            createParticles();
+            
+            // Simulate loading time
+            setTimeout(function() {
+                loadingScreen.style.opacity = '0';
+                setTimeout(function() {
+                    loadingScreen.style.visibility = 'hidden';
+                }, 500);
+            }, 2000);
+            
+            // Assessment functionality
+            setupAssessment();
+            
+            // Modal functionality
+            setupModals();
+        });
+
+        // Assessment functionality
+        function setupAssessment() {
+            const optionButtons = document.querySelectorAll('.option-btn');
+            const submitButton = document.getElementById('submit-assessment');
+            const resultSection = document.getElementById('result-section');
+            const riskLevel = document.getElementById('risk-level');
+            const immediateActions = document.getElementById('immediate-actions');
+            const safetyStrategies = document.getElementById('safety-strategies');
+            
+            // User answers object
+            let answers = {
+                1: null,
+                2: null,
+                3: null,
+                4: null,
+                5: null
+            };
+            
+            // Handle option selection
+            optionButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const question = this.getAttribute('data-question');
+                    const value = this.getAttribute('data-value');
+                    
+                    // Remove 'selected' class from all options in this question
+                    document.querySelectorAll(`.option-btn[data-question="${question}"]`).forEach(btn => {
+                        btn.classList.remove('selected');
+                    });
+                    
+                    // Add 'selected' class to clicked option
+                    this.classList.add('selected');
+                    
+                    // Store the answer
+                    answers[question] = value;
+                });
+            });
+            
+            // Handle submit button
+            submitButton.addEventListener('click', function() {
+                // Check if all questions have been answered
+                let allAnswered = true;
+                for (let i = 1; i <= 5; i++) {
+                    if (answers[i] === null) {
+                        allAnswered = false;
+                        break;
+                    }
+                }
+                
+                if (!allAnswered) {
+                    alert('Please answer all questions before submitting.');
+                    return;
+                }
+                
+                // Calculate risk level
+                let riskScore = 0;
+                for (let i = 1; i <= 5; i++) {
+                    if (answers[i] === 'yes') riskScore += 2;
+                    else if (answers[i] === 'unsure') riskScore += 1;
+                }
+                
+                // Display results
+                if (riskScore >= 6) {
+                    riskLevel.innerHTML = '<p>High Risk: You may be in an unsafe situation. Consider taking immediate action.</p>';
+                    riskLevel.className = 'risk-level risk-high';
+                    
+                    // High risk immediate actions
+                    immediateActions.innerHTML = `
+                        <li class="action-item">Move to a public area with other people immediately if possible</li>
+                        <li class="action-item">Call a trusted friend or family member to come get you</li>
+                        <li class="action-item">If threatened, contact emergency services (100 for police)</li>
+                        <li class="action-item">Use a firm, loud voice to tell the person to stop their behavior</li>
+                        <li class="action-item">If unable to leave, try to attract attention from others nearby</li>
+                    `;
+                    
+                    // High risk safety strategies
+                    safetyStrategies.innerHTML = `
+                        <li class="action-item">Stay in public, well-lit areas where others can see and hear you</li>
+                        <li class="action-item">Share your location with trusted contacts</li>
+                        <li class="action-item">Trust your instincts and don't second-guess your feelings of discomfort</li>
+                        <li class="action-item">Have an emergency contact on speed dial</li>
+                        <li class="action-item">Consider using personal safety apps on your phone</li>
+                    `;
+                } else if (riskScore >= 3) {
+                    riskLevel.innerHTML = '<p>Medium Risk: Be cautious and aware of your surroundings.</p>';
+                    riskLevel.className = 'risk-level risk-medium';
+                    
+                    // Medium risk immediate actions
+                    immediateActions.innerHTML = `
+                        <li class="action-item">Remain alert and aware of your surroundings</li>
+                        <li class="action-item">Try to join a group or find a public area</li>
+                        <li class="action-item">Keep your phone accessible for emergency calls</li>
+                        <li class="action-item">Set clear boundaries if someone is making you uncomfortable</li>
+                        <li class="action-item">Have an exit plan ready if the situation escalates</li>
+                    `;
+                    
+                    // Medium risk safety strategies
+                    safetyStrategies.innerHTML = `
+                        <li class="action-item">Use the buddy system when going out</li>
+                        <li class="action-item">Let someone know your plans and when you expect to return</li>
+                        <li class="action-item">Practice assertive communication techniques</li>
+                        <li class="action-item">Be aware of exit routes in unfamiliar places</li>
+                        <li class="action-item">Trust your intuition if something feels wrong</li>
+                    `;
+                } else {
+                    riskLevel.innerHTML = '<p>Low Risk: You appear to be in a safe situation, but always stay alert.</p>';
+                    riskLevel.className = 'risk-level risk-low';
+                    
+                    // Low risk immediate actions
+                    immediateActions.innerHTML = `
+                        <li class="action-item">Continue to stay aware of your surroundings</li>
+                        <li class="action-item">Keep your phone charged and accessible</li>
+                        <li class="action-item">Stay connected with friends or family</li>
+                        <li class="action-item">Remember that situations can change, so remain vigilant</li>
+                    `;
+                    
+                    // Low risk safety strategies
+                    safetyStrategies.innerHTML = `
+                        <li class="action-item">Learn about personal safety and self-defense techniques</li>
+                        <li class="action-item">Develop a safety plan for different situations</li>
+                        <li class="action-item">Be mindful of personal information shared with others</li>
+                        <li class="action-item">Consider downloading safety apps on your phone</li>
+                    `;
+                }
+                
+                // Show result section
+                resultSection.style.display = 'block';
+                resultSection.scrollIntoView({ behavior: 'smooth' });
+            });
+        }
+
+        // Modal functionality
+        function setupModals() {
+            // Modal open buttons
+            document.getElementById('show-molestation-modal').addEventListener('click', function() {
+                openModal('molestation-modal');
+            });
+            
+            document.getElementById('sos-button').addEventListener('click', function() {
+                openModal('sos-modal');
+            });
+            
+            document.getElementById('resources-button').addEventListener('click', function() {
+                openModal('resources-modal');
+            });
+            
+            document.getElementById('defense-resources').addEventListener('click', function() {
+                openModal('defense-modal');
+            });
+            
+            // Modal close buttons
+            const closeButtons = document.querySelectorAll('.close-btn');
+            closeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const modalId = this.getAttribute('data-modal');
+                    closeModal(modalId);
+                });
+            });
+            
+            // Share location button
+            document.getElementById('share-location').addEventListener('click', function() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        alert("Location shared with emergency contacts.\n\nThis is a simulation. In a real app, your location coordinates would be sent to your emergency contacts.");
+                    }, function() {
+                        alert("Could not access your location. Please make sure location services are enabled.");
+                    });
+                } else {
+                    alert("Geolocation is not supported by this browser.");
+                }
+            });
+        }
+
+        // Open modal function
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.add('active');
+            setTimeout(() => {
+                modal.querySelector('.modal-content').style.opacity = '1';
+                modal.querySelector('.modal-content').style.transform = 'scale(1)';
+            }, 10);
+            
+            // Close modal when clicking outside
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeModal(modalId);
+                }
+            });
+            
+            // Close on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeModal(modalId);
+                }
+            });
+        }
+
+        // Close modal function
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.querySelector('.modal-content').style.opacity = '0';
+            modal.querySelector('.modal-content').style.transform = 'scale(0.9)';
+            
+            setTimeout(() => {
+                modal.classList.remove('active');
+            }, 300);
+        }
+        
+    </script>
+
+</body>
+</html>
+            

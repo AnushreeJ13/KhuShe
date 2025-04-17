@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TeenHealth | Adolescent Reproductive Wellness</title>
+    <title>Wisdom Years | Women's Health After 50</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -380,7 +380,7 @@
         .testimonials {
             padding: 6rem 5%;
             text-align: center;
-            background: linear-gradient(rgba(2, 6, 23, 0.9), rgba(2, 6, 23, 0.9)), url('https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            background: linear-gradient(rgba(2, 6, 23, 0.9), rgba(2, 6, 23, 0.9)), url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
         }
 
         .testimonials-grid {
@@ -535,6 +535,20 @@
             font-size: 0.9rem;
         }
 
+        /* Animations */
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
         /* Responsive */
         @media (max-width: 1024px) {
             .hero h1 {
@@ -628,16 +642,15 @@
     <header>
         <a href="#" class="logo">
             <span class="logo-icon">🌸</span>
-            TeenHealth
+            Wisdom Years
         </a>
         <nav id="mainNav">
             <ul>
                 <li><a href="#" class="active">Home</a></li>
-                <li><a href="./PCOS-Plate/index.html">PCOS Plate</a></li>
-                <li><a href="cb.html">Period Tracker</a></li>
-                <li><a href="care.html">SafeHer</a></li>
-                <li><a href="journal.html">DearDiary</a></li>
-                
+                <li><a href="#">Bone Health</a></li>
+                <li><a href="#">Heart Health</a></li>
+                <li><a href="#">Brain Health</a></li>
+                <li><a href="#">Resources</a></li>
                 <li><a href="#" class="nav-cta">Get Started</a></li>
             </ul>
         </nav>
@@ -646,114 +659,113 @@
 
     <section class="hero">
         <div class="hero-content">
-            <h1>Empowering Your Adolescent Health Journey</h1>
-            <p>Take control of your reproductive health with personalized tools, expert guidance, and a supportive community designed specifically for teens.</p>
+            <h1>Thriving in Your Wisdom Years</h1>
+            <p>Empowering women over 50 with personalized health tools for bone strength, heart wellness, and cognitive vitality.</p>
             <div class="hero-btns">
-                <a href="#f" class="btn btn-primary">Explore Features</a>
+                <a href="#features" class="btn btn-primary">Explore Features</a>
                 <a href="#" class="btn btn-secondary">Learn More</a>
             </div>
         </div>
     </section>
 
-    <section class="features" id="f">
+    <section class="features" id="features">
         <div class="section-header">
-            <h2 class="section-title">Your Teen Health Toolkit</h2>
-            <p class="section-subtitle">Discover our suite of tools designed to support your reproductive health and safety</p>
+            <h2 class="section-title">Your Vitality Toolkit</h2>
+            <p class="section-subtitle">Essential health tools designed specifically for women in their wisdom years</p>
         </div>
         <div class="features-grid">
             <div class="feature-card">
-                <div class="feature-icon">🍽️</div>
-                <h3>PCOS Plate</h3>
-                <p>Get personalized meal recommendations based on your PCOS symptoms and food preferences to help manage your condition.</p>
-                <a href="./PCOS-Plate/index.html" class="feature-link">Find Your Recipes <i>→</i></a>
+                <div class="feature-icon">🦴</div>
+                <h3>Bone Strength Tracker</h3>
+                <p>Monitor your bone health with our osteoporosis risk assessment, calcium intake calculator, and personalized exercise recommendations.</p>
+                <a href="./bones.html" class="feature-link">Strengthen Bones <i>→</i></a>
             </div>
             <div class="feature-card">
-                <div class="feature-icon">📅</div>
-                <h3>Period Tracker</h3>
-                <p>Simple, private period tracking with predictions, symptom logging, and educational resources about your cycle.</p>
-                <a href="cb.html" class="feature-link">Start Tracking <i>→</i></a>
+                <div class="feature-icon">❤️</div>
+                <h3>Heart Wellness</h3>
+                <p>Track blood pressure, cholesterol, and get personalized heart-healthy lifestyle recommendations tailored for postmenopausal women.</p>
+                <a href="heart.html" class="feature-link">Protect Your Heart <i>→</i></a>
             </div>
             <div class="feature-card">
-                <div class="feature-icon">🛡️</div>
-                <h3>SafeHer</h3>
-                <p>Emergency contacts, safety tips, and quick-access help for uncomfortable or dangerous situations.</p>
-                <a href="care.html" class="feature-link">Stay Safe <i>→</i></a>
+                <div class="feature-icon">🧠</div>
+                <h3>Brain Vitality</h3>
+                <p>Cognitive exercises, memory tests, and nutrition plans to maintain mental sharpness and reduce dementia risk factors.</p>
+                <a href="#" class="feature-link">Boost Brain Health <i>→</i></a>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">💬</div>
-                <h3>DearDiary</h3>
-                <p>A simple journaling app that lets you write daily entries, 
-                track your mood, and save your thoughts. Easily view, edit, or delete past entries whenever you want.</p>
-                <a href="journal.html" class="feature-link">Ask Now <i>→</i></a>
+                <h3>Expert Q&A</h3>
+                <p>Get your questions answered by our network of geriatric specialists, nutritionists, and women's health experts.</p>
+                <a href="#" class="feature-link">Ask a Question <i>→</i></a>
             </div>
         </div>
     </section>
 
     <section class="about">
         <div class="about-image">
-            <img src="https://images.unsplash.com/photo-1542596594-649edbc13630?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Teen girls discussing health">
+            <img src="https://images.unsplash.com/photo-1498758536662-35b82cd15e29?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Women discussing health">
         </div>
         <div class="about-content">
-            <h2>Your Body, Your Choices</h2>
-            <p>We believe in providing evidence-based information that empowers teens to make informed decisions about their reproductive health.</p>
-            <p>Our platform combines medical expertise with intuitive technology to guide you through puberty, periods, and personal safety.</p>
+            <h2>Your Health, Your Wisdom</h2>
+            <p>We believe the years after 50 should be your most vibrant yet. Our platform combines medical expertise with personalized tools to help you navigate menopause and beyond with confidence.</p>
+            <p>From bone density to brain health, we provide evidence-based guidance tailored to your unique needs during this transformative life stage.</p>
             
             <div class="stats">
                 <div class="stat-item">
+                    <div class="stat-number">1 in 3</div>
+                    <div class="stat-label">Women over 50 experience osteoporosis</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">80%</div>
+                    <div class="stat-label">Heart disease risk increases after menopause</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">2x</div>
+                    <div class="stat-label">More likely to develop Alzheimer's than men</div>
+                </div>
+                <div class="stat-item">
                     <div class="stat-number">100%</div>
-                    <div class="stat-label">Private</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">24/7</div>
-                    <div class="stat-label">Support</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">13-19</div>
-                    <div class="stat-label">Age Focus</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">No Ads</div>
-                    <div class="stat-label">Ever</div>
+                    <div class="stat-label">Preventable with lifestyle changes</div>
                 </div>
             </div>
             
-            <a href="#" class="btn btn-primary">Our Promise</a>
+            <a href="#" class="btn btn-primary">Our Approach</a>
         </div>
     </section>
 
     <section class="testimonials">
         <div class="section-header">
-            <h2 class="section-title">Trusted by Teens Worldwide</h2>
-            <p class="section-subtitle">Hear from our community about their experiences</p>
+            <h2 class="section-title">Inspiring Stories</h2>
+            <p class="section-subtitle">Hear from women thriving in their wisdom years</p>
         </div>
         <div class="testimonials-grid">
             <div class="testimonial-card">
-                <p class="testimonial-text">"PCOS Plate helped me find foods that actually make me feel better. I didn't know diet could affect my symptoms so much!"</p>
+                <p class="testimonial-text">"The bone strength program helped me reverse my osteopenia through targeted exercises and nutrition. At 62, I feel stronger than I did at 40!"</p>
                 <div class="testimonial-author">
-                    <img src="https://randomuser.me/api/portraits/women/22.jpg" alt="Priya K." class="author-avatar">
+                    <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Margaret T." class="author-avatar">
                     <div class="author-info">
-                        <h4>Priya K.</h4>
-                        <p>Age 16, Mumbai</p>
+                        <h4>Margaret T.</h4>
+                        <p>Age 62, Portland</p>
                     </div>
                 </div>
             </div>
             <div class="testimonial-card">
-                <p class="testimonial-text">"The period tracker is so easy to use and helps me prepare for my cycle. I love the educational tips too!"</p>
+                <p class="testimonial-text">"After my heart scare, the personalized wellness plan got my cholesterol under control naturally. My doctor was amazed at my last checkup."</p>
                 <div class="testimonial-author">
-                    <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Emma S." class="author-avatar">
+                    <img src="https://randomuser.me/api/portraits/women/72.jpg" alt="Susan K." class="author-avatar">
                     <div class="author-info">
-                        <h4>Emma S.</h4>
-                        <p>Age 14, London</p>
+                        <h4>Susan K.</h4>
+                        <p>Age 58, Chicago</p>
                     </div>
                 </div>
             </div>
             <div class="testimonial-card">
-                <p class="testimonial-text">"SafeHer helped me get out of an uncomfortable situation. I'm so grateful for the emergency features."</p>
+                <p class="testimonial-text">"The brain exercises and Mediterranean diet plan have sharpened my memory so much that I've started learning Spanish - at 70!"</p>
                 <div class="testimonial-author">
-                    <img src="https://randomuser.me/api/portraits/women/33.jpg" alt="Maria L." class="author-avatar">
+                    <img src="https://randomuser.me/api/portraits/women/33.jpg" alt="Eleanor R." class="author-avatar">
                     <div class="author-info">
-                        <h4>Maria L.</h4>
-                        <p>Age 17, Mexico City</p>
+                        <h4>Eleanor R.</h4>
+                        <p>Age 70, Miami</p>
                     </div>
                 </div>
             </div>
@@ -762,9 +774,9 @@
 
     <section class="cta">
         <div class="cta-content">
-            <h2>Ready to Take Control of Your Health?</h2>
-            <p>Join thousands of teens who are making informed decisions about their bodies and futures.</p>
-            <a href="#" class="btn btn-primary" style="background: white; color: var(--primary);">Get Started Today</a>
+            <h2>Ready to Embrace Your Wisdom Years with Confidence?</h2>
+            <p>Join our community of women taking proactive control of their health after 50.</p>
+            <a href="#" class="btn btn-primary" style="background: white; color: var(--primary);">Start Your Journey</a>
         </div>
     </section>
 
@@ -773,9 +785,9 @@
             <div class="footer-col">
                 <a href="#" class="logo">
                     <span class="logo-icon">🌸</span>
-                    TeenHealth
+                    Wisdom Years
                 </a>
-                <p style="color: var(--gray); margin-top: 1rem;">Empowering teens through every stage of their health journey.</p>
+                <p style="color: var(--gray); margin-top: 1rem;">Empowering women to thrive in their wisdom years with strength, vitality, and joy.</p>
                 <div class="social-links">
                     <a href="#"><i>📱</i></a>
                     <a href="#"><i>📘</i></a>
@@ -784,20 +796,20 @@
                 </div>
             </div>
             <div class="footer-col">
-                <h3>Resources</h3>
+                <h3>Health Topics</h3>
                 <ul class="footer-links">
-                    <li><a href="#">Articles</a></li>
-                    <li><a href="#">FAQs</a></li>
-                    <li><a href="#">Glossary</a></li>
-                    <li><a href="#">Research</a></li>
-                    <li><a href="#">Community</a></li>
+                    <li><a href="#">Bone Health</a></li>
+                    <li><a href="#">Heart Wellness</a></li>
+                    <li><a href="#">Cognitive Vitality</a></li>
+                    <li><a href="#">Menopause Support</a></li>
+                    <li><a href="#">Nutrition Plans</a></li>
                 </ul>
             </div>
             <div class="footer-col">
                 <h3>Company</h3>
                 <ul class="footer-links">
                     <li><a href="#">About Us</a></li>
-                    <li><a href="#">Our Team</a></li>
+                    <li><a href="#">Our Experts</a></li>
                     <li><a href="#">Careers</a></li>
                     <li><a href="#">Press</a></li>
                     <li><a href="#">Contact</a></li>
@@ -809,12 +821,12 @@
                     <li><a href="#">Privacy Policy</a></li>
                     <li><a href="#">Terms of Service</a></li>
                     <li><a href="#">Cookie Policy</a></li>
-                    <li><a href="#">COPPA Compliance</a></li>
+                    <li><a href="#">HIPAA Compliance</a></li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2025 TeenHealth. All rights reserved. | Made with ♥ for teens everywhere</p>
+            <p>&copy; 2025 Wisdom Years. All rights reserved. | Celebrating women's health at every age</p>
         </div>
     </footer>
 
@@ -859,26 +871,6 @@
                 const elementPosition = element.getBoundingClientRect().top;
                 const screenPosition = window.innerHeight / 1.2;
                 
-                if(elementPosition < screenPosition) {
-                    element.style.opacity = '1';
-                    element.style.transform = 'translateY(0)';
-                }
-            });
-        };
-        
-        // Set initial state
-        document.querySelectorAll('.feature-card, .section-header, .about-content, .testimonial-card').forEach(element => {
-            element.style.opacity = '0';
-            element.style.transform = 'translateY(30px)';
-            element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        });
-        
-        // Listen for scroll events
-        window.addEventListener('scroll', animateOnScroll);
-        window.addEventListener('load', animateOnScroll);
-    </script>
-</body>
-</html>                
                 if(elementPosition < screenPosition) {
                     element.style.opacity = '1';
                     element.style.transform = 'translateY(0)';
