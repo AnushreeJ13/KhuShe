@@ -58,66 +58,64 @@
       font-size: 2rem;
     }
 
+    
     nav ul {
-      display: flex;
-      list-style: none;
-      gap: 2rem;
-    }
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
 
-    nav ul li a {
-      font-weight: 500;
-      position: relative;
-      padding: 0.5rem 0;
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      color: var(--text-light);
-      font-family: 'Inter', sans-serif;
-    }
+        nav ul li a {
+            font-weight: 500;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: var(--transition);
+        }
 
-    nav ul li a::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: var(--transition);
+        }
 
-    nav ul li a:hover,
-    nav ul li a.active {
-      color: var(--primary);
-    }
+        nav ul li a:hover,
+        nav ul li a.active {
+            color: var(--primary);
+        }
 
-    nav ul li a:hover::after,
-    nav ul li a.active::after {
-      width: 100%;
-    }
+        nav ul li a:hover::after,
+        nav ul li a.active::after {
+            width: 100%;
+        }
 
-    .nav-cta {
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
-      color: white;
-      padding: 0.6rem 1.5rem;
-      border-radius: 50px;
-      font-weight: 600;
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
-    }
+        .nav-cta {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
+        }
 
-    .nav-cta:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 25px rgba(236, 72, 153, 0.4);
-    }
+        .nav-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(236, 72, 153, 0.4);
+        }
 
-    .mobile-menu-btn {
-      display: none;
-      background: none;
-      border: none;
-      color: white;
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
     /* Adjust app container for new nav */
     .app-container {
       max-width: 1200px;
@@ -590,13 +588,13 @@
 
      <!-- New Navigation Bar -->
   <header>
-    <a href="#" class="logo">
+    <a href="./menopause.html" class="logo">
       <span class="logo-icon">🌸</span>
       MenoTrack
     </a>
     <nav id="mainNav">
       <ul>
-        <li><a href="#" class="active">Home</a></li>
+        <li><a href="./index.html" class="active">Home</a></li>
         <li><a href="#assessment-tab">Assessment</a></li>
         <li><a href="#tracker-tab">Tracker</a></li>
         <li><a href="#history-tab">History</a></li>

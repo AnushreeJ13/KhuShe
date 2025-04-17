@@ -104,103 +104,135 @@
       --input-bg: #222222;
       --highlight: #9966CC; /* Amethyst instead of pink */
     }
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    }
-    
-    body {
-      background-color: var(--background);
-      color: var(--text-light);
-      min-height: 100vh;
-      line-height: 1.6;
-    }
-    
-    header {
-      position: relative;
-      text-align: center;
-      padding: 10px 0;
-      background-color: #000000;
-      margin-bottom: 2rem;
-      border-bottom: 2px solid var(--primary);
-      box-shadow: 0 4px 20px rgba(138, 43, 226, 0.2);
-    }
-    
-    .logo-container {
-      display: flex;
-      justify-content: center;
-      padding: 0;
-    }
-    
-    .logo {
-      width: 180px;
-      transition: transform 0.3s ease, filter 0.3s ease;
-      filter: brightness(1.1) drop-shadow(0 0 8px rgba(138, 43, 226, 0.5));
-    }
-    
-    .logo:hover {
-      transform: rotate(-5deg) scale(1.05);
-      filter: brightness(1.2) drop-shadow(0 0 12px rgba(138, 43, 226, 0.8));
-    }
-    
-    nav {
-      font-family: 'Segoe UI', system-ui, sans-serif;
-    }
+    :root {
+            --primary: #EC4899;
+            --primary-dark: #DB2777;
+            --secondary: #7C3AED;
+            --dark: #0F172A;
+            --darker: #020617;
+            --light: #F8FAFC;
+            --gray: #94A3B8;
+            --dark-gray: #334155;
+            --card-bg: rgba(30, 41, 59, 0.6);
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--darker);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height:100px;
+            padding: 1.5rem 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 1000;
+            backdrop-filter: blur(12px);
+            background: rgba(2, 6, 23, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-icon {
+            margin-right: 0.5rem;
+            font-size: 2rem;
+        }
+
     
     nav ul {
-      display: flex;
-      justify-content: center;
-      gap: 1.5rem;
-      list-style: none;
-      flex-wrap: wrap;
-      padding: 0.5rem 0;
-    }
-    
-    nav a {
-      color: var(--text-light);
-      text-decoration: none;
-      font-weight: 500;
-      padding: 0.5rem 1rem;
-      border-radius: 2rem;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 0.5rem;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    nav a::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, var(--primary), transparent);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      z-index: -1;
-      border-radius: 2rem;
-    }
-    
-    nav a:hover {
-      color: white;
-      transform: translateY(-2px);
-    }
-    
-    nav a:hover::before {
-      opacity: 0.2;
-    }
-    
-    nav a i {
-      margin-right: 0.5rem;
-      color: var(--primary);
-    }
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav ul li a {
+            font-weight: 500;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: var(--transition);
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: var(--transition);
+        }
+
+        nav ul li a:hover,
+        nav ul li a.active {
+            color: var(--primary);
+        }
+
+        nav ul li a:hover::after,
+        nav ul li a.active::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(236, 72, 153, 0.4);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
 
     /* ----------------- Tracker and Card Styles ----------------- */
     .container {
@@ -509,65 +541,7 @@
     }
 
     /* ----------------- Login/Profile Container Styles ----------------- */
-    .login-container {
-      position: absolute;
-      top: 10px;
-      right: 20px;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
     
-    .login-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px 20px;
-      background: linear-gradient(135deg, var(--primary), #483D8B);
-      color: white;
-      text-decoration: none;
-      border-radius: 30px;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
-      gap: 10px;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .login-btn::after {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-      transform: rotate(45deg);
-      animation: shimmerBtn 3s infinite linear;
-      z-index: 1;
-    }
-    
-    @keyframes shimmerBtn {
-      0% { transform: translateX(-100%) rotate(45deg); }
-      100% { transform: translateX(100%) rotate(45deg); }
-    }
-    
-    .login-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 20px rgba(138, 43, 226, 0.4);
-      background: linear-gradient(135deg, #483D8B, var(--primary));
-    }
-    
-    .login-btn i {
-      position: relative;
-      z-index: 2;
-    }
-    
-    .login-btn span {
-      position: relative;
-      z-index: 2;
-    }
     
     .user-info {
       display: none;
@@ -585,16 +559,7 @@
       color: var(--primary);
     }
     
-    .logout-btn {
-      color: var(--primary);
-      cursor: pointer;
-      font-weight: 600;
-      transition: color 0.3s ease;
-    }
-    
-    .logout-btn:hover {
-      color: var(--text-bright);
-    }
+   
   </style>
 </head>
 <body>
@@ -605,55 +570,26 @@
     <div class="floating-circle" style="width: 200px; height: 200px; top: 40%; left: 50%;"></div>
     <div class="floating-circle" style="width: 150px; height: 150px; top: 80%; left: 30%;"></div>
   </div>
-  <header>
-    <!-- Login/Profile Container -->
-    <div class="login-container">
-      <a href="auth.html" class="login-btn" id="loginButton">
-        <i class="fas fa-user"></i> <span>Login / Sign Up</span>
-      </a>
-      <div class="user-info" id="userInfo">
-        <i class="fas fa-user-circle"></i>
-        <span id="userEmail"></span>
-        <span class="logout-btn" id="logoutButton">Logout</span>
-      </div>
-    </div>
 
-    <section class="features", id="f">
-      <div class="section-header">
-          <h2 class="section-title">Your Personalized Health Toolkit</h2>
-          <p class="section-subtitle">Discover our suite of tools designed to support your reproductive health at every stage</p>
-      </div>
-      <div class="features-grid">
-          <div class="feature-card">
-              <div class="feature-icon">💊</div>
-              <h3>PillPicker</h3>
-              <p>Our intelligent algorithm suggests the contraceptive method that aligns with your lifestyle, health profile, and personal preferences.</p>
-              <a href="https://shecare.onrender.com/" class="feature-link">Find Your Match <i>→</i></a>
-          </div>
-          <div class="feature-card">
-              <div class="feature-icon">📅</div>
-              <h3>Cycle Tracker</h3>
-              <p>Advanced period prediction and fertility tracking with personalized insights about your menstrual health.</p>
-              <a href="oc.html" class="feature-link">Start Tracking <i>→</i></a>
-          </div>
-          <div class="feature-card">
-              <div class="feature-icon">🔍</div>
-              <h3>Contraceptive Explorer</h3>
-              <p>Comprehensive, unbiased information about all contraceptive options with effectiveness rates and real user experiences.</p>
-              <a href="methods.html" class="feature-link">Explore Options <i>→</i></a>
-          </div>
-          <div class="feature-card">
-              <div class="feature-icon">💬</div>
-              <h3>Expert Q&A</h3>
-              <p>Get your questions answered by our network of gynecologists, nurses, and reproductive health specialists.</p>
-              <a href="#" class="feature-link">Ask a Question <i>→</i></a>
-          </div>
-      </div>
-  </section>
-  </header>
+
+  <header>
+    <a href="./reproductive.html" class="logo"><img src="./LOG1.png" width="150px"></a>
+    <nav id="mainNav">
+        <ul>
+            <li><a href="./index.html" class="active">Home</a></li>
+            <li><a href="https://shecare.onrender.com/">PillPicker</a></li>
+            <li><a href="methods.html">Contraceptives</a></li>
+            <li><a href="oc.html">Ovulation tracker</a></li>
+            <li><a href="#">Resources</a></li>
+            <li><a href="#" class="nav-cta">Get Started</a></li>
+        </ul>
+    </nav>
+    <button class="mobile-menu-btn" id="menuBtn">☰</button>
+</header>
 
   <div class="container">
     <div class="title-section">
+      <br/><br/>
       <h1>Ovulation: Track, know, plan</h1>
       <p>
         Not sure when you're ovulating? <br />
