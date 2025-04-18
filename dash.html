@@ -1,0 +1,1629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wisdom Years | Vital360 Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Using Firebase compat libraries for consistency -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-storage-compat.js"></script>
+    <!-- Include html2pdf library for report generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        :root {
+            --primary: #EC4899;
+            --primary-dark: #DB2777;
+            --secondary: #7C3AED;
+            --dark: #0F172A;
+            --darker: #020617;
+            --light: #F8FAFC;
+            --gray: #94A3B8;
+            --dark-gray: #334155;
+            --card-bg: rgba(30, 41, 59, 0.6);
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--darker);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Dashboard Layout */
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: rgba(2, 6, 23, 0.9);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem 1.5rem;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+            transition: var(--transition);
+        }
+
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-icon {
+            margin-right: 0.5rem;
+            font-size: 2rem;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            color: var(--gray);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .menu-toggle:hover {
+            color: var(--primary);
+        }
+
+        /* User Profile */
+        .user-profile {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+            border: 3px solid var(--primary);
+        }
+
+        .user-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .user-info p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .edit-profile {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .edit-profile:hover {
+            background: var(--primary);
+        }
+
+        /* Navigation */
+        .nav-menu {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            transition: var(--transition);
+            color: var(--gray);
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: rgba(236, 72, 153, 0.1);
+            color: var(--primary);
+        }
+
+        .nav-icon {
+            margin-right: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .nav-text {
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        /* Logout */
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            background: none;
+            border: none;
+            color: var(--gray);
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 0, 0, 0.1);
+            color: #ff6b6b;
+        }
+
+        .logout-icon {
+            margin-right: 1rem;
+            font-size: 1.2rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 2rem 3rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .notification-btn, .settings-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .notification-btn:hover, .settings-btn:hover {
+            background: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* Cards */
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border-color: rgba(236, 72, 153, 0.3);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .card-content {
+            margin-bottom: 1rem;
+        }
+
+        .card-stats {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .card-description {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        .card-trend {
+            font-weight: 600;
+        }
+
+        .trend-up {
+            color: #4ade80;
+        }
+
+        .trend-down {
+            color: #f87171;
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .add-btn {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .add-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(236, 72, 153, 0.3);
+        }
+
+        .add-icon {
+            font-size: 1.1rem;
+        }
+
+        /* Cognitive Activities */
+        .activities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .activity-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: var(--transition);
+        }
+
+        .activity-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(236, 72, 153, 0.3);
+        }
+
+        .activity-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .activity-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .activity-desc {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .activity-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .activity-btn:hover {
+            background: var(--primary);
+        }
+
+        /* Wellness Reports */
+        .reports-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .report-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: var(--transition);
+        }
+
+        .report-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(236, 72, 153, 0.3);
+        }
+
+        .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .report-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .report-date {
+            color: var(--gray);
+            font-size: 0.8rem;
+        }
+
+        .report-summary {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .report-link {
+            color: var(--primary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            transition: var(--transition);
+        }
+
+        .report-link:hover {
+            color: var(--secondary);
+        }
+
+        /* Reminders */
+        .reminders-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .reminder-item {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .reminder-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .reminder-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .reminder-details h4 {
+            font-size: 1rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .reminder-details p {
+            color: var(--gray);
+            font-size: 0.8rem;
+        }
+
+        .reminder-time {
+            color: var(--primary);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .reminder-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .reminder-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .reminder-btn:hover {
+            background: var(--primary);
+        }
+
+        /* Modals */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: var(--dark);
+            border-radius: 16px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 500px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--gray);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            color: var(--primary);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: white;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-file {
+            display: none;
+        }
+
+        .file-upload-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .file-upload-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary);
+        }
+
+        .upload-icon {
+            font-size: 1.2rem;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .cancel-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .cancel-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .save-btn {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(236, 72, 153, 0.3);
+        }
+
+        /* Report Template (hidden until needed) */
+        .report-template {
+            display: none;
+            background: white;
+            color: black;
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .report-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .report-logo {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .report-title {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .report-date {
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .report-section {
+            margin-bottom: 2rem;
+        }
+
+        .report-section-title {
+            font-size: 1.3rem;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .report-metrics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .report-metric {
+            background: #f9f9f9;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .metric-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        /* Notification Area */
+        .notification-area {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .notification {
+            background: var(--dark);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transform: translateX(100%);
+            opacity: 0;
+            transition: all 0.3s ease;
+            max-width: 300px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 250px;
+            }
+            .main-content {
+                margin-left: 250px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+            }
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 1.5rem;
+            }
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .modal-content {
+                width: 95%;
+                padding: 1.5rem;
+            }
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+  <!-- Dashboard Container -->
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <span class="logo-icon">💜</span>
+          <span>Wisdom Years</span>
+        </div>
+        <button class="menu-toggle">≡</button>
+      </div>
+      
+      <!-- User Profile Section -->
+      <div class="user-profile">
+        <img src="/api/placeholder/200/200" alt="User Profile" class="user-avatar" id="profilePhoto">
+        <div class="user-info">
+          <h3 id="usernameEl">User</h3>
+          <p id="emailEl">email@example.com</p>
+        </div>
+        <button class="edit-profile" id="edit-profile-btn">Edit Profile</button>
+      </div>
+      
+      <!-- Navigation Menu -->
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a href="#" class="nav-link active">
+            <span class="nav-icon">📊</span>
+            <span class="nav-text">Vital360 Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <span class="nav-icon">🧠</span>
+            <span class="nav-text">Cognitive Activities</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <span class="nav-icon">📈</span>
+            <span class="nav-text">Wellness Reports</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <span class="nav-icon">⏰</span>
+            <span class="nav-text">Medication Reminders</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="./heart.html" class="nav-link">
+            <span class="nav-icon">❤️</span>
+            <span class="nav-text">Heart Health</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="./bones.html" class="nav-link">
+            <span class="nav-icon">🦴</span>
+            <span class="nav-text">Bone Health</span>
+          </a>
+        </li>
+      </ul>
+      
+      <!-- Logout Button -->
+      <div class="logout">
+        <button class="logout-btn" onclick="handleLogout()">
+          <span class="logout-icon">🚪</span>
+          <span class="logout-text">Sign Out</span>
+        </button>
+      </div>
+    </aside>
+    
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <div class="header">
+        <h1>Vital360 Dashboard</h1>
+        <div class="header-actions">
+          <button class="notification-btn">🔔</button>
+          <button class="settings-btn">⚙️</button>
+        </div>
+      </div>
+      
+      <!-- Stats Cards Section -->
+      <div class="cards-container">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Cognitive Health</h3>
+            <div class="card-icon">🧠</div>
+          </div>
+          <div class="card-content">
+            <div class="card-stats">84%</div>
+            <p class="card-description">Engagement with activities this week</p>
+          </div>
+          <div class="card-footer">
+            <span>Last 7 days</span>
+            <div class="card-trend trend-up">↗ 6%</div>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Medication Adherence</h3>
+            <div class="card-icon">💊</div>
+          </div>
+          <div class="card-content">
+            <div class="card-stats">92%</div>
+            <p class="card-description">Doses taken as prescribed</p>
+          </div>
+          <div class="card-footer">
+            <span>This month</span>
+            <div class="card-trend trend-up">↗ 3%</div>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Wellness Progress</h3>
+            <div class="card-icon">📊</div>
+          </div>
+          <div class="card-content">
+            <div class="card-stats">76%</div>
+            <p class="card-description">Of monthly goals achieved</p>
+          </div>
+          <div class="card-footer">
+            <span>Current month</span>
+            <div class="card-trend trend-up">↗ 12%</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Cognitive Activities Section -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">Weekly Cognitive Activities</h2>
+          <button class="add-btn" id="view-all-activities">
+            <span class="add-icon">👀</span>
+            <span>View All</span>
+          </button>
+        </div>
+        <div class="activities-grid">
+          <div class="activity-card">
+            <div class="activity-icon">🧩</div>
+            <h3 class="activity-title">Memory Puzzle</h3>
+            <p class="activity-desc">Complete this week's memory challenge to boost recall</p>
+            <button class="activity-btn">
+              Start Activity
+              <span>→</span>
+            </button>
+          </div>
+          <div class="activity-card">
+            <div class="activity-icon">📖</div>
+            <h3 class="activity-title">Reading Challenge</h3>
+            <p class="activity-desc">Read for 20 minutes daily this week</p>
+            <button class="activity-btn">
+              Start Activity
+              <span>→</span>
+            </button>
+          </div>
+          <div class="activity-card">
+            <div class="activity-icon">🎶</div>
+            <h3 class="activity-title">Music Therapy</h3>
+            <p class="activity-desc">Listen to classical music for relaxation</p>
+            <button class="activity-btn">
+              Start Activity
+              <span>→</span>
+            </button>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Wellness Reports Section -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">Monthly Wellness Reports</h2>
+          <button class="add-btn" id="generate-report">
+            <span class="add-icon">📄</span>
+            <span>Generate New</span>
+          </button>
+        </div>
+        <div class="reports-container">
+          <div class="report-card">
+            <div class="report-header">
+              <h3 class="report-title">March 2025 Wellness</h3>
+              <span class="report-date">Apr 2, 2025</span>
+            </div>
+            <p class="report-summary">Your cognitive activities increased by 12% this month. Keep up the great work!</p>
+            <a href="#" class="report-link download-report" data-report-id="report1">
+              Download Report
+              <span>↓</span>
+            </a>
+          </div>
+          <div class="report-card">
+            <div class="report-header">
+              <h3 class="report-title">February 2025 Wellness</h3>
+              <span class="report-date">Mar 3, 2025</span>
+            </div>
+            <p class="report-summary">Medication adherence was excellent at 98%. Your heart health metrics improved.</p>
+            <a href="#" class="report-link download-report" data-report-id="report2">
+              Download Report
+              <span>↓</span>
+            </a>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Medication Reminders Section -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">Upcoming Medication Reminders</h2>
+          <button class="add-btn" id="add-reminder">
+            <span class="add-icon">+</span>
+            <span>Add Reminder</span>
+          </button>
+        </div>
+        <div class="reminders-list" id="remindersList">
+          <!-- Reminders will be dynamically added here -->
+        </div>
+      </section>
+    </main>
+  </div>
+  
+  <!-- Modals -->
+  <!-- Edit Profile Modal -->
+  <div class="modal" id="profile-modal">
+    <div class="modal-content">
+      <button class="close-modal" id="close-profile-modal">×</button>
+      <h2 class="modal-title">Edit Profile</h2>
+      <form id="profile-form">
+        <div class="form-group">
+          <label class="form-label">Profile Picture</label>
+          <input type="file" id="avatar-upload" class="form-file" accept="image/*">
+          <label for="avatar-upload" class="file-upload-btn">
+            <span class="upload-icon">📷</span>
+            <span>Choose a photo</span>
+          </label>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="name">Name</label>
+          <input type="text" id="name" class="form-input" placeholder="Enter your name" >
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="phone">Phone</label>
+          <input type="tel" id="phone" class="form-input" placeholder="Enter your phone number">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="cancel-btn" id="cancel-profile">Cancel</button>
+          <button type="submit" class="save-btn">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <!-- Add Reminder Modal -->
+  <div class="modal" id="reminder-modal">
+    <div class="modal-content">
+      <button class="close-modal" id="close-reminder-modal">×</button>
+      <h2 class="modal-title">Add Medication Reminder</h2>
+      <form id="reminder-form">
+        <div class="form-group">
+          <label class="form-label" for="medication-name">Medication Name</label>
+          <input type="text" id="medication-name" class="form-input" placeholder="Enter medication name">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="medication-dosage">Dosage Instructions</label>
+          <input type="text" id="medication-dosage" class="form-input" placeholder="e.g. 1 tablet with water">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="reminder-time">Time</label>
+          <input type="time" id="reminder-time" class="form-input">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="reminder-repeat">Repeat</label>
+          <select id="reminder-repeat" class="form-input">
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+            <option value="none">Does not repeat</option>
+          </select>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="cancel-btn" id="cancel-reminder">Cancel</button>
+          <button type="submit" class="save-btn">Save Reminder</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <!-- Generate Report Modal -->
+  <div class="modal" id="report-modal">
+    <div class="modal-content">
+      <button class="close-modal" id="close-report-modal">×</button>
+      <h2 class="modal-title">Generate Wellness Report</h2>
+      <form id="report-form">
+        <div class="form-group">
+          <label class="form-label" for="report-period">Report Period</label>
+          <select id="report-period" class="form-input">
+            <option value="weekly">Weekly</option>
+            <option value="monthly" selected>Monthly</option>
+            <option value="quarterly">Quarterly</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="report-focus">Focus Areas</label>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+            <label style="display: flex; align-items: center; gap: 0.5rem;">
+              <input type="checkbox" checked> Cognitive Health
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.5rem;">
+              <input type="checkbox" checked> Medication
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.5rem;">
+              <input type="checkbox" checked> Wellness Goals
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.5rem;">
+              <input type="checkbox"> Heart Health
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.5rem;">
+              <input type="checkbox"> Bone Health
+            </label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="cancel-btn" id="cancel-report">Cancel</button>
+          <button type="submit" class="save-btn">Generate Report</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <!-- Report Template (hidden) -->
+  <div id="report-template" class="report-template">
+    <div class="report-header">
+      <div class="report-logo">Wisdom Years</div>
+      <h1 class="report-title">Monthly Wellness Report</h1>
+      <div class="report-date">April 2025</div>
+    </div>
+    
+    <div class="report-section">
+      <h2 class="report-section-title">Summary</h2>
+      <p>This report summarizes your health and wellness activities for the month. You've made excellent progress in several areas.</p>
+    </div>
+    
+    <div class="report-section">
+      <h2 class="report-section-title">Key Metrics</h2>
+      <div class="report-metrics">
+        <div class="report-metric">
+          <div class="metric-title">Cognitive Activities</div>
+          <div class="metric-value">84%</div>
+          <div>Engagement rate</div>
+        </div>
+        <div class="report-metric">
+          <div class="metric-title">Medication Adherence</div>
+          <div class="metric-value">92%</div>
+          <div>Doses taken as prescribed</div>
+        </div>
+        <div class="report-metric">
+          <div class="metric-title">Wellness Goals</div>
+          <div class="metric-value">76%</div>
+          <div>Monthly goals achieved</div>
+        </div>
+        <div class="report-metric">
+          <div class="metric-title">Activity Minutes</div>
+          <div class="metric-value">1,245</div>
+          <div>Total active minutes</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="report-section">
+      <h2 class="report-section-title">Recommendations</h2>
+      <ul>
+        <li>Continue with your current cognitive activities routine</li>
+        <li>Consider adding 10 minutes of meditation to your daily routine</li>
+        <li>Schedule your annual physical examination</li>
+        <li>Review your calcium and vitamin D intake with your doctor</li>
+      </ul>
+    </div>
+    
+    <div class="report-section">
+      <h2 class="report-section-title">Next Steps</h2>
+      <p>Based on your current progress, we recommend focusing on maintaining consistency with your medication schedule and gradually increasing your physical activity.</p>
+    </div>
+  </div>
+  
+  <!-- Notification Area -->
+  <div class="notification-area" id="notification-area"></div>
+  
+  <!-- Firebase & Dashboard Script -->
+  <script>
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAzbzw54O_JRDNOfHyteIMvq999R3Aj624",
+      authDomain: "ehsaas-f4c7e.firebaseapp.com",
+      projectId: "ehsaas-f4c7e",
+      storageBucket: "ehsaas-f4c7e.appspot.com",
+      messagingSenderId: "618055369757",
+      appId: "1:618055369757:web:3592bd6978c85df0f432f4",
+      measurementId: "G-JTTDNV43GD"
+    };
+
+    // Initialize Firebase
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+    const storage = firebase.storage();
+
+    // Global variables for health tracking
+    let medicationData = [];
+    let activityData = [];
+    let reportData = [];
+
+    // Listen for authentication state changes
+    auth.onAuthStateChanged(async user => {
+      if (user) {
+        // Load user profile
+        loadUserProfile(user);
+        
+        // Load medication reminders
+        loadMedicationReminders(user.uid);
+        
+        // Load cognitive activities
+        loadCognitiveActivities(user.uid);
+        
+        // Load wellness reports
+        loadWellnessReports(user.uid);
+      }
+    });
+
+    // Load user profile
+    async function loadUserProfile(user) {
+      const userDoc = await db.collection('users').doc(user.uid).get();
+      if (userDoc.exists) {
+        const data = userDoc.data();
+        document.getElementById("usernameEl").textContent = data.username || user.displayName || "User";
+        document.getElementById("emailEl").textContent = data.email || user.email;
+        if (data.profilePhotoURL) {
+          document.getElementById("profilePhoto").src = data.profilePhotoURL;
+        }
+      }
+    }
+
+    // Load medication reminders with realtime updates
+    function loadMedicationReminders(userId) {
+      db.collection('users').doc(userId).collection('medicationReminders')
+        .orderBy('time', 'asc')
+        .onSnapshot(snapshot => {
+          medicationData = [];
+          const remindersList = document.getElementById('remindersList');
+          remindersList.innerHTML = '';
+          
+          snapshot.forEach(doc => {
+            const reminder = doc.data();
+            reminder.id = doc.id;
+            medicationData.push(reminder);
+            
+            // Create reminder item
+            const reminderItem = document.createElement('div');
+            reminderItem.className = 'reminder-item';
+            reminderItem.innerHTML = `
+              <div class="reminder-info">
+                <div class="reminder-icon">💊</div>
+                <div class="reminder-details">
+                  <h4>${reminder.name}</h4>
+                  <p>${reminder.dosage}</p>
+                </div>
+              </div>
+              <div class="reminder-time">${formatTime(reminder.time)}</div>
+              <div class="reminder-actions">
+                <button class="reminder-btn delete-reminder" data-id="${doc.id}">🗑️</button>
+              </div>
+            `;
+            
+            remindersList.appendChild(reminderItem);
+          });
+          
+          // Add event listeners to delete buttons
+          document.querySelectorAll('.delete-reminder').forEach(button => {
+            button.addEventListener('click', (e) => {
+              e.stopPropagation();
+              deleteReminder(userId, button.dataset.id);
+            });
+          });
+        });
+    }
+
+    // Format time for display
+    function formatTime(timeString) {
+      if (!timeString) return '';
+      const [hours, minutes] = timeString.split(':');
+      const hour = parseInt(hours);
+      const ampm = hour >= 12 ? 'PM' : 'AM';
+      const hour12 = hour % 12 || 12;
+      return `${hour12}:${minutes} ${ampm}`;
+    }
+
+    // Delete a reminder
+    function deleteReminder(userId, reminderId) {
+      db.collection('users').doc(userId).collection('medicationReminders').doc(reminderId).delete()
+        .then(() => {
+          showNotification('Reminder deleted successfully');
+        })
+        .catch(error => {
+          console.error("Error deleting reminder:", error);
+          showNotification('Error deleting reminder');
+        });
+    }
+
+    // Load cognitive activities with realtime updates
+    function loadCognitiveActivities(userId) {
+      db.collection('users').doc(userId).collection('cognitiveActivities').orderBy('date', 'desc').limit(3)
+        .onSnapshot(snapshot => {
+          activityData = [];
+          snapshot.forEach(doc => {
+            activityData.push(doc.data());
+          });
+          // Update UI would go here
+        });
+    }
+
+    // Load wellness reports with realtime updates
+    function loadWellnessReports(userId) {
+      db.collection('users').doc(userId).collection('wellnessReports').orderBy('date', 'desc').limit(2)
+        .onSnapshot(snapshot => {
+          reportData = [];
+          snapshot.forEach(doc => {
+            const report = doc.data();
+            report.id = doc.id;
+            reportData.push(report);
+          });
+          // Update UI would go here
+        });
+    }
+
+    // Generate and download a wellness report
+    function generateAndDownloadReport() {
+      const element = document.getElementById('report-template');
+      const opt = {
+        margin: 10,
+        filename: 'Wellness_Report_April_2025.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+      
+      // Show loading notification
+      showNotification('Generating report...');
+      
+      // Generate the PDF
+      html2pdf().set(opt).from(element).save().then(() => {
+        showNotification('Report downloaded successfully');
+      });
+    }
+
+    // Upload functions with error handling
+    async function uploadFile(path, file) {
+      try {
+        const storageRef = storage.ref(path);
+        await storageRef.put(file);
+        return await storageRef.getDownloadURL();
+      } catch (error) {
+        console.error("Upload error:", error);
+        showNotification("Upload failed. Please try again.");
+        throw error;
+      }
+    }
+
+    // Profile form submission
+    document.getElementById('profile-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const user = auth.currentUser;
+      if (!user) return;
+      
+      try {
+        const fileInput = document.getElementById('avatar-upload');
+        const file = fileInput.files[0];
+        let photoURL = null;
+        
+        if (file) {
+          photoURL = await uploadFile(`profilePhotos/${user.uid}`, file);
+        }
+        
+        const updateData = {
+          username: document.getElementById('name').value,
+          phone: document.getElementById('phone').value,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        };
+        
+        if (photoURL) updateData.profilePhotoURL = photoURL;
+        
+        await db.collection('users').doc(user.uid).update(updateData);
+        
+        // Update auth profile if needed
+        if (updateData.username) {
+          await user.updateProfile({ displayName: updateData.username });
+        }
+        
+        showNotification('Profile updated successfully!');
+        document.getElementById('profile-modal').style.display = 'none';
+      } catch (error) {
+        console.error("Profile update error:", error);
+        showNotification('Error updating profile: ' + error.message);
+      }
+    });
+
+    // Reminder form submission
+    document.getElementById('reminder-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const user = auth.currentUser;
+      if (!user) return;
+      
+      try {
+        await db.collection('users').doc(user.uid).collection('medicationReminders').add({
+          name: document.getElementById('medication-name').value,
+          dosage: document.getElementById('medication-dosage').value,
+          time: document.getElementById('reminder-time').value,
+          repeat: document.getElementById('reminder-repeat').value,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        
+        showNotification('Reminder added successfully!');
+        document.getElementById('reminder-modal').style.display = 'none';
+        this.reset();
+      } catch (error) {
+        console.error("Reminder save error:", error);
+        showNotification('Error saving reminder: ' + error.message);
+      }
+    });
+
+    // Report form submission
+    document.getElementById('report-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const user = auth.currentUser;
+      if (!user) return;
+      
+      try {
+        const period = document.getElementById('report-period').value;
+        
+        // Generate the report
+        generateAndDownloadReport();
+        
+        // Save report metadata to Firestore
+        await db.collection('users').doc(user.uid).collection('wellnessReports').add({
+          title: `${period.charAt(0).toUpperCase() + period.slice(1)} Wellness Report`,
+          period: period,
+          date: firebase.firestore.FieldValue.serverTimestamp(),
+          // Additional report data would be added here
+        });
+        
+        document.getElementById('report-modal').style.display = 'none';
+      } catch (error) {
+        console.error("Report generation error:", error);
+        showNotification('Error generating report: ' + error.message);
+      }
+    });
+
+    // Notification function
+    function showNotification(message) {
+      const notification = document.createElement('div');
+      notification.className = 'notification';
+      notification.textContent = message;
+      document.getElementById('notification-area').appendChild(notification);
+      
+      setTimeout(() => {
+        notification.classList.add('show');
+      }, 10);
+      
+      setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => notification.remove(), 300);
+      }, 3000);
+    }
+
+    // Logout function
+    function handleLogout() {
+      auth.signOut().then(() => {
+        // Redirect to home or login page would go here
+        showNotification('Signed out successfully');
+      }).catch(error => {
+        console.error("Logout error:", error);
+        showNotification('Error signing out: ' + error.message);
+      });
+    }
+
+    // Modal toggle functions
+    document.querySelector('.menu-toggle').addEventListener('click', () => {
+      document.querySelector('.sidebar').classList.toggle('active');
+    });
+
+    // Profile modal
+    document.getElementById('edit-profile-btn').addEventListener('click', () => {
+      document.getElementById('profile-modal').style.display = 'flex';
+    });
+    document.getElementById('close-profile-modal').addEventListener('click', () => {
+      document.getElementById('profile-modal').style.display = 'none';
+    });
+    document.getElementById('cancel-profile').addEventListener('click', () => {
+      document.getElementById('profile-modal').style.display = 'none';
+    });
+
+    // Reminder modal
+    document.getElementById('add-reminder').addEventListener('click', () => {
+      document.getElementById('reminder-modal').style.display = 'flex';
+    });
+    document.getElementById('close-reminder-modal').addEventListener('click', () => {
+      document.getElementById('reminder-modal').style.display = 'none';
+    });
+    document.getElementById('cancel-reminder').addEventListener('click', () => {
+      document.getElementById('reminder-modal').style.display = 'none';
+    });
+
+    // Report modal
+    document.getElementById('generate-report').addEventListener('click', () => {
+      document.getElementById('report-modal').style.display = 'flex';
+    });
+    document.getElementById('close-report-modal').addEventListener('click', () => {
+      document.getElementById('report-modal').style.display = 'none';
+    });
+    document.getElementById('cancel-report').addEventListener('click', () => {
+      document.getElementById('report-modal').style.display = 'none';
+    });
+
+    // Download report buttons
+    document.addEventListener('click', (e) => {
+      if (e.target.classList.contains('download-report') || e.target.closest('.download-report')) {
+        e.preventDefault();
+        generateAndDownloadReport();
+      }
+    });
+
+    // Initialize with some sample reminders
+    window.addEventListener('DOMContentLoaded', () => {
+      const sampleReminders = [
+        {
+          name: "Vitamin D Supplement",
+          dosage: "Take 1 capsule with breakfast",
+          time: "08:00",
+          repeat: "daily"
+        },
+        {
+          name: "Blood Pressure Medication",
+          dosage: "Take 1 tablet with water",
+          time: "14:00",
+          repeat: "daily"
+        },
+        {
+          name: "Calcium Supplement",
+          dosage: "Take 1 tablet with dinner",
+          time: "19:30",
+          repeat: "daily"
+        }
+      ];
+      
+      // Only add sample data if no reminders exist
+      if (auth.currentUser) {
+        db.collection('users').doc(auth.currentUser.uid).collection('medicationReminders').get()
+          .then(snapshot => {
+            if (snapshot.empty) {
+              sampleReminders.forEach(reminder => {
+                db.collection('users').doc(auth.currentUser.uid).collection('medicationReminders').add({
+                  ...reminder,
+                  createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+              });
+            }
+          });
+      }
+    });
+  </script>
+</body>
+</html>

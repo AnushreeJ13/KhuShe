@@ -1,0 +1,1677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BodyBrave | TeenHealth</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #EC4899;
+            --primary-dark: #DB2777;
+            --secondary: #7C3AED;
+            --dark: #0F172A;
+            --darker: #020617;
+            --light: #F8FAFC;
+            --gray: #94A3B8;
+            --dark-gray: #334155;
+            --card-bg: rgba(30, 41, 59, 0.6);
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            --gradient: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--darker);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 1000;
+            backdrop-filter: blur(12px);
+            background: rgba(2, 6, 23, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 5%;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-icon {
+            margin-right: 0.5rem;
+            font-size: 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1509909756405-be0199881695?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            opacity: 0.15;
+            z-index: -1;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-text {
+            max-width: 600px;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .hero-title span {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            color: var(--gray);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.9rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(236, 72, 153, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-left: 1rem;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .hero-image {
+            position: relative;
+        }
+
+        .hero-circle {
+            position: relative;
+            width: 450px;
+            height: 450px;
+            border-radius: 50%;
+            background: rgba(124, 58, 237, 0.1);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: pulse 6s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .affirmation-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .affirmation {
+            padding: 2rem;
+            border-radius: 20px;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            max-width: 80%;
+            text-align: center;
+            transition: var(--transition);
+            opacity: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .affirmation.active {
+            opacity: 1;
+        }
+
+        .affirmation p {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .affirmation span {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 6rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+
+        .section-subtitle {
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 2.5rem;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: rgba(236, 72, 153, 0.3);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            background: var(--gradient);
+            color: white;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card p {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .feature-link {
+            display: inline-flex;
+            align-items: center;
+            color: var(--primary);
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .feature-link:hover {
+            color: var(--secondary);
+        }
+
+        .feature-link i {
+            margin-left: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .feature-link:hover i {
+            transform: translateX(3px);
+        }
+
+        /* Premium Section */
+        .premium {
+            padding: 6rem 0;
+            background: linear-gradient(rgba(2, 6, 23, 0.9), rgba(2, 6, 23, 0.9)), url('https://images.unsplash.com/photo-1573164713988-8665fc963095?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+        }
+
+        .premium-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .premium-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .premium-content p {
+            margin-bottom: 1.5rem;
+            color: var(--gray);
+        }
+
+        .premium-features {
+            list-style: none;
+            margin: 2rem 0;
+        }
+
+        .premium-features li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .premium-features li::before {
+            content: '✓';
+            width: 24px;
+            height: 24px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-size: 0.8rem;
+            color: white;
+        }
+
+        .price-toggle {
+            display: flex;
+            align-items: center;
+            margin: 2rem 0;
+        }
+
+        .toggle-option {
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .toggle-option.active {
+            background: var(--gradient);
+            color: white;
+        }
+
+        .toggle-switch {
+            width: 50px;
+            height: 26px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 0 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .toggle-switch.yearly::after {
+            left: calc(100% - 23px);
+        }
+
+        .price-container {
+            margin-top: 2rem;
+        }
+
+        .price {
+            font-size: 4rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .price span {
+            font-size: 1.2rem;
+            margin-right: 0.5rem;
+        }
+
+        .price-period {
+            font-size: 1rem;
+            color: var(--gray);
+            margin-top: 0.5rem;
+        }
+
+        .price-savings {
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            background: rgba(124, 58, 237, 0.2);
+            color: var(--secondary);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        .premium-image {
+            position: relative;
+        }
+
+        .pricing-card {
+            background: var(--dark);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient);
+        }
+
+        /* Interactive Component */
+        .interactive {
+            padding: 6rem 0;
+        }
+
+        .mood-tracker {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            overflow: hidden;
+            max-width: 800px;
+            margin: 0 auto;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .mood-header {
+            padding: 2rem;
+            background: var(--dark);
+            text-align: center;
+        }
+
+        .mood-header h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .mood-header p {
+            color: var(--gray);
+        }
+
+        .mood-body {
+            padding: 2rem;
+        }
+
+        .mood-question {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .mood-question h4 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .mood-options {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .mood-option {
+            padding: 1rem;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100px;
+            text-align: center;
+        }
+
+        .mood-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .mood-option.selected {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .mood-option span {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .mood-notes {
+            margin-top: 2rem;
+        }
+
+        .mood-notes label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--gray);
+        }
+
+        .mood-notes textarea {
+            width: 100%;
+            height: 150px;
+            padding: 1rem;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            font-family: 'Inter', sans-serif;
+            resize: none;
+        }
+
+        .mood-notes textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .mood-submit {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            border-radius: 10px;
+            background: var(--gradient);
+            color: white;
+            font-weight: 600;
+            text-align: center;
+            margin-top: 2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+        }
+
+        .mood-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(236, 72, 153, 0.4);
+        }
+
+        .result-container {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .result-container.active {
+            display: block;
+        }
+
+        .result-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .result-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .result-message {
+            color: var(--gray);
+            margin-bottom: 2rem;
+        }
+
+        .resource-list {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .resource-list h5 {
+            margin-bottom: 1rem;
+        }
+
+        .resource-list ul {
+            list-style: none;
+        }
+
+        .resource-list ul li {
+            margin-bottom: 0.8rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .resource-list ul li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+        }
+
+        .return-btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .return-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Therapist Section */
+        .therapist {
+            padding: 6rem 0;
+        }
+
+        .therapist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .therapist-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .therapist-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: rgba(236, 72, 153, 0.3);
+        }
+
+        .therapist-img {
+            height: 250px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .therapist-info {
+            padding: 1.5rem;
+        }
+
+        .therapist-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .therapist-title {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .therapist-focus {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .focus-tag {
+            background: rgba(124, 58, 237, 0.2);
+            color: var(--secondary);
+            border-radius: 50px;
+            padding: 0.3rem 0.8rem;
+            font-size: 0.8rem;
+        }
+
+        .therapist-btn {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 8px;
+            background: var(--gradient);
+            color: white;
+            font-weight: 500;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+        }
+
+        .therapist-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(236, 72, 153, 0.4);
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 6rem 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .cta p {
+            margin-bottom: 2.5rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-circle {
+                width: 350px;
+                height: 350px;
+                margin: 0 auto;
+            }
+            
+            .premium-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-circle {
+                width: 300px;
+                height: 300px;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .pricing-card {
+                padding: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-circle {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .btn {
+                width: 100%;
+                margin: 0.5rem 0;
+            }
+            
+            .btn-secondary {
+                margin-left: 0;
+            }
+            
+            .hero-btns {
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .mood-options {
+                gap: 0.5rem;
+            }
+            
+            .mood-option {
+                width: 80px;
+                padding: 0.8rem;
+            }
+        }
+        .premium-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: linear-gradient(135deg, var(--premium), #FFC107);
+    color: #000;
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+  }
+
+  .premium-badge i {
+    font-size: 0.8rem;
+  }
+  .premium-modal .modal-content {
+    border-color: var(--premium);
+    box-shadow: 0 8px 32px rgba(255, 215, 0, 0.2);
+  }
+
+  .premium-modal .modal-header h3 {
+    color: var(--premium);
+  }
+
+  .pricing-plans {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .pricing-plan {
+    flex: 1;
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pricing-plan:hover {
+    border-color: var(--premium);
+    box-shadow: 0 5px 20px rgba(255, 215, 0, 0.1);
+  }
+
+  .pricing-plan.popular {
+    border-color: var(--premium);
+    background: rgba(255, 215, 0, 0.05);
+  }
+
+  .popular-badge {
+    position: absolute;
+    top: 0;
+    right: 1.5rem;
+    background: var(--premium);
+    color: #000;
+    padding: 0.25rem 1rem;
+    border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+
+    </style>
+</head>
+<body>
+    <header>
+        <a href="#" class="logo">
+            <span class="logo-icon">🌸</span>
+            TeenHealth
+        </a>
+    </header>
+
+    <section class="hero">
+        <div class="container hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">Embrace Your <span>Unique</span> Journey with Body<span>Brave</span></h1>
+                <p class="hero-subtitle">A safe space to build confidence, resist bullying, and nurture your mental wellbeing with expert guidance and peer support.</p>
+                <div class="hero-btns">
+                    <a href="#features" class="btn btn-primary">Discover Features</a>
+                    <a href="#therapist" class="btn btn-secondary">Meet Our Therapists</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="hero-circle">
+                    <div class="affirmation-container" id="affirmationContainer">
+                        <div class="affirmation active">
+                            <p>"My body is a vessel for my dreams, not a canvas for others' judgment."</p>
+                            <span>Daily Affirmation</span>
+                        </div>
+                        <div class="affirmation">
+                            <p>"I am worthy of respect at any size, shape, or appearance."</p>
+                            <span>Daily Affirmation</span>
+                        </div>
+                        <div class="affirmation">
+                            <p>"Other people's opinions of me are not my reality."</p>
+                            <span>Daily Affirmation</span>
+                        </div>
+                        <div class="affirmation">
+                            <p>"My strength grows with each challenge I face."</p>
+                            <span>Daily Affirmation</span>
+                        </div>
+                        <div class="affirmation">
+                            <p>"I celebrate the unique qualities that make me, me."</p>
+                            <span>Daily Affirmation</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Build Your Resilience</h2>
+                <p class="section-subtitle">Tools and resources to help you navigate bullying, build body confidence, and nurture mental wellness</p>
+            </div>
+            <div class="features-grid">
+                <!-- First, add the feature card to your features section -->
+<div class="feature-card">
+    <div class="feature-icon">💪</div>
+    <h3>Body Confidence Hub</h3>
+    <p>Expert articles, videos, and activities designed to help you appreciate your body and build lasting self-esteem.</p>
+    <a href="javascript:void(0)" class="feature-link" id="openBodyConfidenceHub">Explore Resources <i>→</i></a>
+</div>
+
+<!-- Add the Body Confidence Hub modal that will appear when clicked -->
+<div id="bodyConfidenceModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Body Confidence Hub</h2>
+            <span class="close-modal">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="resource-filters">
+                <button class="filter-btn active" data-filter="all">All Resources</button>
+                <button class="filter-btn" data-filter="articles">Articles</button>
+                <button class="filter-btn" data-filter="videos">Videos</button>
+                <button class="filter-btn" data-filter="activities">Activities</button>
+            </div>
+
+            <div class="resource-grid">
+                <!-- Articles -->
+                <div class="resource-card" data-type="articles">
+                    <div class="resource-img" style="background-image: url('/api/placeholder/400/250')"></div>
+                    <div class="resource-info">
+                        <span class="resource-tag">Article</span>
+                        <h3>Reframing Negative Body Talk</h3>
+                        <p>Learn techniques to recognize and transform negative self-talk into affirming language.</p>
+                        <a href="#" class="resource-link">Read Article</a>
+                    </div>
+                </div>
+                
+                <div class="resource-card" data-type="articles">
+                    <div class="resource-img" style="background-image: url('/api/placeholder/400/250')"></div>
+                    <div class="resource-info">
+                        <span class="resource-tag">Article</span>
+                        <h3>The Science of Body Image</h3>
+                        <p>Understanding how our brains process body image and practical ways to build a healthier perspective.</p>
+                        <a href="#" class="resource-link">Read Article</a>
+                    </div>
+                </div>
+                
+                <!-- Videos -->
+                <div class="resource-card" data-type="videos">
+                    <div class="resource-img" style="background-image: url('/api/placeholder/400/250')">
+                        <div class="play-icon">▶️</div>
+                    </div>
+                    <div class="resource-info">
+                        <span class="resource-tag">Video</span>
+                        <h3>5-Minute Confidence Boosters</h3>
+                        <p>Quick exercises you can do anywhere to instantly build confidence and presence.</p>
+                        <a href="#" class="resource-link">Watch Video</a>
+                    </div>
+                </div>
+                
+                <div class="resource-card" data-type="videos">
+                    <div class="resource-img" style="background-image: url('/api/placeholder/400/250')">
+                        <div class="play-icon">▶️</div>
+                    </div>
+                    <div class="resource-info">
+                        <span class="resource-tag">Video</span>
+                        <h3>Teen Stories: Finding My Confidence</h3>
+                        <p>Real teens share their journeys to body acceptance and self-love.</p>
+                        <a href="#" class="resource-link">Watch Video</a>
+                    </div>
+                </div>
+                
+                <!-- Activities -->
+                <div class="resource-card" data-type="activities">
+                    <div class="resource-img" style="background-image: url('/api/placeholder/400/250')"></div>
+                    <div class="resource-info">
+                        <span class="resource-tag">Activity</span>
+                        <h3>Mirror Affirmation Practice</h3>
+                        <p>A guided 7-day challenge to transform your relationship with your reflection.</p>
+                        <a href="#" class="resource-link">Start Activity</a>
+                    </div>
+                </div>
+                
+                <div class="resource-card" data-type="activities">
+                    <div class="resource-img" style="background-image: url('/api/placeholder/400/250')"></div>
+                    <div class="resource-info">
+                        <span class="resource-tag">Activity</span>
+                        <h3>Body Gratitude Journal</h3>
+                        <p>Interactive journaling prompts to appreciate your body for what it does, not how it looks.</p>
+                        <a href="#" class="resource-link">Start Activity</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add these styles to your existing CSS -->
+<style>
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(2, 6, 23, 0.9);
+        z-index: 2000;
+        overflow-y: auto;
+    }
+    
+    .modal-content {
+        background: var(--dark);
+        border-radius: 20px;
+        width: 90%;
+        max-width: 1000px;
+        margin: 50px auto;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        overflow: hidden;
+        animation: modalFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    @keyframes modalFadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .modal-header {
+        padding: 1.5rem 2rem;
+        background: var(--card-bg);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .modal-header h2 {
+        font-size: 1.8rem;
+        background: var(--gradient);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+    
+    .close-modal {
+        font-size: 2rem;
+        color: var(--gray);
+        cursor: pointer;
+        transition: var(--transition);
+    }
+    
+    .close-modal:hover {
+        color: white;
+    }
+    
+    .modal-body {
+        padding: 2rem;
+    }
+    
+    /* Filters */
+    .resource-filters {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+    }
+    
+    .filter-btn {
+        padding: 0.6rem 1.2rem;
+        border-radius: 50px;
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--gray);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        cursor: pointer;
+        transition: var(--transition);
+        white-space: nowrap;
+    }
+    
+    .filter-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .filter-btn.active {
+        background: var(--gradient);
+        color: white;
+        border-color: transparent;
+    }
+    
+    /* Resource Cards */
+    .resource-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+    
+    .resource-card {
+        background: var(--card-bg);
+        border-radius: 16px;
+        overflow: hidden;
+        transition: var(--transition);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .resource-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        border-color: rgba(236, 72, 153, 0.3);
+    }
+    
+    .resource-img {
+        height: 180px;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+    }
+    
+    .play-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 3rem;
+        opacity: 0.9;
+    }
+    
+    .resource-info {
+        padding: 1.5rem;
+    }
+    
+    .resource-tag {
+        display: inline-block;
+        padding: 0.3rem 0.8rem;
+        background: rgba(124, 58, 237, 0.2);
+        color: var(--secondary);
+        border-radius: 50px;
+        font-size: 0.8rem;
+        margin-bottom: 1rem;
+    }
+    
+    .resource-info h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    .resource-info p {
+        color: var(--gray);
+        margin-bottom: 1.2rem;
+        font-size: 0.9rem;
+    }
+    
+    .resource-link {
+        display: inline-flex;
+        align-items: center;
+        color: var(--primary);
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: var(--transition);
+    }
+    
+    .resource-link:hover {
+        color: var(--secondary);
+    }
+    
+    @media (max-width: 768px) {
+        .resource-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .modal-content {
+            width: 95%;
+            margin: 30px auto;
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+    }
+</style>
+
+<!-- Add this JavaScript to your existing script section -->
+<script>
+    // Body Confidence Hub Modal Functionality
+    const bodyConfidenceHub = document.getElementById('openBodyConfidenceHub');
+    const bodyConfidenceModal = document.getElementById('bodyConfidenceModal');
+    const closeModal = document.querySelector('.close-modal');
+    
+    // Open modal when clicking the feature link
+    bodyConfidenceHub.addEventListener('click', () => {
+        bodyConfidenceModal.style.display = 'block';
+        document.body.style.overflow = 'hidden'; // Prevent scrolling
+    });
+    
+    // Close modal when clicking the X
+    closeModal.addEventListener('click', () => {
+        bodyConfidenceModal.style.display = 'none';
+        document.body.style.overflow = ''; // Re-enable scrolling
+    });
+    
+    // Close modal when clicking outside of it
+    window.addEventListener('click', (e) => {
+        if (e.target === bodyConfidenceModal) {
+            bodyConfidenceModal.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+    });
+    
+    // Filter functionality
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const resourceCards = document.querySelectorAll('.resource-card');
+    
+    filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Update active button
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            
+            // Filter cards
+            const filter = button.getAttribute('data-filter');
+            
+            resourceCards.forEach(card => {
+                if (filter === 'all' || card.getAttribute('data-type') === filter) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Bullying Response Guide</h3>
+                    <p>Practical strategies and step-by-step protocols for handling bullying situations effectively and safely.</p>
+                    <a href="#" class="feature-link">Get Strategies <i>→</i></a>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h3>Daily Mental Wellness</h3>
+                    <p>Quick exercises, mood tracking, and personalized recommendations to support your everyday mental health.</p>
+                    <a href="#interactive" class="feature-link">Start Your Journey <i>→</i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="premium" id="premium">
+        <div class="container premium-container">
+            <div class="premium-content">
+                <h2>Unlock Premium Support</h2>
+                <p>Take your journey to the next level with personalized guidance, professional support, and exclusive resources.</p>
+                
+                <ul class="premium-features">
+                    <li>One-on-one sessions with licensed therapists specializing in teen mental health</li>
+                    <li>Personalized 8-week resilience program based on your unique needs</li>
+                    <li>Weekly group therapy sessions with peers facing similar challenges</li>
+                    <li>Priority access to crisis support when you need immediate help</li>
+                    <li>Parent/guardian resources while respecting your privacy</li>
+                </ul>
+                
+               
+                
+               
+                
+                <a href="#" class="btn btn-primary" style="margin-top: 2rem;">Start Free Trial</a>
+            </div>
+            <div class="premium-banner">
+                <h3><i class="fas fa-crown"></i> Upgrade to Premium Fertility Tracker</h3>
+                <p>Get advanced cycle predictions, connect with top IVF specialists, and unlock personalized fertility insights</p>
+                <button class="premium-btn" id="premiumBtn">
+                  <i class="fas fa-gem"></i> Unlock Premium Features
+                </button>
+              </div>
+            <div class="premium-image">
+                <div class="pricing-card">
+                    <h3 style="margin-bottom: 1.5rem; font-size: 1.8rem;">BodyBrave Premium Benefits</h3>
+                    
+                    <div style="margin-bottom: 1.5rem;">
+                        <h4 style="margin-bottom: 0.8rem; color: var(--primary);">Personal Connection</h4>
+                        <!-- Continuing from where the code was cut off -->
+                        <p style="color: var(--gray);">Connect personally with licensed therapists who specialize in teen body image, bullying, and mental health concerns.</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 1.5rem;">
+                        <h4 style="margin-bottom: 0.8rem; color: var(--primary);">Personalized Program</h4>
+                        <p style="color: var(--gray);">Get a customized 8-week resilience plan built specifically for your unique situation and goals.</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 1.5rem;">
+                        <h4 style="margin-bottom: 0.8rem; color: var(--primary);">Priority Support</h4>
+                        <p style="color: var(--gray);">Access crisis support with reduced wait times when you're facing immediate challenges.</p>
+                    </div>
+                    
+                    <div>
+                        <h4 style="margin-bottom: 0.8rem; color: var(--primary);">Community</h4>
+                        <p style="color: var(--gray);">Join exclusive group sessions with peers who understand what you're going through.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="interactive" id="interactive">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Check In With Yourself</h2>
+                <p class="section-subtitle">Our mood tracker helps you understand your emotions and provides personalized resources based on how you're feeling</p>
+            </div>
+            <div class="mood-tracker">
+                <div class="mood-header">
+                    <h3>Mood Check-In</h3>
+                    <p>Take a moment to reflect on how you're feeling today</p>
+                </div>
+                <div class="mood-body" id="moodForm">
+                    <div class="mood-question">
+                        <h4>How are you feeling right now?</h4>
+                        <p>Select the emotion that best matches your current state</p>
+                    </div>
+                    <div class="mood-options">
+                        <div class="mood-option" data-mood="great">
+                            <span>😊</span>
+                            <p>Great</p>
+                        </div>
+                        <div class="mood-option" data-mood="good">
+                            <span>🙂</span>
+                            <p>Good</p>
+                        </div>
+                        <div class="mood-option" data-mood="okay">
+                            <span>😐</span>
+                            <p>Okay</p>
+                        </div>
+                        <div class="mood-option" data-mood="down">
+                            <span>🙁</span>
+                            <p>Down</p>
+                        </div>
+                        <div class="mood-option" data-mood="struggling">
+                            <span>😔</span>
+                            <p>Struggling</p>
+                        </div>
+                    </div>
+                    <div class="mood-notes">
+                        <label for="moodNotes">What's on your mind? (optional)</label>
+                        <textarea id="moodNotes" placeholder="Share your thoughts..."></textarea>
+                    </div>
+                    <button class="mood-submit" id="moodSubmit">Submit Check-In</button>
+                </div>
+                <div class="result-container" id="greatResult">
+                    <div class="result-icon">🌟</div>
+                    <h3 class="result-title">You're Doing Great!</h3>
+                    <p class="result-message">It's wonderful that you're feeling positive today. This is a great time to build on your strengths and possibly help others who might be struggling.</p>
+                    <div class="resource-list">
+                        <h5>Suggested Activities</h5>
+                        <ul>
+                            <li>Journal about what's going well and why</li>
+                            <li>Share your positive energy with a friend who might need it</li>
+                            <li>Try a new self-care activity to maintain your momentum</li>
+                        </ul>
+                    </div>
+                    <button class="return-btn" onclick="resetMoodTracker()">New Check-In</button>
+                </div>
+                <div class="result-container" id="goodResult">
+                    <div class="result-icon">✨</div>
+                    <h3 class="result-title">You're Doing Well</h3>
+                    <p class="result-message">It's great that you're having a good day. Consider what factors are contributing to your positive mood.</p>
+                    <div class="resource-list">
+                        <h5>Suggested Activities</h5>
+                        <ul>
+                            <li>Reflect on what's going right today</li>
+                            <li>Connect with a friend or family member</li>
+                            <li>Take time for a hobby you enjoy</li>
+                        </ul>
+                    </div>
+                    <button class="return-btn" onclick="resetMoodTracker()">New Check-In</button>
+                </div>
+                <div class="result-container" id="okayResult">
+                    <div class="result-icon">💫</div>
+                    <h3 class="result-title">You're Doing Okay</h3>
+                    <p class="result-message">Neutral days are part of life. Consider what might help shift your day in a more positive direction.</p>
+                    <div class="resource-list">
+                        <h5>Suggested Activities</h5>
+                        <ul>
+                            <li>Try a short mindfulness exercise</li>
+                            <li>Move your body - even a short walk can help</li>
+                            <li>Reach out to someone who makes you feel good</li>
+                        </ul>
+                    </div>
+                    <button class="return-btn" onclick="resetMoodTracker()">New Check-In</button>
+                </div>
+                <div class="result-container" id="downResult">
+                    <div class="result-icon">🌧️</div>
+                    <h3 class="result-title">Having a Tough Day?</h3>
+                    <p class="result-message">It's okay to not feel your best. Remember that all feelings are temporary and you have tools to help navigate difficult emotions.</p>
+                    <div class="resource-list">
+                        <h5>Helpful Resources</h5>
+                        <ul>
+                            <li>Try a guided breathing exercise in our Calm Space</li>
+                            <li>Read "5 Ways to Shift a Negative Mood" in our Resource Library</li>
+                            <li>Connect with a supportive person in your life</li>
+                        </ul>
+                    </div>
+                    <button class="return-btn" onclick="resetMoodTracker()">New Check-In</button>
+                </div>
+                <div class="result-container" id="strugglingResult">
+                    <div class="result-icon">💙</div>
+                    <h3 class="result-title">We're Here For You</h3>
+                    <p class="result-message">We're sorry you're having a difficult time. Remember that asking for help is a sign of strength, not weakness.</p>
+                    <div class="resource-list">
+                        <h5>Support Options</h5>
+                        <ul>
+                            <li>Call or text a crisis helpline: 988</li>
+                            <li>Use our "Talk Now" feature to connect with a counselor</li>
+                            <li>Try the "Grounding Techniques" in our Emergency Toolkit</li>
+                            <li>Reach out to a trusted adult or friend</li>
+                        </ul>
+                    </div>
+                    <button class="return-btn" onclick="resetMoodTracker()">New Check-In</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="therapist" id="therapist">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Our Expert Therapists</h2>
+                <p class="section-subtitle">Connect with licensed professionals who specialize in teen body image, bullying, and mental health</p>
+            </div>
+            <div class="therapist-grid">
+                <div class="therapist-card">
+                    <img src="/api/placeholder/400/320" alt="Dr. Sarah Chen" class="therapist-img">
+                    <div class="therapist-info">
+                        <h3>Dr. Sarah Chen</h3>
+                        <p class="therapist-title">Clinical Psychologist</p>
+                        <div class="therapist-focus">
+                            <span class="focus-tag">Body Image</span>
+                            <span class="focus-tag">Anxiety</span>
+                            <span class="focus-tag">Teen Girls</span>
+                        </div>
+                        <button class="therapist-btn">View Profile</button>
+                    </div>
+                </div>
+                <div class="therapist-card">
+                    <img src="/api/placeholder/400/320" alt="Marcus Johnson" class="therapist-img">
+                    <div class="therapist-info">
+                        <h3>Marcus Johnson</h3>
+                        <p class="therapist-title">Licensed Counselor</p>
+                        <div class="therapist-focus">
+                            <span class="focus-tag">Bullying</span>
+                            <span class="focus-tag">Self-Esteem</span>
+                            <span class="focus-tag">Teen Boys</span>
+                        </div>
+                        <button class="therapist-btn">View Profile</button>
+                    </div>
+                </div>
+                <div class="therapist-card">
+                    <img src="/api/placeholder/400/320" alt="Dr. Lena Patel" class="therapist-img">
+                    <div class="therapist-info">
+                        <h3>Dr. Lena Patel</h3>
+                        <p class="therapist-title">Adolescent Psychiatrist</p>
+                        <div class="therapist-focus">
+                            <span class="focus-tag">Depression</span>
+                            <span class="focus-tag">Trauma</span>
+                            <span class="focus-tag">LGBTQ+ Youth</span>
+                        </div>
+                        <button class="therapist-btn">View Profile</button>
+                    </div>
+                </div>
+                <div class="therapist-card">
+                    <img src="/api/placeholder/400/320" alt="James Wilson" class="therapist-img">
+                    <div class="therapist-info">
+                        <h3>James Wilson</h3>
+                        <p class="therapist-title">Art Therapist</p>
+                        <div class="therapist-focus">
+                            <span class="focus-tag">Self-Expression</span>
+                            <span class="focus-tag">Neurodiversity</span>
+                            <span class="focus-tag">Creative Healing</span>
+                        </div>
+                        <button class="therapist-btn">View Profile</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta" id="cta">
+        <div class="container cta-content">
+            <h2>Start Your BodyBrave Journey Today</h2>
+            <p>Join thousands of teens who are building confidence, resilience, and mental wellness in our supportive community.</p>
+            <a href="#" class="btn btn-primary">Sign Up Now - Free</a>
+        </div>
+    </section>
+
+   
+    <script>
+        // Affirmation rotation
+        const affirmations = document.querySelectorAll('#affirmationContainer .affirmation');
+        let currentAffirmation = 0;
+
+        function rotateAffirmations() {
+            affirmations.forEach(aff => aff.classList.remove('active'));
+            currentAffirmation = (currentAffirmation + 1) % affirmations.length;
+            affirmations[currentAffirmation].classList.add('active');
+        }
+
+        // Set interval for affirmation rotation
+        setInterval(rotateAffirmations, 5000);
+
+        // Pricing toggle
+        const monthlyOption = document.getElementById('monthlyOption');
+        const yearlyOption = document.getElementById('yearlyOption');
+        const toggleSwitch = document.getElementById('toggleSwitch');
+        const priceDisplay = document.getElementById('priceDisplay');
+        const pricePeriod = document.getElementById('pricePeriod');
+        const priceSavings = document.getElementById('priceSavings');
+
+        monthlyOption.addEventListener('click', () => {
+            monthlyOption.classList.add('active');
+            yearlyOption.classList.remove('active');
+            toggleSwitch.classList.remove('yearly');
+            priceDisplay.innerHTML = '<span>$</span>9.99';
+            pricePeriod.textContent = 'per month';
+            priceSavings.style.display = 'none';
+        });
+
+        yearlyOption.addEventListener('click', () => {
+            yearlyOption.classList.add('active');
+            monthlyOption.classList.remove('active');
+            toggleSwitch.classList.add('yearly');
+            priceDisplay.innerHTML = '<span>$</span>95.88';
+            pricePeriod.textContent = 'per year';
+            priceSavings.style.display = 'inline-block';
+        });
+
+        toggleSwitch.addEventListener('click', () => {
+            if (toggleSwitch.classList.contains('yearly')) {
+                monthlyOption.click();
+            } else {
+                yearlyOption.click();
+            }
+        });
+
+        // Mood tracker functionality
+        const moodOptions = document.querySelectorAll('.mood-option');
+        const moodSubmit = document.getElementById('moodSubmit');
+        const moodForm = document.getElementById('moodForm');
+        let selectedMood = null;
+
+        moodOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                moodOptions.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+                selectedMood = option.getAttribute('data-mood');
+            });
+        });
+
+        moodSubmit.addEventListener('click', () => {
+            if (!selectedMood) {
+                alert('Please select how you are feeling first');
+                return;
+            }
+            
+            moodForm.style.display = 'none';
+            document.getElementById(`${selectedMood}Result`).classList.add('active');
+        });
+
+        function resetMoodTracker() {
+            document.querySelectorAll('.result-container').forEach(result => {
+                result.classList.remove('active');
+            });
+            moodForm.style.display = 'block';
+            moodOptions.forEach(opt => opt.classList.remove('selected'));
+            document.getElementById('moodNotes').value = '';
+            selectedMood = null;
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

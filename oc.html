@@ -3,12 +3,42 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>KhuShe | Modern Ovulation Tracker</title>
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-  />
+  <title>KhuShe | Premium Fertility & IVF Tracker</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
   <style>
+  :root {
+    --primary: #9C4DF4;
+    --primary-light: #C9A8F8;
+    --primary-dark: #6A1B9A;
+    --secondary: #6A5ACD;
+    --secondary-light: #A59AFF;
+    --background: #0F0B1A;
+    --card-bg: #1A1529;
+    --card-bg-light: #2A2440;
+    --text-bright: #FFFFFF;
+    --text-light: #F0E5FF;
+    --text-muted: #B8B0CC;
+    --success: #7B68EE;
+    --warning: #FFAA5C;
+    --danger: #FF6B6B;
+    --border: #3A3450;
+    --input-bg: #25203A;
+    --highlight: #B388FF;
+    --premium: #FFD700;
+    --ivf-clinic: #00D1FF;
+    --ivf-clinic-dark: #0095C7;
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.1);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.2);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,0.3);
+    --glow-primary: 0 0 12px rgba(156, 77, 244, 0.5);
+  }
+
+  /* Background Animations */
   .background-animations {
     position: fixed;
     top: 0;
@@ -18,562 +48,1127 @@
     pointer-events: none;
     z-index: -1;
     overflow: hidden;
-    background-color: #0a0a0a;
+    background: radial-gradient(ellipse at top, #1A0526 0%, #0F0B1A 100%);
   }
 
   .floating-circle {
     position: absolute;
     border-radius: 50%;
-    background: rgba(138, 43, 226, 0.15);
-    animation: float 12s infinite linear;
-    filter: blur(8px);
+    background: linear-gradient(135deg, rgba(156, 77, 244, 0.15), rgba(106, 90, 205, 0.15));
+    animation: float 15s infinite ease-in-out;
+    filter: blur(60px);
+    opacity: 0.6;
   }
   
   @keyframes float {
     0%, 100% {
-      transform: translateY(0) translateX(0);
-      opacity: 0.2;
+      transform: translate(0, 0) rotate(0deg);
     }
     25% {
-      transform: translateY(-20vh) translateX(10vw);
+      transform: translate(-5vw, -10vh) rotate(5deg);
     }
     50% {
-      transform: translateY(10vh) translateX(-10vw);
-      opacity: 0.4;
+      transform: translate(5vw, 5vh) rotate(-5deg);
     }
     75% {
-      transform: translateY(-10vh) translateX(15vw);
+      transform: translate(-8vw, 5vh) rotate(3deg);
     }
   }
 
-  /* Light effect */
-  .background-animations::before {
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    animation: particle-float 20s infinite linear;
+  }
+
+  @keyframes particle-float {
+    0% {
+      transform: translateY(0) translateX(0);
+      opacity: 0;
+    }
+    10% {
+      opacity: 0.3;
+    }
+    90% {
+      opacity: 0.3;
+    }
+    100% {
+      transform: translateY(-100vh) translateX(20vw);
+      opacity: 0;
+    }
+  }
+
+  /* Base Styles */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--background);
+    color: var(--text-light);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--text-bright);
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+    transition: var(--transition);
+  }
+
+  /* Header */
+  header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    padding: 0 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1000;
+    backdrop-filter: blur(12px);
+    background: rgba(15, 11, 26, 0.85);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    transition: var(--transition);
+  }
+
+  header.scrolled {
+    background: rgba(15, 11, 26, 0.95);
+    box-shadow: var(--shadow-md);
+  }
+  .logo img {
+  width: auto;   /* Maintains aspect ratio */
+  transition: var(--transition);
+}
+
+/* For smaller screens */
+@media (max-width: 768px) {
+  .logo img {
+    height: 36px;  /* Slightly smaller for mobile */
+  }
+}
+
+/* When header is scrolled */
+header.scrolled .logo img {
+  height: 38px;   /* Slightly smaller when scrolled */
+}
+
+  header.scrolled .logo img {
+    height: 36px;
+  }
+
+  nav ul {
+    display: flex;
+    list-style: none;
+    gap: 1.5rem;
+  }
+
+  nav ul li a {
+    font-weight: 500;
+    position: relative;
+    padding: 0.5rem 0;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    transition: var(--transition);
+  }
+
+  nav ul li a::after {
     content: '';
     position: absolute;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle at 50% 50%, 
-      rgba(138, 43, 226, 0.08) 0%, 
-      rgba(0, 0, 0, 0) 70%);
-    animation: rotate 60s linear infinite;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    transition: var(--transition);
+  }
+
+  nav ul li a:hover,
+  nav ul li a.active {
+    color: var(--text-bright);
+  }
+
+  nav ul li a:hover::after,
+  nav ul li a.active::after {
+    width: 100%;
+  }
+
+  .nav-cta {
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    color: white;
+    padding: 0.6rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: var(--transition);
+    box-shadow: var(--glow-primary);
+    font-size: 0.95rem;
+  }
+
+  .nav-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(156, 77, 244, 0.4);
+  }
+
+  .mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 1001;
+  }
+
+  /* Main Content */
+  .main-content {
+    margin-top: 100px;
+    padding: 2rem 5%;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Premium Banner */
+  .premium-banner {
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    color: white;
+    padding: 1.5rem;
+    text-align: center;
+    border-radius: var(--radius-lg);
+    margin-bottom: 2rem;
+    box-shadow: var(--glow-primary);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .premium-banner::before {
+    content: '';
+    position: absolute;
     top: -50%;
     left: -50%;
-  }
-  
-  @keyframes rotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      to bottom right,
+      transparent 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      transparent 100%
+    );
+    transform: rotate(30deg);
+    animation: shine 3s infinite;
   }
 
-  /* Shimmer effect */
-  @keyframes shimmer {
-    0% { background-position: -1000px 0; }
-    100% { background-position: 1000px 0; }
+  @keyframes shine {
+    0% { transform: translateX(-100%) rotate(30deg); }
+    100% { transform: translateX(100%) rotate(30deg); }
   }
 
-  .background-animations::after {
+  .premium-banner h3 {
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    position: relative;
+  }
+
+  .premium-banner p {
+    margin-bottom: 1.5rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+  }
+
+  .premium-btn {
+    background: white;
+    color: var(--primary-dark);
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    font-size: 1rem;
+  }
+
+  .premium-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  }
+
+  .premium-btn::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      to bottom right,
+      transparent 20%,
+      rgba(255, 255, 255, 0.3) 50%,
+      transparent 80%
+    );
+    transform: rotate(30deg);
+    animation: shine 3s infinite;
+  }
+
+  /* IVF Clinic Section */
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .section-header h2 {
+    font-size: 1.5rem;
+    color: var(--text-bright);
+  }
+
+  .view-all {
+    color: var(--primary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .ivf-clinic-section {
+    background: rgba(0, 209, 255, 0.05);
+    border: 1px solid rgba(0, 209, 255, 0.15);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ivf-clinic-section::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0) 25%,
-      rgba(138, 43, 226, 0.05) 50%,
-      rgba(255, 255, 255, 0) 75%
-    );
-    animation: shimmer 8s infinite;
-    background-size: 1000px 100%;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--ivf-clinic), transparent);
   }
-    /* ----------------- Base & Navigation Styles ----------------- */
-    :root {
-      --primary: #8A2BE2; /* Changed from pink to medium violet purple */
-      --primary-light: #B19CD9; /* Lighter purple tone */
-      --secondary: #6A5ACD; /* Slate blue */
-      --secondary-light: #9370DB; /* Medium purple */
-      --background: #111111; /* Kept dark background */
-      --card-bg: #1a1a1a; /* Kept dark card background */
-      --text-bright: #FFFFFF;
-      --text-light: #F0F0F0;
-      --text-muted: #AAAAAA;
-      --success: #7B68EE; /* Medium slate blue instead of pink */
-      --warning: #5F9EA0; /* Cadet blue instead of orange */
-      --border: #2a2a2a;
-      --input-bg: #222222;
-      --highlight: #9966CC; /* Amethyst instead of pink */
-    }
-    :root {
-            --primary: #EC4899;
-            --primary-dark: #DB2777;
-            --secondary: #7C3AED;
-            --dark: #0F172A;
-            --darker: #020617;
-            --light: #F8FAFC;
-            --gray: #94A3B8;
-            --dark-gray: #334155;
-            --card-bg: rgba(30, 41, 59, 0.6);
-            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  .ivf-clinic-section h3 {
+    color: var(--ivf-clinic);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.25rem;
+  }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--darker);
-            color: var(--light);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
+  .ivf-clinic-section h3 i {
+    font-size: 1.2rem;
+  }
 
-        h1, h2, h3, h4 {
-            font-family: 'Inter', sans-serif;
-            font-weight: 600;
-            line-height: 1.2;
-        }
+  .ivf-clinic-section p {
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+  }
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
+  .ivf-clinic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.25rem;
+    margin-top: 1rem;
+  }
 
-        /* Header */
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height:100px;
-            padding: 1.5rem 5%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            z-index: 1000;
-            backdrop-filter: blur(12px);
-            background: rgba(2, 6, 23, 0.8);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
+  .ivf-clinic-card {
+    background: var(--card-bg-light);
+    border: 1px solid rgba(0, 209, 255, 0.1);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    transition: var(--transition);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
 
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            display: flex;
-            align-items: center;
-        }
+  .ivf-clinic-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      135deg,
+      rgba(0, 209, 255, 0.05) 0%,
+      rgba(0, 209, 255, 0) 100%
+    );
+    z-index: 0;
+  }
 
-        .logo-icon {
-            margin-right: 0.5rem;
-            font-size: 2rem;
-        }
+  .ivf-clinic-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(0, 209, 255, 0.3);
+    box-shadow: 0 10px 25px rgba(0, 209, 255, 0.15);
+  }
 
-    
-    nav ul {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
+  .ivf-clinic-card h4 {
+    color: var(--text-bright);
+    margin-bottom: 0.75rem;
+    position: relative;
+    font-size: 1.1rem;
+  }
 
-        nav ul li a {
-            font-weight: 500;
-            position: relative;
-            padding: 0.5rem 0;
-            transition: var(--transition);
-        }
+  .ivf-clinic-card p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    position: relative;
+  }
 
-        nav ul li a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            transition: var(--transition);
-        }
+  .ivf-clinic-card .rating {
+    color: var(--premium);
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    position: relative;
+  }
 
-        nav ul li a:hover,
-        nav ul li a.active {
-            color: var(--primary);
-        }
+  .ivf-clinic-card .distance {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-top: 0.75rem;
+  }
 
-        nav ul li a:hover::after,
-        nav ul li a.active::after {
-            width: 100%;
-        }
+  .ivf-clinic-card .distance i {
+    color: var(--primary);
+  }
 
-        .nav-cta {
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 0.6rem 1.5rem;
-            border-radius: 50px;
-            font-weight: 600;
-            transition: var(--transition);
-            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
-        }
-
-        .nav-cta:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(236, 72, 153, 0.4);
-        }
-
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-    /* ----------------- Tracker and Card Styles ----------------- */
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0;
-    }
-    
-    .title-section {
-      text-align: center;
-      width: 70%;
-      padding: 2rem;
-      background-color: rgba(0, 0, 0, 0.6);
-      border-radius: 20px;
-      border: 2px solid var(--primary);
-      margin: 2rem auto;
-      box-shadow: 0 8px 30px rgba(138, 43, 226, 0.25);
-      animation: fadeIn 0.8s ease-out;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .title-section::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(45deg, transparent, rgba(138, 43, 226, 0.2), transparent);
-      transform: rotate(45deg);
-      animation: shimmerBg 3s infinite linear;
-      z-index: -1;
-    }
-    
-    @keyframes shimmerBg {
-      0% { transform: translateX(-100%) rotate(45deg); }
-      100% { transform: translateX(100%) rotate(45deg); }
-    }
-    
-    .title-section h1 {
-      font-size: 2.2rem;
-      color: var(--primary);
-      margin-bottom: 1rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
-    }
-    
-    .title-section p {
-      color: var(--text-light);
-      font-size: 1.1rem;
-      max-width: 800px;
-      margin: 0 auto;
-      line-height: 1.5;
-    }
-    
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    .tracker-grid {
-      display: grid;
-      grid-template-columns: minmax(300px, 400px) 1fr;
-      gap: 2rem;
-      margin-top: 2rem;
-      padding: 0 2rem;
-    }
-    
-    .card {
-      background: var(--card-bg);
-      backdrop-filter: blur(10px);
-      border-radius: 1.5rem;
-      padding: 2rem;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-      border: 1px solid var(--border);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .card::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 1.5rem;
-      padding: 2px;
-      background: linear-gradient(135deg, var(--primary), transparent, var(--primary));
-      -webkit-mask: 
-        linear-gradient(#fff 0 0) content-box, 
-        linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      pointer-events: none;
-      opacity: 0.5;
-    }
-    
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 40px rgba(138, 43, 226, 0.3);
-    }
-    
-    .card-header {
-      margin-bottom: 2rem;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 1rem;
-    }
-    
-    .card-title {
-      font-size: 1.5rem;
-      color: var(--primary);
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      margin-bottom: 0.5rem;
-    }
-    
-    .card-title i {
-      color: var(--primary);
-      font-size: 1.2em;
-    }
-    
-    .form-group {
-      margin-bottom: 1.5rem;
-    }
-    
-    .form-group label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: 500;
-      color: var(--text-light);
-      font-size: 0.95rem;
-    }
-    
-    .form-control {
-      width: 100%;
-      padding: 1rem;
-      border: 2px solid var(--border);
-      border-radius: 1rem;
-      font-size: 1rem;
-      transition: all 0.3s ease;
-      background: var(--input-bg);
-      color: var(--text-bright);
-    }
-    
-    .form-control:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.2);
-    }
-    
-    .btn {
-      width: 100%;
-      padding: 1rem;
-      border: none;
-      border-radius: 1rem;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .btn-primary {
-      background: linear-gradient(135deg, var(--primary) 0%, #483D8B 100%);
-      color: var(--text-bright);
-    }
-    
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(138, 43, 226, 0.4);
-    }
-    
-    .btn-primary::after {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-      transform: rotate(45deg);
-      animation: shimmerEffect 3s infinite linear;
-    }
-    
-    @keyframes shimmerEffect {
-      0% { transform: translateX(-100%) rotate(45deg); }
-      100% { transform: translateX(100%) rotate(45deg); }
-    }
-    
-    .result-card {
+  /* Tracker and Card Styles */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0;
+  }
+  
+  .title-section {
+    text-align: center;
+    width: 80%;
+    padding: 3rem 2rem;
+    background: rgba(26, 21, 41, 0.7);
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(156, 77, 244, 0.3);
+    margin: 2rem auto;
+    box-shadow: var(--glow-primary);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+  }
+  
+  .title-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+      circle at 50% 50%,
+      rgba(156, 77, 244, 0.1) 0%,
+      transparent 70%
+    );
+    z-index: -1;
+  }
+  
+  .title-section h1 {
+    font-size: 2.5rem;
+    color: var(--text-bright);
+    margin-bottom: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  
+  .title-section p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+  
+  @keyframes fadeIn {
+    from {
       opacity: 0;
-      transform: translateY(20px);
-      transition: all 0.5s ease;
+      transform: translateY(-20px);
     }
-    
-    .result-card.visible {
+    to {
       opacity: 1;
       transform: translateY(0);
     }
-    
-    .result-item {
-      padding: 1.2rem;
-      border-radius: 1rem;
-      margin-bottom: 1rem;
-      transition: all 0.3s ease;
-      border: 1px solid transparent;
+  }
+  
+  .tracker-grid {
+    display: grid;
+    grid-template-columns: minmax(300px, 400px) 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+  
+  .card {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-lg);
+    padding: 1px;
+    background: linear-gradient(135deg, var(--primary), transparent, var(--secondary));
+    -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0.5;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary);
+  }
+  
+  .card-header {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .card-title {
+    font-size: 1.5rem;
+    color: var(--text-bright);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0;
+  }
+  
+  .card-title i {
+    color: var(--primary);
+    font-size: 1.2em;
+  }
+  
+  .card-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .card-action-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--input-bg);
+    border: none;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  
+  .card-action-btn:hover {
+    background: var(--primary);
+    color: white;
+  }
+  
+  .form-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+    color: var(--text-light);
+    font-size: 0.95rem;
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    transition: var(--transition);
+    background: var(--input-bg);
+    color: var(--text-bright);
+    font-family: 'Inter', sans-serif;
+  }
+  
+  .form-control:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(156, 77, 244, 0.2);
+  }
+  
+  .form-control::placeholder {
+    color: var(--text-muted);
+    opacity: 0.7;
+  }
+  
+  .btn {
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .btn-primary {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: var(--text-bright);
+    box-shadow: var(--glow-primary);
+  }
+  
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(156, 77, 244, 0.4);
+  }
+  
+  .btn-primary:active {
+    transform: translateY(0);
+  }
+  
+  .btn-secondary {
+    background: var(--input-bg);
+    color: var(--text-light);
+    border: 1px solid var(--border);
+  }
+  
+  .btn-secondary:hover {
+    background: var(--card-bg-light);
+    border-color: var(--primary);
+  }
+  
+  .btn-ivf {
+    background: linear-gradient(135deg, var(--ivf-clinic), var(--ivf-clinic-dark));
+    color: white;
+    box-shadow: 0 4px 20px rgba(0, 209, 255, 0.3);
+  }
+  
+  .btn-ivf:hover {
+    box-shadow: 0 8px 30px rgba(0, 209, 255, 0.4);
+  }
+  
+  .result-card {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease;
+  }
+  
+  .result-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .result-item {
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    margin-bottom: 1rem;
+    transition: var(--transition);
+    border: 1px solid transparent;
+    background: var(--card-bg-light);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .result-item:hover {
+    transform: translateX(5px);
+    border-color: var(--primary);
+  }
+  
+  .result-item.primary {
+    border-left: 4px solid var(--primary);
+  }
+  
+  .result-item.secondary {
+    border-left: 4px solid var(--secondary);
+  }
+  
+  .result-item.ivf {
+    border-left: 4px solid var(--ivf-clinic);
+  }
+  
+  .result-label {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .result-label i {
+    font-size: 0.9rem;
+  }
+  
+  .result-value {
+    font-size: 1.125rem;
+    color: var(--text-bright);
+    font-weight: 600;
+  }
+  
+  .result-note {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 0.25rem;
+    font-style: italic;
+  }
+  
+  .estimations-table {
+    width: 100%;
+    margin-top: 2rem;
+    border-collapse: separate;
+    border-spacing: 0 0.8rem;
+  }
+  
+  .estimations-table th,
+  .estimations-table td {
+    padding: 1rem;
+    text-align: left;
+  }
+  
+  .estimations-table th {
+    background: rgba(156, 77, 244, 0.1);
+    color: var(--primary);
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .estimations-table td {
+    background: var(--card-bg-light);
+    font-size: 0.95rem;
+  }
+  
+  .estimations-table tr:hover td {
+    background: rgba(156, 77, 244, 0.1);
+  }
+  
+  .estimations-table tr td:first-child {
+    border-top-left-radius: var(--radius-sm);
+    border-bottom-left-radius: var(--radius-sm);
+  }
+  
+  .estimations-table tr td:last-child {
+    border-top-right-radius: var(--radius-sm);
+    border-bottom-right-radius: var(--radius-sm);
+  }
+
+  /* Premium Features */
+  .premium-feature {
+    position: relative;
+  }
+
+  .premium-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: linear-gradient(135deg, var(--premium), #FFC107);
+    color: #000;
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+  }
+
+  .premium-badge i {
+    font-size: 0.8rem;
+  }
+
+  /* IVF Clinic Modal */
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(5px);
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  .modal-content {
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    width: 90%;
+    max-width: 600px;
+    padding: 2rem;
+    position: relative;
+    border: 1px solid var(--ivf-clinic);
+    box-shadow: 0 8px 32px rgba(0, 209, 255, 0.2);
+    animation: slideUp 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @keyframes slideUp {
+    from {
+      transform: translateY(30px);
+      opacity: 0;
     }
-    
-    .result-item:hover {
-      transform: translateX(5px);
-      border-color: var(--primary);
+    to {
+      transform: translateY(0);
+      opacity: 1;
     }
-    
-    .result-item.primary {
-      background: rgba(138, 43, 226, 0.1);
+  }
+
+  .close-modal {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: var(--transition);
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+  }
+
+  .close-modal:hover {
+    background: var(--input-bg);
+    color: var(--text-bright);
+  }
+
+  .modal-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .modal-header h3 {
+    color: var(--ivf-clinic);
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .modal-header h3 i {
+    font-size: 1.2rem;
+  }
+
+  .modal-body {
+    margin-bottom: 1.5rem;
+  }
+
+  .modal-body p {
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+
+  .checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin: 1.5rem 0;
+  }
+
+  .checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .checkbox-item input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--ivf-clinic);
+  }
+
+  .checkbox-item label {
+    color: var(--text-light);
+    font-size: 0.95rem;
+  }
+
+  .checkbox-item .premium-badge {
+    position: static;
+    margin-left: auto;
+  }
+
+  .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+  }
+
+  /* Premium Modal */
+  .premium-modal .modal-content {
+    border-color: var(--premium);
+    box-shadow: 0 8px 32px rgba(255, 215, 0, 0.2);
+  }
+
+  .premium-modal .modal-header h3 {
+    color: var(--premium);
+  }
+
+  .pricing-plans {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .pricing-plan {
+    flex: 1;
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pricing-plan:hover {
+    border-color: var(--premium);
+    box-shadow: 0 5px 20px rgba(255, 215, 0, 0.1);
+  }
+
+  .pricing-plan.popular {
+    border-color: var(--premium);
+    background: rgba(255, 215, 0, 0.05);
+  }
+
+  .popular-badge {
+    position: absolute;
+    top: 0;
+    right: 1.5rem;
+    background: var(--premium);
+    color: #000;
+    padding: 0.25rem 1rem;
+    border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .plan-name {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-bright);
+  }
+
+  .plan-price {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--premium);
+    margin-bottom: 0.5rem;
+  }
+
+  .plan-period {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .plan-features {
+    list-style: none;
+    margin-bottom: 1.5rem;
+  }
+
+  .plan-features li {
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .plan-features li i {
+    color: var(--premium);
+    font-size: 0.8rem;
+  }
+
+  .plan-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background: var(--premium);
+    color: #000;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+
+  .plan-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+  }
+  
+
+  /* Responsive */
+  @media (max-width: 1200px) {
+    .title-section {
+      width: 90%;
     }
-    
-    .result-item.secondary {
-      background: rgba(106, 90, 205, 0.1);
-    }
-    
-    .result-label {
-      font-size: 0.875rem;
-      color: var(--text-muted);
-      margin-bottom: 0.25rem;
-    }
-    
-    .result-value {
-      font-size: 1.125rem;
-      color: var(--text-bright);
-      font-weight: 600;
-    }
-    
-    .estimations-table {
-      width: 100%;
-      margin-top: 2rem;
-      border-collapse: separate;
-      border-spacing: 0 0.8rem;
-    }
-    
-    .estimations-table th,
-    .estimations-table td {
-      padding: 1rem;
-      text-align: left;
-    }
-    
-    .estimations-table th {
-      background: rgba(138, 43, 226, 0.15);
-      color: var(--primary);
-      font-weight: 600;
-      border-radius: 0.5rem;
-    }
-    
-    .estimations-table td {
-      background: var(--input-bg);
-    }
-    
-    .estimations-table tr:hover td {
-      background: rgba(138, 43, 226, 0.1);
-    }
-    
-    .estimations-table tr td:first-child {
-      border-top-left-radius: 0.5rem;
-      border-bottom-left-radius: 0.5rem;
-    }
-    
-    .estimations-table tr td:last-child {
-      border-top-right-radius: 0.5rem;
-      border-bottom-right-radius: 0.5rem;
-    }
-    
-    @media (max-width: 1024px) {
-      .tracker-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-    
-    @media (max-width: 768px) {
-      .container {
-        padding: 1rem;
-      }
-      .title-section {
-        width: 90%;
-        padding: 1.5rem;
-      }
-      .title-section h1 {
-        font-size: 1.8rem;
-      }
-      .estimations-table {
-        display: block;
-        overflow-x: auto;
-      }
+  }
+
+  @media (max-width: 1024px) {
+    .tracker-grid {
+      grid-template-columns: 1fr;
     }
 
-    /* ----------------- Login/Profile Container Styles ----------------- */
-    
-    
-    .user-info {
+    .pricing-plans {
+      flex-direction: column;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .main-content {
+      padding: 1.5rem;
+    }
+
+    .title-section {
+      width: 100%;
+      padding: 2rem 1.5rem;
+    }
+
+    .title-section h1 {
+      font-size: 2rem;
+    }
+
+    .estimations-table {
+      display: block;
+      overflow-x: auto;
+    }
+
+    nav ul {
       display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: var(--background);
+      flex-direction: column;
       align-items: center;
-      gap: 10px;
-      background: rgba(138, 43, 226, 0.2);
-      padding: 10px 20px;
-      border-radius: 30px;
-      color: var(--text-bright);
-      border: 1px solid rgba(138, 43, 226, 0.3);
+      justify-content: center;
+      gap: 2rem;
+      z-index: 1000;
+      animation: fadeIn 0.3s ease-out;
     }
-    
-    .user-info i {
-      font-size: 1.2rem;
-      color: var(--primary);
+
+    nav ul.active {
+      display: flex;
     }
-    
-   
+
+    .mobile-menu-btn {
+      display: block;
+    }
+
+    .mobile-menu-btn.active {
+      position: fixed;
+      top: 25px;
+      right: 5%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .title-section h1 {
+      font-size: 1.8rem;
+    }
+
+    .title-section p {
+      font-size: 1rem;
+    }
+
+    .card {
+      padding: 1.5rem;
+    }
+
+    .ivf-clinic-grid {
+      grid-template-columns: 1fr;
+    }
+  }
   </style>
 </head>
 <body>
 <div class="background-animations">
     <!-- Floating circles -->
-    <div class="floating-circle" style="width: 180px; height: 180px; top: 20%; left: 10%;"></div>
-    <div class="floating-circle" style="width: 120px; height: 120px; top: 60%; left: 80%;"></div>
-    <div class="floating-circle" style="width: 200px; height: 200px; top: 40%; left: 50%;"></div>
-    <div class="floating-circle" style="width: 150px; height: 150px; top: 80%; left: 30%;"></div>
+    <div class="floating-circle" style="width: 300px; height: 300px; top: 10%; left: 5%;"></div>
+    <div class="floating-circle" style="width: 200px; height: 200px; top: 70%; left: 80%;"></div>
+    <div class="floating-circle" style="width: 250px; height: 250px; top: 40%; left: 60%;"></div>
+    <div class="floating-circle" style="width: 180px; height: 180px; top: 80%; left: 20%;"></div>
+    
+    <!-- Floating particles -->
+    <div class="particle" style="width: 2px; height: 2px; top: 20%; left: 15%; animation-delay: 0s;"></div>
+    <div class="particle" style="width: 3px; height: 3px; top: 30%; left: 85%; animation-delay: 2s;"></div>
+    <div class="particle" style="width: 1px; height: 1px; top: 60%; left: 45%; animation-delay: 4s;"></div>
+    <div class="particle" style="width: 2px; height: 2px; top: 10%; left: 75%; animation-delay: 6s;"></div>
   </div>
 
-
   <header>
-    <a href="./reproductive.html" class="logo"><img src="./LOG1.png" width="150px"></a>
+    <img src="./LOG1.png" alt="KhuShe Fertility Tracker" width="150px"> 
     <nav id="mainNav">
         <ul>
             <li><a href="./index.html" class="active">Home</a></li>
@@ -585,91 +1180,300 @@
         </ul>
     </nav>
     <button class="mobile-menu-btn" id="menuBtn">☰</button>
-</header>
+  </header>
 
-  <div class="container">
-    <div class="title-section">
-      <br/><br/>
-      <h1>Ovulation: Track, know, plan</h1>
-      <p>
-        Not sure when you're ovulating? <br />
-        Use this free ovulation calculator to estimate your most fertile days.
-      </p>
+  <div class="main-content">
+    <!-- Premium Banner -->
+    <div class="premium-banner">
+      <h3><i class="fas fa-crown"></i> Upgrade to Premium Fertility Tracker</h3>
+      <p>Get advanced cycle predictions, connect with top IVF specialists, and unlock personalized fertility insights</p>
+      <button class="premium-btn" id="premiumBtn">
+        <i class="fas fa-gem"></i> Unlock Premium Features
+      </button>
     </div>
 
-    <div class="tracker-grid">
-      <div class="card input-section">
-        <div class="card-header">
-          <h2 class="card-title">
-            <i class="fas fa-calendar-alt"></i>
-            Enter Cycle Details
-          </h2>
+    <!-- IVF Clinic Section -->
+    <div class="ivf-clinic-section">
+      <div class="section-header">
+        <h3><i class="fas fa-hospital"></i> Partner IVF Clinics</h3>
+        <a href="#" class="view-all">View all <i class="fas fa-chevron-right"></i></a>
+      </div>
+      <p>These premium-rated clinics can access your ovulation data (with your permission) to provide personalized fertility treatments</p>
+      
+      <div class="ivf-clinic-grid">
+        <div class="ivf-clinic-card" data-clinic="1">
+          <h4>Fertility Plus Clinic</h4>
+          <p>Specialized in advanced IVF treatments with high success rates</p>
+          <div class="rating">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star-half-alt"></i>
+            4.7 (128 reviews)
+          </div>
+          <div class="distance">
+            <i class="fas fa-map-marker-alt"></i> 2.5 miles from your location
+          </div>
         </div>
-        <div class="form-group">
-          <label>First Day of Last Period</label>
-          <input type="date" id="lastPeriod" class="form-control" />
+        
+        <div class="ivf-clinic-card" data-clinic="2">
+          <h4>New Hope Fertility</h4>
+          <p>Minimal stimulation IVF experts with personalized care</p>
+          <div class="rating">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            4.9 (95 reviews)
+          </div>
+          <div class="distance">
+            <i class="fas fa-map-marker-alt"></i> 5.1 miles from your location
+          </div>
         </div>
-        <div class="form-group">
-          <label>Cycle Length</label>
-          <select id="cycleLength" class="form-control">
-            <option value="28">28 days</option>
-            <option value="29">29 days</option>
-            <option value="30">30 days</option>
-            <option value="31">31 days</option>
-            <option value="32">32 days</option>
-          </select>
+        
+        <div class="ivf-clinic-card premium-feature" data-clinic="3">
+          <div class="premium-badge"><i class="fas fa-crown"></i> PREMIUM</div>
+          <h4>Global IVF Center</h4>
+          <p>World-class fertility specialists with cutting-edge technology</p>
+          <div class="rating">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            5.0 (210 reviews)
+          </div>
+          <div class="distance">
+            <i class="fas fa-map-marker-alt"></i> Virtual consultations available
+          </div>
         </div>
-        <button id="calculateBtn" class="btn btn-primary">
-          <i class="fas fa-calculator"></i>
-          Calculate My Cycle
-        </button>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="title-section">
+        <h1>Advanced IVF-Oriented Ovulation Tracker</h1>
+        <p>
+          Precision tracking for fertility treatments. Share your data securely with your IVF clinic for personalized care and better outcomes.
+        </p>
       </div>
 
-      <div id="resultsCard" class="card result-card">
-        <div class="card-header">
-          <h2 class="card-title">
-            <i class="fas fa-chart-line"></i>
-            Your Cycle Insights
-          </h2>
-        </div>
-        <div class="result-item primary">
-          <div class="result-label">Ovulation Window</div>
-          <div id="ovulationWindow" class="result-value"></div>
-        </div>
-        <div class="result-item secondary">
-          <div class="result-label">Most Probable Ovulation Date</div>
-          <div id="ovulationDate" class="result-value"></div>
-        </div>
-        <div class="result-item primary">
-          <div class="result-label">Intercourse Window for Pregnancy</div>
-          <div id="intercourseWindow" class="result-value"></div>
-        </div>
-        <div class="result-item secondary">
-          <div class="result-label">Pregnancy Test Date</div>
-          <div id="pregnancyTest" class="result-value"></div>
-        </div>
-        <div class="result-item primary">
-          <div class="result-label">Next Period Start</div>
-          <div id="nextPeriod" class="result-value"></div>
+      <div class="tracker-grid">
+        <div class="card input-section">
+          <div class="card-header">
+            <h2 class="card-title">
+              <i class="fas fa-calendar-alt"></i>
+              Enter Cycle Details
+            </h2>
+            <div class="card-actions">
+              <button class="card-action-btn" title="Save cycle">
+                <i class="fas fa-save"></i>
+              </button>
+              <button class="card-action-btn" title="History">
+                <i class="fas fa-history"></i>
+              </button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label><i class="far fa-calendar-check"></i> First Day of Last Period</label>
+            <input type="date" id="lastPeriod" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-arrows-alt-h"></i> Cycle Length</label>
+            <select id="cycleLength" class="form-control">
+              <option value="">Select your cycle length</option>
+              <option value="28">28 days (average)</option>
+              <option value="29">29 days</option>
+              <option value="30">30 days</option>
+              <option value="31">31 days</option>
+              <option value="32">32 days</option>
+            </select>
+          </div>
+          <div class="form-group premium-feature">
+            <div class="premium-badge"><i class="fas fa-crown"></i> PREMIUM</div>
+            <label><i class="fas fa-wave-square"></i> LH Surge Date (Optional)</label>
+            <input type="date" id="lhSurge" class="form-control" disabled />
+            <small class="text-muted">Premium feature: Enter your LH surge date for more accurate predictions</small>
+          </div>
+          <button id="calculateBtn" class="btn btn-primary">
+            <i class="fas fa-calculator"></i>
+            Calculate My Fertility Window
+          </button>
         </div>
 
-        <div class="card-header">
-          <h2 class="card-title">
-            <i class="fas fa-calendar-week"></i>
-            Future Cycle Predictions
-          </h2>
+        <div id="resultsCard" class="card result-card">
+          <div class="card-header">
+            <h2 class="card-title">
+              <i class="fas fa-chart-line"></i>
+              Your Fertility Insights
+            </h2>
+            <div class="card-actions">
+              <button class="card-action-btn" title="Print">
+                <i class="fas fa-print"></i>
+              </button>
+              <button class="card-action-btn" title="Share">
+                <i class="fas fa-share-alt"></i>
+              </button>
+            </div>
+          </div>
+          <div class="result-item primary">
+            <div class="result-label">
+              <i class="fas fa-venus"></i> Ovulation Window
+            </div>
+            <div id="ovulationWindow" class="result-value">-</div>
+            <div class="result-note">Best time to track ovulation with tests</div>
+          </div>
+          <div class="result-item secondary">
+            <div class="result-label">
+              <i class="fas fa-bullseye"></i> Most Probable Ovulation Date
+            </div>
+            <div id="ovulationDate" class="result-value">-</div>
+          </div>
+          <div class="result-item ivf">
+            <div class="result-label">
+              <i class="fas fa-hospital-user"></i> Best Time for IVF Procedures
+            </div>
+            <div id="ivfWindow" class="result-value">-</div>
+            <div class="result-note">Optimal window for egg retrieval or transfer</div>
+          </div>
+          <div class="result-item secondary">
+            <div class="result-label">
+              <i class="fas fa-vial"></i> Pregnancy Test Date
+            </div>
+            <div id="pregnancyTest" class="result-value">-</div>
+            <div class="result-note">Earliest date for accurate test results</div>
+          </div>
+          <div class="result-item primary">
+            <div class="result-label">
+              <i class="fas fa-calendar-week"></i> Next Period Start
+            </div>
+            <div id="nextPeriod" class="result-value">-</div>
+          </div>
+
+          <div class="card-header" style="margin-top: 2rem;">
+            <h2 class="card-title">
+              <i class="fas fa-calendar-week"></i>
+              Future Cycle Predictions
+            </h2>
+          </div>
+          <table class="estimations-table" id="estimationsTable">
+            <thead>
+              <tr>
+                <th>Cycle</th>
+                <th>Period Start</th>
+                <th>Ovulation Window</th>
+                <th>IVF Procedure Window</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="4" style="text-align: center; color: var(--text-muted);">Enter your cycle details to see predictions</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Share with Clinic Section -->
+          <div class="card-header" style="margin-top: 2rem;">
+            <h2 class="card-title">
+              <i class="fas fa-share-alt"></i>
+              Share with Your IVF Clinic
+            </h2>
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-hospital"></i> Select Clinic</label>
+            <select id="clinicSelect" class="form-control">
+              <option value="">-- Select a clinic --</option>
+              <option value="1">Fertility Plus Clinic</option>
+              <option value="2">New Hope Fertility</option>
+              <option value="3" disabled>Global IVF Center (Premium)</option>
+            </select>
+          </div>
+          <button id="shareBtn" class="btn btn-ivf">
+            <i class="fas fa-paper-plane"></i>
+            Share My Fertility Data
+          </button>
         </div>
-        <table class="estimations-table" id="estimationsTable">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Period Start</th>
-              <th>Ovulation Window</th>
-              <th>Due Date</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- IVF Clinic Modal -->
+  <div class="modal" id="clinicModal">
+    <div class="modal-content">
+      <span class="close-modal" id="closeModal">&times;</span>
+      <div class="modal-header">
+        <h3><i class="fas fa-hospital"></i> Share Data with <span id="modalClinicName">Clinic</span></h3>
+      </div>
+      <div class="modal-body">
+        <p>By sharing your ovulation data with <strong id="modalClinicName2">the clinic</strong>, you agree to:</p>
+        
+        <div class="checkbox-group">
+          <div class="checkbox-item">
+            <input type="checkbox" id="shareCurrent" checked>
+            <label for="shareCurrent">Current Cycle Data</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="shareFuture" checked>
+            <label for="shareFuture">Future Predictions</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="shareHistory">
+            <label for="shareHistory">Historical Data</label>
+            <div class="premium-badge"><i class="fas fa-crown"></i> PREMIUM</div>
+          </div>
+        </div>
+
+        <p style="font-size: 0.9rem; color: var(--text-muted);">
+          <i class="fas fa-lock"></i> Your data will be encrypted and shared securely. 
+          The clinic may contact you to discuss treatment options.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button id="cancelShare" class="btn btn-secondary">Cancel</button>
+        <button id="confirmShare" class="btn btn-ivf">Confirm & Share</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Premium Modal -->
+  <div class="modal premium-modal" id="premiumModal">
+    <div class="modal-content">
+      <span class="close-modal" id="closePremiumModal">&times;</span>
+      <div class="modal-header">
+        <h3><i class="fas fa-crown"></i> Upgrade to Premium</h3>
+      </div>
+      <div class="modal-body">
+        <div class="pricing-plans">
+          <div class="pricing-plan">
+            <div class="plan-name">Monthly</div>
+            <div class="plan-price">$9.99</div>
+            <div class="plan-period">per month</div>
+            <ul class="plan-features">
+              <li><i class="fas fa-check"></i> Advanced cycle predictions</li>
+              <li><i class="fas fa-check"></i> LH surge tracking</li>
+              <li><i class="fas fa-check"></i> Basic clinic access</li>
+              <li><i class="fas fa-check"></i> 3 month history</li>
+            </ul>
+            <button class="plan-btn">Choose Monthly</button>
+          </div>
+          
+          <div class="pricing-plan popular">
+            <div class="popular-badge">BEST VALUE</div>
+            <div class="plan-name">Yearly</div>
+            <div class="plan-price">$89.99</div>
+            <div class="plan-period">per year (25% off)</div>
+            <ul class="plan-features">
+              <li><i class="fas fa-check"></i> Everything in Monthly</li>
+              <li><i class="fas fa-check"></i> Premium clinic network</li>
+              <li><i class="fas fa-check"></i> 12 month history</li>
+              <li><i class="fas fa-check"></i> Priority support</li>
+              <li><i class="fas fa-check"></i> Personalized insights</li>
+            </ul>
+            <button class="plan-btn">Choose Yearly</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -677,23 +1481,129 @@
   <!-- ----------------- Ovulation Tracker Script ----------------- -->
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      const calculateBtn = document.getElementById('calculateBtn');
-      const resultsCard = document.getElementById('resultsCard');
+      // Header scroll effect
+      const header = document.querySelector('header');
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 50) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      });
 
+      // Mobile menu toggle
+      const menuBtn = document.getElementById('menuBtn');
+      const mainNav = document.getElementById('mainNav').querySelector('ul');
+      
+      menuBtn.addEventListener('click', function() {
+        this.classList.toggle('active');
+        mainNav.classList.toggle('active');
+      });
+
+      // Close mobile menu when clicking a link
+      mainNav.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', function() {
+          menuBtn.classList.remove('active');
+          mainNav.classList.remove('active');
+        });
+      });
+
+      // Modal elements
+      const clinicModal = document.getElementById('clinicModal');
+      const closeModal = document.getElementById('closeModal');
+      const cancelShare = document.getElementById('cancelShare');
+      const confirmShare = document.getElementById('confirmShare');
+      const clinicSelect = document.getElementById('clinicSelect');
+      const shareBtn = document.getElementById('shareBtn');
+      const premiumModal = document.getElementById('premiumModal');
+      const closePremiumModal = document.getElementById('closePremiumModal');
+      const premiumBtn = document.getElementById('premiumBtn');
+
+      // Clinic cards click handlers
+      document.querySelectorAll('.ivf-clinic-card').forEach(card => {
+        card.addEventListener('click', function() {
+          const clinicId = this.getAttribute('data-clinic');
+          if (clinicId === '3') {
+            premiumModal.style.display = 'flex';
+            return;
+          }
+          
+          const clinicName = this.querySelector('h4').textContent;
+          document.getElementById('modalClinicName').textContent = clinicName;
+          document.getElementById('modalClinicName2').textContent = clinicName;
+          clinicModal.style.display = 'flex';
+        });
+      });
+
+      // Share button click handler
+      shareBtn.addEventListener('click', function() {
+        const clinicId = clinicSelect.value;
+        if (!clinicId) {
+          alert('Please select a clinic first');
+          return;
+        }
+        
+        const clinicName = clinicSelect.options[clinicSelect.selectedIndex].text.replace(' (Premium)', '');
+        if (clinicSelect.options[clinicSelect.selectedIndex].disabled) {
+          premiumModal.style.display = 'flex';
+          return;
+        }
+        
+        document.getElementById('modalClinicName').textContent = clinicName;
+        document.getElementById('modalClinicName2').textContent = clinicName;
+        clinicModal.style.display = 'flex';
+      });
+
+      // Modal close handlers
+      closeModal.addEventListener('click', function() {
+        clinicModal.style.display = 'none';
+      });
+
+      cancelShare.addEventListener('click', function() {
+        clinicModal.style.display = 'none';
+      });
+
+      confirmShare.addEventListener('click', function() {
+        const clinicName = document.getElementById('modalClinicName').textContent;
+        alert(`Your fertility data has been shared with ${clinicName} successfully!`);
+        clinicModal.style.display = 'none';
+      });
+
+      // Premium modal handlers
+      premiumBtn.addEventListener('click', function() {
+        premiumModal.style.display = 'flex';
+      });
+
+      closePremiumModal.addEventListener('click', function() {
+        premiumModal.style.display = 'none';
+      });
+
+      // Close modals when clicking outside
+      window.addEventListener('click', function(event) {
+        if (event.target === clinicModal) {
+          clinicModal.style.display = 'none';
+        }
+        if (event.target === premiumModal) {
+          premiumModal.style.display = 'none';
+        }
+      });
+
+      // Date formatting
       function formatDate(date) {
         return new Intl.DateTimeFormat('en-US', {
-          month: 'long',
+          month: 'short',
           day: 'numeric',
           year: 'numeric',
         }).format(new Date(date));
       }
 
+      // Calculate ovulation and fertility windows
       function calculateOvulation() {
         const lastPeriod = new Date(document.getElementById('lastPeriod').value);
         const cycleLength = parseInt(document.getElementById('cycleLength').value);
 
         if (!lastPeriod || isNaN(cycleLength)) {
-          alert('Please fill in all fields correctly');
+          alert('Please fill in all required fields correctly');
           return;
         }
 
@@ -707,8 +1617,8 @@
         const ovulationWindowEnd = new Date(ovulationDay);
         ovulationWindowEnd.setDate(ovulationDay.getDate() + 2);
 
-        const intercourseStart = new Date(ovulationWindowStart);
-        intercourseStart.setDate(ovulationWindowStart.getDate() - 3);
+        const ivfWindowStart = new Date(ovulationWindowStart);
+        ivfWindowStart.setDate(ovulationWindowStart.getDate() - 5);
 
         const pregnancyTestDate = new Date(ovulationDay);
         pregnancyTestDate.setDate(ovulationDay.getDate() + 9);
@@ -721,8 +1631,8 @@
           `${formatDate(ovulationWindowStart)} - ${formatDate(ovulationWindowEnd)}`;
         document.getElementById('ovulationDate').textContent =
           formatDate(ovulationDay);
-        document.getElementById('intercourseWindow').textContent =
-          `${formatDate(intercourseStart)} - ${formatDate(ovulationWindowEnd)}`;
+        document.getElementById('ivfWindow').textContent =
+          `${formatDate(ivfWindowStart)} - ${formatDate(ovulationWindowEnd)}`;
         document.getElementById('pregnancyTest').textContent =
           formatDate(pregnancyTestDate);
         document.getElementById('nextPeriod').textContent =
@@ -732,9 +1642,10 @@
         generateEstimations(lastPeriod, cycleLength);
 
         // Show results with animation
-        resultsCard.classList.add('visible');
+        document.getElementById('resultsCard').classList.add('visible');
       }
 
+      // Generate future cycle predictions
       function generateEstimations(startDate, cycleLength) {
         const tbody = document.querySelector('#estimationsTable tbody');
         tbody.innerHTML = '';
@@ -753,14 +1664,14 @@
           const ovulationWindowEnd = new Date(ovulationDate);
           ovulationWindowEnd.setDate(ovulationDate.getDate() + 2);
 
-          const dueDate = new Date(ovulationDate);
-          dueDate.setDate(ovulationDate.getDate() + 280);
+          const ivfWindowStart = new Date(ovulationWindowStart);
+          ivfWindowStart.setDate(ovulationWindowStart.getDate() - 5);
 
           row.innerHTML = `
             <td>${i}</td>
             <td>${formatDate(currentDate)}</td>
             <td>${formatDate(ovulationWindowStart)} - ${formatDate(ovulationWindowEnd)}</td>
-            <td>${formatDate(dueDate)}</td>
+            <td>${formatDate(ivfWindowStart)} - ${formatDate(ovulationWindowEnd)}</td>
           `;
 
           tbody.appendChild(row);
@@ -770,64 +1681,25 @@
         }
       }
 
-      calculateBtn.addEventListener('click', function () {
-        calculateBtn.classList.add('loading');
-        calculateBtn.disabled = true;
+      // Calculate button click handler
+      document.getElementById('calculateBtn').addEventListener('click', function () {
+        this.classList.add('loading');
+        this.disabled = true;
+        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Calculating...';
 
         setTimeout(() => {
           calculateOvulation();
-          calculateBtn.classList.remove('loading');
-          calculateBtn.disabled = false;
+          this.classList.remove('loading');
+          this.disabled = false;
+          this.innerHTML = '<i class="fas fa-calculator"></i> Calculate My Fertility Window';
         }, 1000);
       });
-    });
-  </script>
 
-  <!-- ----------------- Login/Profile Script ----------------- -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const loginBtn = document.getElementById('loginButton');
-      const userInfo = document.getElementById('userInfo');
-      const userEmail = document.getElementById('userEmail');
-      const logoutBtn = document.getElementById('logoutButton');
-
-      function checkAuth() {
-        const isLoggedIn = sessionStorage.getItem('isLoggedIn');
-        const storedEmail = sessionStorage.getItem('userEmail');
-        if (isLoggedIn && storedEmail) {
-          loginBtn.style.display = 'none';
-          userInfo.style.display = 'flex';
-          userEmail.textContent = storedEmail;
-        } else {
-          loginBtn.style.display = 'inline-flex';
-          userInfo.style.display = 'none';
-        }
-      }
-
-      logoutBtn.addEventListener('click', function () {
-        sessionStorage.removeItem('isLoggedIn');
-        sessionStorage.removeItem('userEmail');
-        checkAuth();
-        window.location.reload();
-      });
-
-      checkAuth();
-    });
-  </script>
-
-  
-   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const protectedElements = document.querySelectorAll('.protected-link');
-      protectedElements.forEach((element) => {
-        element.addEventListener('click', function (e) {
-          if (!sessionStorage.getItem('isLoggedIn')) {
-            e.preventDefault();
-            alert('Please login to access this feature');
-            window.location.href = 'auth.html';
-          }
-        });
-      });
+      // Initialize with today's date as default
+      const today = new Date();
+      const formattedDate = today.toISOString().substr(0, 10);
+      document.getElementById('lastPeriod').value = formattedDate;
+      document.getElementById('lhSurge').value = formattedDate;
     });
   </script>
 </body>
